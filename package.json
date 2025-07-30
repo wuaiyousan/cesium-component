@@ -1,0 +1,36 @@
+{
+  "name": "cesium-component",
+  "private": false,
+  "version": "0.0.4",
+  "type": "module",
+  "main": "./dist/cesium-component.umd.js",
+  "module": "./dist/cesium-component.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/cesium-component.es.js",
+      "require": "./dist/cesium-component.umd.js"
+    },
+    "./dist/style.css": "./dist/style.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "build-lib": "vite build --config vite.config.build.js"
+  },
+  "dependencies": {
+    "cesium": "^1.120.0",
+    "vue": "^3.4.31"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.5",
+    "eslint": "^9.32.0",
+    "eslint-config-cesium": "^11.0.1",
+    "eslint-plugin-vue": "^10.3.0",
+    "vite": "^5.3.4",
+    "vite-plugin-static-copy": "^3.1.1"
+  }
+}
