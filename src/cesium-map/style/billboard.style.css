@@ -1,0 +1,29 @@
+.custom-billboard {
+  width: 256px;
+  color: white;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.custom-billboard .title {
+  padding: 4px 12px;
+  height: 32px;
+  line-height: 32px;
+  font-size: 16px;
+}
+
+.custom-billboard .box-list {
+  padding: 0 12px;
+}
+
+.custom-billboard .box-list .box-item {
+  display: flex;
+  align-items: center;
+  line-height: 24px;
+}
+
+.custom-billboard .box-list .box-item .it-label {
+  color: #ddd;
+}
+.custom-billboard .box-list .box-item .it-text {
+  color: #fff;
+}

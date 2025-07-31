@@ -3,10 +3,11 @@
  * @Author: xionghaiying
  * @Date: 2025-07-29 14:06:08
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-30 16:52:23
+ * @LastEditTime: 2025-07-31 14:09:21
 -->
 <script setup>
-import CesiumViewer from "./components/CesiumViewer.vue";
+// import CesiumViewer2 from "./cesium-map/CesiumViewer2.vue";
+import CesiumViewer from "./cesium-map/CesiumViewer.vue";
 </script>
 
 <template>
@@ -14,5 +15,3 @@ import CesiumViewer from "./components/CesiumViewer.vue";
 </template>
 
 <style scoped></style>
-
-

@@ -2,10 +2,10 @@
  * @Author: xionghaiying
  * @Date: 2022-06-10 20:37:08
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-31 09:13:03
+ * @LastEditTime: 2025-07-31 10:53:56
  * @Description: scene.config
  */
-
+import * as Cesium from "cesium";
 // 场景视图配置
 export let viewConf = {
   homeView: {

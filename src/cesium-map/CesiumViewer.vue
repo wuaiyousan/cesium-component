@@ -3,68 +3,111 @@
  * @Author: xionghaiying
  * @Date: 2025-07-29 14:59:29
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-30 14:41:50
+ * @LastEditTime: 2025-07-31 14:20:51
 -->
 
 <template>
-  <div id="cesium-container" ref="cesiumContainer"></div>
+  <div class="scene-view">
+    <!-- 场景部分 -->
+    <SceneMap
+      :options="viewOptions"
+      class="scene-map"
+      ref="mapRef"
+      @scene-loaded="sceneLoaded"
+    >
+      <slot name="mapSlot"></slot>
+    </SceneMap>
+    <slot></slot>
+  </div>
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref } from "vue";
-import * as Cesium from "cesium";
-
+// cesium 引入
 import "cesium/Build/Cesium/Widgets/widgets.css";
-const props = defineProps({
-  options: {
-    type: Object,
-    default: () => ({}),
-  },
-});
 
-const cesiumContainer = ref(null);
-let viewer = null;
+import { onMounted, onBeforeUnmount, ref } from "vue";
+import SceneMap from "./basic/SceneMap.vue";
+import mapConfig from "./data/map.config.js";
+import { viewConf } from "./data/scene.config.js";
+
+import eventBus from "./utils/eventBus.js";
+
+const { viewOptions } = viewConf;
+const { doEventSubscribe, doEventSend } = eventBus();
+
 onMounted(() => {
-  if (cesiumContainer.value) {
-    // 创建 Cesium Viewer
-    viewer = new Cesium.Viewer(cesiumContainer.value, {
-      ...props.options,
-      // 默认配置
-      timeline: false,
-      animation: false,
-      baseLayerPicker: false,
-      fullscreenButton: false,
-      vrButton: false,
-      geocoder: false,
-      homeButton: false,
-      infoBox: false,
-      sceneModePicker: false,
-      selectionIndicator: false,
-      navigationHelpButton: false,
-      navigationInstructionsInitiallyVisible: false,
-      shouldAnimate: true,
-      // baseLayer:false
+  if (mapRef.value) {
+    // 初始化场景
+    initScene();
+  }
+});
+
+onBeforeUnmount(() => {
+  let toEarth = window.earthObj;
+  if (toEarth) {
+  }
+});
+
+const mapRef = ref(null);
+
+function initScene() {
+  let toRef = mapRef.value;
+  if (toRef) {
+    let defaultLayers = mapConfig
+      .getScenarioList()
+      .filter((item) => item.isDefault);
+    let basicLayers = defaultLayers.flatMap((item) => {
+      return item.layerList.filter((it) => it.checked);
     });
-
-    // 添加一些默认场景
-    viewer.scene.globe.enableLighting = true;
+    toRef.doInit({ sceneList: basicLayers });
   }
-});
+}
 
-onUnmounted(() => {
-  if (viewer && !viewer.isDestroyed()) {
-    viewer.destroy();
-  }
-});
+function sceneLoaded() {
+  const viewer = window.earthObj;
+  viewer.scene.hdrEnabled = true; //hdr
+  // viewer.scene.globe.baseColor = Cesium.Color.TRANSPARENT;
+  // viewer.scene.backgroundColor = Cesium.Color.fromBytes(8, 58, 108, 100);
+  viewer.scene.sun.show = true; //太阳光
+  viewer.scene.moon.show = false; //月亮光
+  viewer.scene.skyBox.show = false; //
+  // viewer.scene.globe.enableLighting = false; //全局光
+  viewer.scene.globe.globeAlpha = 0.001;
+  viewer.scene.fxaa = true; //图像改善
+  viewer.scene.skyAtmosphere.show = false; //天空
 
+  // 后处理渲染
+  // const fs =
+  // 	'uniform sampler2D colorTexture;\n' +
+  // 	'varying vec2 v_textureCoordinates;\n' +
+  // 	'uniform float scale;\n' +
+  // 	'uniform vec3 offset;\n' +
+  // 	'void main() {\n' +
+  // 	'    vec4 color = texture2D(colorTexture, v_textureCoordinates);\n' +
+  // 	'    gl_FragColor = vec4(color.rgb * scale + offset, 1.0);\n' +
+  // 	'}\n';
+  // viewer.scene.postProcessStages.add(
+  // 	new Cesium.PostProcessStage({
+  // 		fragmentShader: fs,
+  // 		uniforms: {
+  // 			scale: 1.1,
+  // 			offset: function () {
+  // 				return new Cesium.Cartesian3(0.1, 0.2, 0.3);
+  // 			},
+  // 		},
+  // 	})
+  // );
+}
 </script>
 
 <style scoped>
-#cesium-container {
+.scene-view {
   width: 100%;
   height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+}
+.scene-map {
+  top: 0;
+  left: 0;
+  height: 100%;
 }
 </style>
