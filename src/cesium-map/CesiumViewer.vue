@@ -3,7 +3,7 @@
  * @Author: xionghaiying
  * @Date: 2025-07-29 14:59:29
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-31 15:36:16
+ * @LastEditTime: 2025-07-31 17:28:51
 -->
 
 <template>
@@ -71,16 +71,8 @@ function initScene() {
 
 function sceneLoaded() {
   const viewer = window.earthObj;
-  viewer.scene.hdrEnabled = true; //hdr
-  // viewer.scene.globe.baseColor = Cesium.Color.TRANSPARENT;
-  // viewer.scene.backgroundColor = Cesium.Color.fromBytes(8, 58, 108, 100);
-  viewer.scene.sun.show = true; //太阳光
-  viewer.scene.moon.show = false; //月亮光
-  viewer.scene.skyBox.show = false; //
-  // viewer.scene.globe.enableLighting = false; //全局光
-  viewer.scene.globe.globeAlpha = 0.001;
-  viewer.scene.fxaa = true; //图像改善
-  viewer.scene.skyAtmosphere.show = false; //天空
+  viewer.scene.sun.show = true; //太阳
+  viewer.scene.moon.show = false; //月亮
 
   // 后处理渲染
   // const fs =

@@ -2,9 +2,10 @@
  * @Author: xionghaiying
  * @Date: 2022-06-21 17:49:25
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-31 10:36:07
+ * @LastEditTime: 2025-07-31 19:23:21
  * @Description: UseLayer
  */
+import Cesium from "@/utils/cesium";
 export default function UseLayer() {
   // 加载或卸载数据
   // 加载WmsLayer矢量线划数据
@@ -13,7 +14,7 @@ export default function UseLayer() {
     if (theLayer) {
       theLayer.show = true
     } else {
-      let theViewer = toEarth._viewer
+      let theViewer = toEarth
       let imageryLayer  = theViewer.imageryLayers.addImageryProvider(
         new Cesium.WebMapServiceImageryProvider({
           url: layerNode.url,
@@ -34,7 +35,7 @@ export default function UseLayer() {
     if (theLayer) {
       theLayer.show = true
     } else {
-      let theViewer = toEarth._viewer
+      let theViewer = toEarth
       let { params, extData } = layerNode;
       // 基础对象
       let options = {
@@ -44,6 +45,7 @@ export default function UseLayer() {
           style: params.style ? params.style : '',
           tileMatrixSetID: params.tileMatrixSetID,
           BIZid:layerNode.id,
+          subdomains: params.subdomains,
       };
       // 天地图特殊处理
       if(params.layer === 'tdtBasicLayer'){
@@ -76,6 +78,19 @@ export default function UseLayer() {
       }
 
       let wmtsImageryProvider = new Cesium.WebMapTileServiceImageryProvider(options);
+      // const wmtsImageryProvider = new Cesium.WebMapTileServiceImageryProvider({
+      //   url: 'https://{s}.tianditu.gov.cn/vec_w/wmts?tk=d5884019533677e99fed5ed36e05c4d3&service=WMTS&request=GetTile&version=1.0.0', // 天地图示例
+      //   //`https://t0.tianditu.gov.cn/img_w/wmts?
+      //   //SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w
+      //   //&FORMAT=tiles&TILEMATRIX={TileMatrix}&TILEROW={TileRow}&TILECOL={TileCol}&tk=fd1a28bea0a80604b9b2744ccb6e208a`
+      //   layer: 'vec',
+      //   style: 'default',
+      //   format: 'tiles',
+      //   tileMatrixSetID: 'w',
+      //   subdomains: ['t0', 't1', 't2', 't3', 't4'], // 天地图的 5 个子域名
+      //   maximumLevel: 18,
+      //   tileMatrixLabels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18']
+      // });
       const imageryLayer = theViewer.imageryLayers.addImageryProvider(wmtsImageryProvider);
       // 加载后的处理
       if(extData && extData.brightness){
@@ -87,7 +102,7 @@ export default function UseLayer() {
 
   // 加载地形
   function loadTerrainProvider(layerNode, toEarth = window.earthObj){
-    let theViewer = toEarth._viewer;
+    let theViewer = toEarth;
     if (layerNode.type === 'ArcGISTiledElevationTerrainProvider') {
       theViewer.terrainProvider =
         new Cesium.ArcGISTiledElevationTerrainProvider({
@@ -114,7 +129,7 @@ export default function UseLayer() {
   
   // 通过 图层配置 信息查找数据目录图层
   function findLayerByParam(layerNode, toEarth = window.earthObj) {
-    let theViewer = toEarth._viewer
+    let theViewer = toEarth
     let layerCollection = theViewer.imageryLayers
     for (
       let i = 0,

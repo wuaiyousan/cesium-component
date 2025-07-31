@@ -2,9 +2,10 @@
  * @Author: xionghaiying
  * @Date: 2022-06-10 20:34:30
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-31 10:37:00
+ * @LastEditTime: 2025-07-31 17:48:40
  * @Description: UseScene
 */
+import Cesium from "@/utils/cesium";
 import { viewConf } from '../data/scene.config.js'
 import { getCurrentInstance } from 'vue'
 import UseLayer from './UseLayer.js'
@@ -212,10 +213,11 @@ export default function UseScene() {
 
   // 场景基础设置
   function basicSetting(earth) {
-    let toViewer = earth._viewer
+    let toViewer = earth
 
     // 初始化控件并作本地化等
-    localizeControls(earth)
+    // todo: useTool来统一处理
+    // localizeControls(earth)
 
     // 设置globe属性
     for (const key in globe) {
@@ -241,7 +243,7 @@ export default function UseScene() {
   const { loadWmsLayer, loadTerrainProvider, loadWmtsLayer } = UseLayer()
   // 初始化一些需要特别处理的场景类型数据
   function initOthers(toEarth, otherScenes, toKey = 'code') {
-    let toViewer = toEarth && toEarth._viewer
+    let toViewer = toEarth
     let aliveCodes = ['600', '500', '300', '200']
     if (toViewer) {
       let fromSceneList = []

@@ -3,7 +3,7 @@
  * @Author: xionghaiying
  * @Date: 2025-07-31 09:27:45
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-31 14:19:32
+ * @LastEditTime: 2025-07-31 17:47:37
 -->
 <template>
   <div class="scene-container" ref="earthContainerRef">
@@ -13,17 +13,17 @@
 
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from "vue";
-import * as Cesium from "cesium";
+import Cesium from "@/utils/cesium";
 import UseScene from "../uses/UseScene.js";
 
 const { basicSetting, initOthers, initEvents, flyToDefault } = UseScene();
 
 const emit = defineEmits();
-async function doInit({ sceneList }) {
+const doInit = async ({ sceneList }) => {
   return Promise.resolve(initContainer({ sceneList })).then(() => {
     emit("scene-loaded", { sceneList });
   });
-}
+};
 
 // 对外公开的方法
 defineExpose({
@@ -42,50 +42,46 @@ onBeforeUnmount(() => {
 const { options, defaultOptions } = defineProps({
   options: {
     type: Object,
-    default: function () {
-      return {};
-    },
+    default: () => ({}),
   },
   defaultOptions: {
     type: Object,
-    default: function () {
-      return {
-        animation: false,
-        homeButton: false,
-        // 是否显示3D/2D选择器,与scene3DOnly不能同时为true
-        // 如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
-        scene3DOnly: false,
-        sceneModePicker: false,
-        requestRenderMode: true,
-        fullscreenButton: false,
-        vrButton: false,
-        infoBox: false,
-        navigationHelpButton: false,
-        timeline: false,
-        baseLayerPicker: false,
-        geocoder: false,
-        selectionIndicator: false,
-        navigationInstructionsInitiallyVisible: false,
-        shouldAnimate: true,
-        // baseLayer:false
-      };
-    },
+    default: () => ({
+      animation: false,
+      homeButton: false,
+      // 是否显示3D/2D选择器,与scene3DOnly不能同时为true
+      // 如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
+      scene3DOnly: false,
+      sceneModePicker: false,
+      requestRenderMode: true,
+      fullscreenButton: false,
+      vrButton: false,
+      infoBox: false,
+      navigationHelpButton: false,
+      timeline: false,
+      baseLayerPicker: false,
+      geocoder: false,
+      selectionIndicator: false,
+      navigationInstructionsInitiallyVisible: false,
+      shouldAnimate: true,
+      baseLayer: false,
+    }),
   },
 });
 
 const earthContainerRef = ref(null);
-function initContainer({ sceneList }) {
+const initContainer = ({ sceneList }) => {
   // 创建地球
   let viewer = new Cesium.Viewer(
     earthContainerRef.value,
     Object.assign({}, defaultOptions, options)
   );
 
-  //   // 基础场景设置
-  //   basicSetting(viewer);
+  // 基础场景设置
+  basicSetting(viewer);
 
-  //   // 依据配置将场景树中的“地形”等进行初始化
-  //   initOthers(viewer, sceneList);
+  // 图层初始化
+  initOthers(viewer, sceneList);
 
   //   // 初始化事件
   //   initEvents(viewer);
@@ -99,7 +95,7 @@ function initContainer({ sceneList }) {
   window.earthObj = viewer;
 
   return true;
-}
+};
 </script>
 
 <style scoped>

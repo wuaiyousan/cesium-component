@@ -3,7 +3,7 @@
  * @Author: xionghaiying
  * @Date: 2025-07-29 14:06:08
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-30 14:36:45
+ * @LastEditTime: 2025-07-31 16:49:14
  */
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
@@ -21,7 +21,7 @@ export default defineConfig(({ mode }) => {
     },
     resolve: {
       alias: {
-        "@": path.resolve(__dirname, "src"),
+        "@": path.resolve(__dirname, "src/cesium-map"),
       },
     },
     plugins: [

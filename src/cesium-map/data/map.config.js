@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2024-06-21 15:03:31
  * @LastEditors: xionghaiying
- * @LastEditTime: 2024-07-10 14:12:31
+ * @LastEditTime: 2025-07-31 19:27:14
  * @Description: 地图配置
  */
 
@@ -13,7 +13,7 @@ let mapConf = {
   // geoserver地址
   geoserverUrl: "http://39.91.167.36:8090/geoserver",
   // 底图方案 todo:暂时没有用，以后用于做切换底图方案
-  getScenarioList: function() {
+  getScenarioList: function () {
     return [
       {
         scenarioName: "矢量",
@@ -39,16 +39,16 @@ let mapConf = {
             toOpacity: 100,
           },
           {
-            uuid: 'da8d6ce89ab84a66816b29c5d9902315',
+            uuid: "da8d6ce89ab84a66816b29c5d9902315",
             id: 7,
-            code: '600',
+            code: "600",
             checked: true,
             czmObject: {
-              name: '天地图-矢量标注',
-              xbsjType: 'Imagery',
+              name: "天地图-矢量标注",
+              xbsjType: "Imagery",
               xbsjImageryProvider: {
                 XbsjImageryProvider: {
-                  url: 'https://t6.tianditu.gov.cn/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=bf3f1bb9496222c7092e4c23f5aee129',
+                  url: "https://t6.tianditu.gov.cn/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=bf3f1bb9496222c7092e4c23f5aee129",
                 },
               },
               xbsjZIndex: 2,
@@ -57,7 +57,7 @@ let mapConf = {
             toOpacity: 100,
           },
         ],
-        isDefault: false
+        isDefault: false,
       },
       {
         scenarioName: "影像",
@@ -65,44 +65,40 @@ let mapConf = {
         layerList: [
           {
             id: "mapservice_img_w",
-            code: '600',
+            code: "600",
             title: "天地图-影像",
             url: `https://t0.tianditu.gov.cn/img_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={TileMatrix}&TILEROW={TileRow}&TILECOL={TileCol}&tk=fd1a28bea0a80604b9b2744ccb6e208a`,
             params: {
-              layer: 'tdtBasicLayer',
-              style: 'default',
-              format: 'tiles',
-              tileMatrixSetID: 'GoogleMapsCompatible',
-              subdomains:["t0","t1","t2","t3","t4","t5","t6","t7"],
+              layer: "tdtBasicLayer",
+              style: "default",
+              format: "tiles",
+              tileMatrixSetID: "GoogleMapsCompatible",
+              subdomains: ["t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7"],
             },
             opacity: 1,
             zIndex: 0,
             checked: true,
-            extData: {
-              brightness: 0.3,
-            }
+            extData: {},
           },
           {
             id: "mapservice_cia_w",
-            code: '600',
+            code: "600",
             title: "天地图-影像注记",
             url: `https://t0.tianditu.gov.cn/cia_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cia&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={TileMatrix}&TILEROW={TileRow}&TILECOL={TileCol}&tk=fd1a28bea0a80604b9b2744ccb6e208a`,
             params: {
-              layer: 'tdtBasicLayer',
-              style: 'default',
-              format: 'tiles',
-              tileMatrixSetID: 'GoogleMapsCompatible',
-              subdomains:["t0","t1","t2","t3","t4","t5","t6","t7"],
+              layer: "tdtBasicLayer",
+              style: "default",
+              format: "tiles",
+              tileMatrixSetID: "GoogleMapsCompatible",
+              subdomains: ["t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7"],
             },
             opacity: 1,
             zIndex: 1,
             checked: false,
-            extData: {
-              brightness: 0.3,
-            }
+            extData: {},
           },
         ],
-        isDefault: true
+        isDefault: true,
       },
       {
         scenarioName: "地形",
@@ -110,23 +106,23 @@ let mapConf = {
         layerList: [
           {
             id: "modelservice_terrain",
-            code: '500',
-            type: 'CesiumTerrainProvider',
+            code: "500",
+            type: "CesiumTerrainProvider",
             title: "地形",
-            url: '/3dModel/terrians',
+            url: "/3dModel/terrians",
             params: {},
             opacity: 1,
             zIndex: 2,
             checked: true,
-            extData: {}
+            extData: {},
           },
         ],
-        isDefault: false
+        isDefault: false,
       },
     ];
   },
   // 获取图层配置
-  getLayers: function() {
+  getLayers: function () {
     return [
       // 行政区划
       {
@@ -141,12 +137,11 @@ let mapConf = {
             title: "东阿县",
             url: `${mapConf.geoserverUrl}/DongAn/wms`,
             params: {
-              layers: "DongAn:County_Level"
+              layers: "DongAn:County_Level",
             },
             opacity: 1,
             zIndex: 1,
             visible: true,
-
           },
           // geoserver 要素服务
           {
@@ -154,12 +149,12 @@ let mapConf = {
             dataType: "featuresmap",
             type: "get",
             title: "东阿县",
-            url:`${mapConf.geoserverUrl}/DongAn/ows`,
+            url: `${mapConf.geoserverUrl}/DongAn/ows`,
             params: {
-              service: 'WFS',
-              version: '1.0.0',
-              request: 'GetFeature',
-              outputFormat: 'application/json',
+              service: "WFS",
+              version: "1.0.0",
+              request: "GetFeature",
+              outputFormat: "application/json",
               typeName: "DongAn:County_Level",
               maxFeatures: "1000",
             },
@@ -167,20 +162,20 @@ let mapConf = {
             zIndex: 1,
             visible: true,
             extData: {
-              classType: 'County'
-            }
+              classType: "County",
+            },
           },
           // geoserver WMTS服务
           {
             id: "mapservice_Town",
-            dataType:"mapservice",
-            type:"wmts",
+            dataType: "mapservice",
+            type: "wmts",
             title: "乡镇",
             url: `${mapConf.geoserverUrl}/gwc/service/wmts/rest/DongAn:Town_Level/{style}/{TileMatrixSet}/{TileMatrixSet}:{TileMatrix}/{TileRow}/{TileCol}?format=image/png`,
             params: {
-              layer: 'DongAn:Town_Level',
-              tileMatrixSetID: 'EPSG:4326',
-              format: 'image/png',
+              layer: "DongAn:Town_Level",
+              tileMatrixSetID: "EPSG:4326",
+              format: "image/png",
               maximumLevel: 21,
               minimumLevel: 5,
             },
@@ -188,7 +183,10 @@ let mapConf = {
             zIndex: 7,
             visible: true,
             extData: {
-              rectangles: [116.04431727200006,36.126622534000035,116.54407316300004,36.52445016200006]
+              rectangles: [
+                116.04431727200006, 36.126622534000035, 116.54407316300004,
+                36.52445016200006,
+              ],
             },
           },
           // geoserver 要素服务
@@ -197,12 +195,12 @@ let mapConf = {
             dataType: "featuresmap",
             type: "get",
             title: "镇级",
-            url:`${mapConf.geoserverUrl}/DongAn/ows`,
+            url: `${mapConf.geoserverUrl}/DongAn/ows`,
             params: {
-              service: 'WFS',
-              version: '1.0.0',
-              request: 'GetFeature',
-              outputFormat: 'application/json',
+              service: "WFS",
+              version: "1.0.0",
+              request: "GetFeature",
+              outputFormat: "application/json",
               typeName: "DongAn:Town_Level",
               maxFeatures: "1000",
             },
@@ -210,40 +208,39 @@ let mapConf = {
             zIndex: 1,
             visible: true,
             extData: {
-              classType: 'Town',
-              liftingHeight: 2030.0
-            }
+              classType: "Town",
+              liftingHeight: 2030.0,
+            },
           },
         ],
         isIndeterminate: false,
         checkAll: false,
-        checkList: []
+        checkList: [],
       },
-      // 河流湖泊 
+      // 河流湖泊
       {
         groupName: "河流湖泊",
         groupType: "water-system",
         groupList: [],
         isIndeterminate: false,
         checkAll: false,
-        checkList: []
+        checkList: [],
       },
-
 
       // 供水管网
       {
         groupName: "供水管网",
         groupType: "pipe-network",
         groupList: [
-          // 接口服务 
+          // 接口服务
           {
             id: "mapservice_pipeline_jk",
-            dataType:"dataservice",
-            type:"get",
+            dataType: "dataservice",
+            type: "get",
             title: "管网",
-            url:`${mapConf.geoserverUrl}/iserver/services/map-gpBaseMapWS/rest/maps/gpCXGSMapDs`,
+            url: `${mapConf.geoserverUrl}/iserver/services/map-gpBaseMapWS/rest/maps/gpCXGSMapDs`,
             params: {
-              layersID: "[0:8,10]"
+              layersID: "[0:8,10]",
             },
             opacity: 1,
             zIndex: 12,
@@ -253,10 +250,10 @@ let mapConf = {
         ],
         isIndeterminate: false,
         checkAll: false,
-        checkList: []
+        checkList: [],
       },
     ];
-  }
+  },
 };
 
-export default mapConf
+export default mapConf;

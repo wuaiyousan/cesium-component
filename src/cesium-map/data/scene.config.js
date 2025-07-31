@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2022-06-10 20:37:08
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-31 10:53:56
+ * @LastEditTime: 2025-07-31 17:29:34
  * @Description: scene.config
  */
 import * as Cesium from "cesium";
@@ -21,7 +21,7 @@ export let viewConf = {
   },
   globe: {
     // 修改球体默认底色
-    baseColor: Cesium.Color.fromCssColorString('#000000'),
+    // baseColor: Cesium.Color.fromCssColorString('#000000'),
     // 开启地形检测
     depthTestAgainstTerrain: false,
     enableLighting: true,
@@ -30,6 +30,7 @@ export let viewConf = {
   },
   scene: {
     backgroundColor: Cesium.Color.TRANSPARENT,
+    debugShowFramesPerSecond:true,//显示帧率（FPS）信息
   },
   settings: {
     // 取消默认的双击事件
