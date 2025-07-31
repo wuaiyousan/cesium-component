@@ -3,10 +3,10 @@
  * @Author: xionghaiying
  * @Date: 2025-07-29 14:59:13
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-30 14:27:54
+ * @LastEditTime: 2025-07-31 09:09:08
  */
-// import CesiumViewer from './components/CesiumViewer.vue'
-import CesiumViewer from './App.vue'
+import CesiumViewer from './cesium-map/CesiumViewer.vue'
+// import CesiumViewer from './App.vue'
 
 const plugin = {
   install(app) {
@@ -15,4 +15,4 @@ const plugin = {
 }
 
 export default plugin
-export { CesiumViewer }
+// export { CesiumViewer }

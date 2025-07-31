@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "cesium": "^1.120.0",
+    "mitt": "^3.0.1",
     "vue": "^3.4.31"
   },
   "devDependencies": {
