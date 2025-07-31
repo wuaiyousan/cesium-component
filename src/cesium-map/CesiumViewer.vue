@@ -3,7 +3,7 @@
  * @Author: xionghaiying
  * @Date: 2025-07-29 14:59:29
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-31 17:28:51
+ * @LastEditTime: 2025-07-31 19:54:46
 -->
 
 <template>
@@ -40,7 +40,7 @@ onMounted(() => {
     // 初始化场景
     initScene();
     // 订阅与发送
-    doEventSubscribe("map-test",mapTest);
+    doEventSubscribe("map-test", mapTest);
   }
 });
 
@@ -56,7 +56,7 @@ const mapTest = (data) => {
 
 const mapRef = ref(null);
 
-function initScene() {
+const initScene = () => {
   let toRef = mapRef.value;
   if (toRef) {
     let defaultLayers = mapConfig
@@ -67,9 +67,9 @@ function initScene() {
     });
     toRef.doInit({ sceneList: basicLayers });
   }
-}
+};
 
-function sceneLoaded() {
+const sceneLoaded = () => {
   const viewer = window.earthObj;
   viewer.scene.sun.show = true; //太阳
   viewer.scene.moon.show = false; //月亮
@@ -95,7 +95,7 @@ function sceneLoaded() {
   // 		},
   // 	})
   // );
-}
+};
 </script>
 
 <style scoped>

@@ -2,13 +2,16 @@
  * @Author: xionghaiying
  * @Date: 2022-06-10 20:34:30
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-31 17:48:40
+ * @LastEditTime: 2025-07-31 19:52:35
  * @Description: UseScene
 */
 import Cesium from "@/utils/cesium";
+import eventMapBus from "@/utils/eventMapBus.js";
 import { viewConf } from '../data/scene.config.js'
 import { getCurrentInstance } from 'vue'
 import UseLayer from './UseLayer.js'
+
+const { doEventSubscribe, doEventSend } = eventMapBus();
 
 export default function UseScene() {
   // navigationHelpButton
@@ -190,8 +193,8 @@ export default function UseScene() {
   }
 
   // 依据参数飞入到目标位置
-  function flyToByParams(toEarth, toDuration = 0.5, toView = {}) {
-    let theViewer = toEarth && toEarth._viewer
+  function flyToByParams(Viewer, toDuration = 0.5, toView = {}) {
+    let theViewer = Viewer
     let to = Object.assign({}, homeView, toView)
     if (theViewer && theViewer.camera) {
       theViewer.camera.flyTo({
@@ -268,10 +271,10 @@ export default function UseScene() {
 
   // 事件
   function initEvents(toEarth) {
-    let viewer = toEarth._viewer
+    let viewer = toEarth
 
     // 左键点击
-    if (settings.enableLeftClick === true) {
+    if (settings.enableLeftClick) {
       viewer.screenSpaceEventHandler.setInputAction(
         leftClickHandler,
         Cesium.ScreenSpaceEventType.LEFT_CLICK
@@ -279,7 +282,7 @@ export default function UseScene() {
     }
 
     // 光标移动
-    if (settings.enableMouseMove === true) {
+    if (settings.enableMouseMove) {
       viewer.screenSpaceEventHandler.setInputAction(
         mousemoveHandler,
         Cesium.ScreenSpaceEventType.MOUSE_MOVE
@@ -297,51 +300,17 @@ export default function UseScene() {
       }
     }
 
-    // 默认鼠标事件修改
+    // 默认鼠标事件修改 
     viewer.scene.screenSpaceCameraController.tiltEventTypes = [Cesium.CameraEventType.PINCH, Cesium.CameraEventType.RIGHT_DRAG];
   }
 
-  const { appContext } = getCurrentInstance()
-  const eventHub = appContext.config.globalProperties.eventHub
   function leftClickHandler(movement) {
-    eventHub.$emit('scene-left-click', movement)
+    doEventSend('scene-left-click', movement)
   }
   function mousemoveHandler(movement) {
-    eventHub.$emit('scene-mouse-move', movement)
+    doEventSend('scene-mouse-move', movement)
   }
 
-  // 显示默认的场景
-  function flyToDefault(toEarth) {
-    // 以配置中满足条件 isDefault=true 为默认显示项
-    let theScene = toEarth.sceneTree.root.children.find(
-      (val) => val && val.czmObject && val.czmObject.isDefault
-    )
-    let tileset = (theScene && theScene.czmObject._tileset) || null
-    // 如果没有默认选中项，直接用自定义中心点
-    if (tileset) {
-      let { position, rotation } = tileset
-      if (position && rotation) {
-        // 1.2s后飞入目标位置
-        flyToByParams(toEarth, 1.2, {
-          lon: (position[0] * 180) / Math.PI,
-          lat: (position[1] * 180) / Math.PI,
-          height: position[2],
-          heading: (rotation[0] * 180) / Math.PI,
-          pitch: (rotation[1] * 180) / Math.PI,
-          roll: (rotation[2] * 180) / Math.PI,
-        })
-      } else {
-        tileset.readyPromise.then((it) => {
-          if (it && it.xbsjTileset) {
-            it.xbsjTileset.flyTo()
-          }
-        })
-      }
-    } else {
-      // 1.2s后飞入目标位置
-      flyToByParams(toEarth, 1.2)
-    }
-  }
 
   // 通过 uuids 查找到场景对象列表
   function findItemListByIds(toEarth, ids, toKey = 'uuid') {
@@ -373,7 +342,6 @@ export default function UseScene() {
     basicSetting,
     initOthers,
     initEvents,
-    flyToDefault,
     findItemListByIds,
     heightByLocation,
   }

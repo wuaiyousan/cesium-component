@@ -2,22 +2,20 @@
  * @Author: xionghaiying
  * @Date: 2022-06-10 20:37:08
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-31 17:29:34
+ * @LastEditTime: 2025-07-31 19:52:48
  * @Description: scene.config
  */
 import * as Cesium from "cesium";
 // 场景视图配置
 export let viewConf = {
   homeView: {
-    // lon: 116.26054547821572,
-    // lat: 36.000736341949516,
-    // height: 40847.4183263135,
-    lon: 116.2611554374565,
-    lat: 35.764828205833055,
+    //112.97,28.22
+    lon: 112.97,
+    lat: 28.22,
     height: 60847.4,
     heading: 0,
-    pitch: -45.44,
-    roll: 359.99,
+    pitch: -90,
+    roll: 0,
   },
   globe: {
     // 修改球体默认底色
@@ -36,9 +34,9 @@ export let viewConf = {
     // 取消默认的双击事件
     disableLeftDbClick: false,
     // 启用场景中，左键单击
-    enableLeftClick: true,
+    enableLeftClick: false,
     // 启用场景中，鼠标移动
-    enableMouseMove: true,
+    enableMouseMove: false,
     // // 启用场景中，拾取交互 - [待完善]
     // enablePicking: true,
   },

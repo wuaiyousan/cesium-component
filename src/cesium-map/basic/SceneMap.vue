@@ -3,7 +3,7 @@
  * @Author: xionghaiying
  * @Date: 2025-07-31 09:27:45
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-31 17:47:37
+ * @LastEditTime: 2025-07-31 19:53:02
 -->
 <template>
   <div class="scene-container" ref="earthContainerRef">
@@ -12,11 +12,11 @@
 </template>
 
 <script setup>
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onBeforeUnmount, onMounted, ref, nextTick } from "vue";
 import Cesium from "@/utils/cesium";
 import UseScene from "../uses/UseScene.js";
 
-const { basicSetting, initOthers, initEvents, flyToDefault } = UseScene();
+const { basicSetting, initOthers, initEvents, flyToByParams } = UseScene();
 
 const emit = defineEmits();
 const doInit = async ({ sceneList }) => {
@@ -83,13 +83,15 @@ const initContainer = ({ sceneList }) => {
   // 图层初始化
   initOthers(viewer, sceneList);
 
-  //   // 初始化事件
-  //   initEvents(viewer);
+  // 初始化事件
+  // todo: 加载时先不注册鼠标事件。根据情况按需处理
+  initEvents(viewer);
 
-  //   // 加载显示默认的场景并聚焦默认视图
-  //   nextTick(() => {
-  //     flyToDefault(viewer);
-  //   });
+  // 加载显示默认的场景并聚焦默认视图
+  nextTick(() => {
+    // 1.2s后飞入目标位置
+    flyToByParams(viewer, 1.2);
+  });
 
   // 保存实例到全局
   window.earthObj = viewer;
