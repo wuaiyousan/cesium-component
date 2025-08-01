@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from "vue"
+import { onMounted, reactive, ref, onUnmounted } from "vue"
 import Cesium from "@/utils/cesium.js";
 import eventMapBus from "@/utils/eventMapBus.js";
 import UseDataSource from "@/uses/UseDataSource.js"
@@ -49,6 +49,16 @@ const { location } = viewConf
 const { doEventSubscribe } = eventMapBus()
 const { loadDataSourceByParams } = UseDataSource()
 const { startDrawing } = UseDraw()
+
+import DrawTool from "@/utils/drawGraphic";
+
+
+const drawTool = new DrawTool(window.earthObj);
+
+onUnmounted(() => {
+  drawTool.clearAll();
+});
+
 
 //#region ------------------------- 弹窗
 const formLabelAlign = reactive({

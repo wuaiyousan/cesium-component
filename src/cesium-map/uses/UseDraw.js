@@ -2,11 +2,14 @@
  * @Author: xionghaiying
  * @Date: 2025-06-20 15:31:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-01 13:58:05
+ * @LastEditTime: 2025-08-01 18:01:56
  * @Description:  绘制
  */
 import Cesium from "@/utils/cesium";
-const {Cartesian2} = Cesium
+const { Cartesian2 } = Cesium;
+import PolylineDashedArrowMaterialProperty from "../glsl/classes/PolylineDashedArrowMaterialProperty.js";
+import DashedArrowMaterialProperty from "../glsl/classes/GradientDashedArrowMaterialProperty.js";
+// import "../glsl/classes/CircleRippleMaterialProperty.js";
 import UseDataSource from "./UseDataSource.js";
 import FormatUtil from "@/utils/FormatUtil.js";
 
@@ -31,9 +34,8 @@ export default function UseDraw() {
   // 启动绘制模式
   function startDrawing({ mode, ops = {}, callback = () => {} }) {
     dataSources = loadDataSourceByParams({ name: "basicDraw" });
-    activePoints = [];
     // 清除绘制事件
-    resetDrawing()
+    resetDrawing();
     drawingMode = mode;
     setupHandlers({ ops, callback });
   }
@@ -51,7 +53,6 @@ export default function UseDraw() {
       if (!position) return;
 
       activePoints.push(position);
-      console.log('xhy001',position);
       if (drawingMode === "point") {
         addFixedPoint({ ...ops, position });
       } else if (drawingMode === "polyline") {
@@ -123,10 +124,12 @@ export default function UseDraw() {
         //   scale: 2.0,
         // }
         point: {
-          pixelSize: size ? size : 10,
+          pixelSize: size ? size : 12,
           color: color
             ? Cesium.Color.fromCssColorString(color)
-            : Cesium.Color.fromCssColorString("#ff201c"),
+            : Cesium.Color.RED,
+          outlineColor: Cesium.Color.YELLOW,
+          outlineWidth: 2,
         },
         label: label
           ? {
@@ -230,22 +233,22 @@ export default function UseDraw() {
           polyline: {
             positions: activePoints,
             width: 5,
-            material: new Cesium.PolylineArrowMaterialProperty(
-              Cesium.Color.RED
-            ),
+            clampToGround: true, //贴地
+            material: new DashedArrowMaterialProperty({
+              color: Cesium.Color.RED,
+              width: 3,
+              arrowSize: 0.01,
+              dashLength: 0.1,
+              gapLength: 0.05,
+              arrowBaseWidth: 20.0 // 箭头底部宽度（相对于线宽的倍数）
+            })
+            // material: new Cesium.PolylineDashedArrowMaterialProperty({
+            //   color: Cesium.Color.CYAN,
+            //   dashLength: 0.15,
+            //   arrowSize: 0.15
+            // }),
           },
         });
-        // let viewer = window.earthObj
-        // const removeAfter = ()=>{
-        //   viewer.scene.preRender.removeEventListener(removeAfter);
-        //   setTimeout(() => {
-        //     if(activeShape){
-        //       viewer.entities.remove(activeShape)
-        //       activeShape = null
-        //     }
-        //   }, 100);
-        // }
-        // viewer.scene.preRender.addEventListener(removeAfter);
       } else {
         certainEntity = dataSources.entities.add({
           polygon: {
@@ -292,6 +295,7 @@ export default function UseDraw() {
     if (activeShape) viewer.entities.remove(activeShape);
     floatingPoint = null;
     activeShape = null;
+    activePoints = [];
   }
 
   // 获取地图坐标

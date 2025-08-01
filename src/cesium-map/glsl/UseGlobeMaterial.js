@@ -1,7 +1,7 @@
 /*
- * @Author: fishScola
+ * @Author: xionghaiying
  * @Date: 2022-09-20 11:00:00
- * @LastEditors: fishScola
+ * @LastEditors: xionghaiying
  * @LastEditTime: 2022-09-30 14:16:40
  * @Description: 全局材质 - 如地形、坡度、坡向、等高线
  */

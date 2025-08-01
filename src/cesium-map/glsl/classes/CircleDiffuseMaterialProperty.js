@@ -1,10 +1,11 @@
 /*
- * @Author: fishScola
+ * @Author: xionghaiying
  * @Date: 2022-09-26 15:11:51
- * @LastEditors: fishScola
- * @LastEditTime: 2022-09-26 17:42:40
+ * @LastEditors: xionghaiying
+ * @LastEditTime: 2025-08-01 15:46:17
  * @Description: 扩散圆
  */
+import Cesium from "@/utils/cesium";
 class CircleDiffuseMaterialProperty {
   constructor(options) {
     this._definitionChanged = new Cesium.Event()

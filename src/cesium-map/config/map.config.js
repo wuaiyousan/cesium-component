@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2024-06-21 15:03:31
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-01 13:39:12
+ * @LastEditTime: 2025-08-01 14:53:28
  * @Description: 地图配置
  */
 
@@ -54,7 +54,7 @@ let mapConf = {
             extData: {},
           },
         ],
-        isDefault: true,
+        isDefault: false,
       },
       {
         scenarioName: "影像",
@@ -95,7 +95,7 @@ let mapConf = {
             extData: {},
           },
         ],
-        isDefault: false,
+        isDefault: true,
       },
       {
         scenarioName: "地形",
