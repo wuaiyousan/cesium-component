@@ -3,18 +3,19 @@
  * @Author: xionghaiying
  * @Date: 2025-07-29 14:59:29
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-31 19:54:46
+ * @LastEditTime: 2025-08-01 10:50:47
 -->
 
 <template>
   <div class="scene-view">
-    <!-- 场景部分 -->
+    <!-- 地图容器 -->
     <SceneMap
       :options="viewOptions"
       class="scene-map"
       ref="mapRef"
       @scene-loaded="sceneLoaded"
     >
+      <MapTools></MapTools>
       <slot name="mapSlot"></slot>
     </SceneMap>
     <slot></slot>
@@ -22,15 +23,15 @@
 </template>
 
 <script setup>
-// cesium 引入
-import "cesium/Build/Cesium/Widgets/widgets.css";
-
 import { onMounted, onBeforeUnmount, ref } from "vue";
-import SceneMap from "./basic/SceneMap.vue";
-import mapConfig from "./data/map.config.js";
-import { viewConf } from "./data/scene.config.js";
 
+import mapConfig from "./config/map.config.js";
+import { viewConf } from "./config/scene.config.js";
 import eventMapBus from "./utils/eventMapBus.js";
+
+// 组件
+import SceneMap from "./basic/SceneMap.vue";
+import MapTools from "./basic/MapTools.vue";
 
 const { viewOptions } = viewConf;
 const { doEventSubscribe, doEventSend } = eventMapBus();
@@ -107,11 +108,5 @@ const sceneLoaded = () => {
   top: 0;
   left: 0;
   height: 100%;
-}
-.test-but {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 100;
 }
 </style>

@@ -3,7 +3,7 @@
  * @Author: xionghaiying
  * @Date: 2025-07-31 09:27:45
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-31 19:53:02
+ * @LastEditTime: 2025-08-01 13:59:14
 -->
 <template>
   <div class="scene-container" ref="earthContainerRef">
@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import { onBeforeUnmount, onMounted, ref, nextTick } from "vue";
+import { onBeforeUnmount, onMounted, ref, nextTick, provide } from "vue";
 import Cesium from "@/utils/cesium";
 import UseScene from "../uses/UseScene.js";
 
@@ -93,6 +93,7 @@ const initContainer = ({ sceneList }) => {
     flyToByParams(viewer, 1.2);
   });
 
+  provide("$earthObj", viewer);
   // 保存实例到全局
   window.earthObj = viewer;
 
@@ -100,7 +101,7 @@ const initContainer = ({ sceneList }) => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .scene-container {
   width: 100%;
   height: 100vh; /* 或固定高度，如 600px */

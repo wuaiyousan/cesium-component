@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "cesium": "^1.120.0",
+    "element-plus": "^2.10.4",
     "mitt": "^3.0.1",
     "vue": "^3.4.31"
   },
@@ -31,6 +32,9 @@
     "eslint": "^9.32.0",
     "eslint-config-cesium": "^11.0.1",
     "eslint-plugin-vue": "^10.3.0",
+    "sass-embedded": "^1.89.2",
+    "unplugin-auto-import": "^19.3.0",
+    "unplugin-vue-components": "^28.8.0",
     "vite": "^5.3.4",
     "vite-plugin-static-copy": "^3.1.1"
   }

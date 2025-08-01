@@ -2,17 +2,18 @@
  * @Author: xionghaiying
  * @Date: 2022-06-10 20:37:08
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-31 19:52:48
+ * @LastEditTime: 2025-08-01 13:42:22
  * @Description: scene.config
  */
 import * as Cesium from "cesium";
 // 场景视图配置
 export let viewConf = {
-  homeView: {
-    //112.97,28.22
+  location: {
+    //112.97,28.22 // 长沙
     lon: 112.97,
     lat: 28.22,
-    height: 60847.4,
+    // height: 15991000.0,
+    height:30000.0,
     heading: 0,
     pitch: -90,
     roll: 0,
@@ -28,7 +29,7 @@ export let viewConf = {
   },
   scene: {
     backgroundColor: Cesium.Color.TRANSPARENT,
-    debugShowFramesPerSecond:true,//显示帧率（FPS）信息
+    debugShowFramesPerSecond: true, //显示帧率（FPS）信息
   },
   settings: {
     // 取消默认的双击事件
@@ -63,16 +64,16 @@ export let viewConf = {
   // 场景中设置
   strategies: {
     // 可选值: ['FLASH','CIRCLE_SCAN','CIRCLE_DIFFUSE','CIRCLE_RIPPLE']
-    animType: 'FLASH',
+    animType: "FLASH",
   },
-}
+};
 
 // 天地图服务key
 export const getTDTKey = function () {
   // '6451442b8eba4fe29af1b47a6d82750b'
   // return 'ee95636dcb9175098ea54d3316a220e1'
-  return 'e24c815473fe46d8c8a8cbaf8fdf9b42'
-}
+  return "e24c815473fe46d8c8a8cbaf8fdf9b42";
+};
 
 // 建筑物面（基础高度信息待输入） - 光效
 export let buildingShder = {
@@ -96,4 +97,4 @@ export let buildingShder = {
   // float vtxf_diff = step(0.005, abs(vtxf_h - vtxf_a13));
   // gl_FragColor.rgb += gl_FragColor.rgb * (1.0 - vtxf_diff);
   `,
-}
+};

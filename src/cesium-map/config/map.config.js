@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2024-06-21 15:03:31
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-31 19:27:14
+ * @LastEditTime: 2025-08-01 13:39:12
  * @Description: 地图配置
  */
 
@@ -20,44 +20,41 @@ let mapConf = {
         scenarioType: "vector",
         layerList: [
           {
-            uuid: "da8d6ce89ab84a66816b29c5d9902314",
-            id: 6,
+            id: "mapservice_vec_w",
             code: "600",
-            checked: true,
-            isBlack: true,
-            czmObject: {
-              name: "天地图-矢量",
-              xbsjType: "Imagery",
-              xbsjImageryProvider: {
-                XbsjImageryProvider: {
-                  url: "https://t6.tianditu.gov.cn/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=bf3f1bb9496222c7092e4c23f5aee129",
-                },
-              },
-              xbsjZIndex: 1,
-              show: true,
+            title: "天地图-矢量",
+            url: `https://t0.tianditu.gov.cn/vec_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={TileMatrix}&TILEROW={TileRow}&TILECOL={TileCol}&tk=fd1a28bea0a80604b9b2744ccb6e208a`,
+            params: {
+              layer: "tdtBasicLayer",
+              style: "default",
+              format: "tiles",
+              tileMatrixSetID: "GoogleMapsCompatible",
+              subdomains: ["t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7"],
             },
-            toOpacity: 100,
+            opacity: 1,
+            zIndex: 0,
+            checked: true,
+            extData: {},
           },
           {
-            uuid: "da8d6ce89ab84a66816b29c5d9902315",
-            id: 7,
+            id: "mapservice_cva_w",
             code: "600",
-            checked: true,
-            czmObject: {
-              name: "天地图-矢量标注",
-              xbsjType: "Imagery",
-              xbsjImageryProvider: {
-                XbsjImageryProvider: {
-                  url: "https://t6.tianditu.gov.cn/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=bf3f1bb9496222c7092e4c23f5aee129",
-                },
-              },
-              xbsjZIndex: 2,
-              show: true,
+            title: "天地图-矢量注记",
+            url: `https://t0.tianditu.gov.cn/cva_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={TileMatrix}&TILEROW={TileRow}&TILECOL={TileCol}&tk=fd1a28bea0a80604b9b2744ccb6e208a`,
+            params: {
+              layer: "tdtBasicLayer",
+              style: "default",
+              format: "tiles",
+              tileMatrixSetID: "GoogleMapsCompatible",
+              subdomains: ["t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7"],
             },
-            toOpacity: 100,
+            opacity: 1,
+            zIndex: 1,
+            checked: false,
+            extData: {},
           },
         ],
-        isDefault: false,
+        isDefault: true,
       },
       {
         scenarioName: "影像",
@@ -67,7 +64,7 @@ let mapConf = {
             id: "mapservice_img_w",
             code: "600",
             title: "天地图-影像",
-            url: `https://t0.tianditu.gov.cn/img_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={TileMatrix}&TILEROW={TileRow}&TILECOL={TileCol}&tk=fd1a28bea0a80604b9b2744ccb6e208a`,
+            url: `https://t3.tianditu.gov.cn/img_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={TileMatrix}&TILEROW={TileRow}&TILECOL={TileCol}&tk=fd1a28bea0a80604b9b2744ccb6e208a`,
             params: {
               layer: "tdtBasicLayer",
               style: "default",
@@ -98,7 +95,7 @@ let mapConf = {
             extData: {},
           },
         ],
-        isDefault: true,
+        isDefault: false,
       },
       {
         scenarioName: "地形",

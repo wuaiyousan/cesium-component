@@ -3,12 +3,16 @@
  * @Author: xionghaiying
  * @Date: 2025-07-29 14:06:08
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-31 16:49:14
+ * @LastEditTime: 2025-08-01 11:23:23
  */
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import path from "path";
 import { viteStaticCopy } from "vite-plugin-static-copy";
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+
 // 设置cesium静态文件的引用路径
 const cesiumSource = "node_modules/cesium/Build/Cesium";
 const cesiumBaseUrl = "cesiumStatic";
@@ -34,6 +38,13 @@ export default defineConfig(({ mode }) => {
           { src: `${cesiumSource}/Assets`, dest: cesiumBaseUrl },
           { src: `${cesiumSource}/Widgets`, dest: cesiumBaseUrl },
         ],
+      }),
+      // 按需导入ElementPlus
+      AutoImport({
+        resolvers: [ElementPlusResolver()],
+      }),
+      Components({
+        resolvers: [ElementPlusResolver()],
       }),
     ],
   };

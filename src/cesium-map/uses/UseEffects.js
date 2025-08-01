@@ -2,10 +2,10 @@
  * @Author: xionghaiying
  * @Date: 2022-06-09 16:37:54
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-31 10:12:39
+ * @LastEditTime: 2025-08-01 11:40:34
  * @Description: 效果
  */
-
+import Cesium from "@/utils/cesium";
 import roadsList from '../assets/json/roads.json'
 import movingWater from '../assets/images/moving-water.png'
 import earthspec from '../assets/images/earthspec1k.jpg'
@@ -20,7 +20,7 @@ import {
 
 import UseGlobeMaterial from '../glsl/UseGlobeMaterial.js'
 import UsePostStage from '../glsl/UsePostStage.js'
-import { viewConf } from '../data/scene.config.js'
+import { viewConf } from '../config/scene.config.js'
 
 export default function UseEffects() {
   // 记录加载的基础场景内容项
