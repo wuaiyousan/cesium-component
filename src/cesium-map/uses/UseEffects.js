@@ -2,21 +2,14 @@
  * @Author: xionghaiying
  * @Date: 2022-06-09 16:37:54
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-01 11:40:34
+ * @LastEditTime: 2025-08-04 15:43:38
  * @Description: 效果
  */
-import Cesium from "@/utils/cesium";
+import Cesium from "@/utils/exportCesium";
 import roadsList from '../assets/json/roads.json'
 import movingWater from '../assets/images/moving-water.png'
 import earthspec from '../assets/images/earthspec1k.jpg'
 import rivers from '../assets/json/rivers.json'
-import {
-  createRainStage,
-  createSnowStage,
-  createFogStage,
-  setSunny,
-  unsetSunny,
-} from '../glsl/weatherEffect.js'
 
 import UseGlobeMaterial from '../glsl/UseGlobeMaterial.js'
 import UsePostStage from '../glsl/UsePostStage.js'
@@ -313,49 +306,7 @@ export default function UseEffects() {
 
   // =================================== 天气效果 =================================== //
 
-  let weatherPostProcess = null
-  window.weatherObj = {
-    type: 'rain',
-    params: {},
-  }
-  let weatherExcluding = ['sunny', 'cloudy']
-  function loadPostProcess(toEarth) {
-    // TODO:weather from here!
-    let viewer = toEarth._viewer
-    let collect = viewer.scene.postProcessStages
-    let theObj = window.weatherObj
 
-    if (weatherExcluding.includes(theObj.type)) {
-      setSunny(viewer)
-      return
-    } else if (theObj.type === 'rain') {
-      weatherPostProcess = createRainStage(theObj.params)
-    } else if (theObj.type === 'snow') {
-      weatherPostProcess = createSnowStage(theObj.params)
-    } else if (theObj.type === 'fog') {
-      weatherPostProcess = createFogStage(theObj.params)
-    }
-    collect.add(weatherPostProcess)
-  }
-
-  function unloadPostProcess(toEarth) {
-    let viewer = toEarth._viewer
-    let theObj = window.weatherObj
-    if (weatherExcluding.includes(theObj.type)) {
-      unsetSunny(viewer)
-    } else if (weatherPostProcess) {
-      let collect = viewer.scene.postProcessStages
-      collect.remove(weatherPostProcess)
-      weatherPostProcess = null
-      window.weatherObj = {
-        type: 'rain',
-        params: {},
-      }
-    }
-  }
-
-  window.loadPostProcess = loadPostProcess
-  window.unloadPostProcess = unloadPostProcess
 
   return {
     loadTilesShader,
@@ -366,9 +317,7 @@ export default function UseEffects() {
     // 地形上色
     loadGlobelMaterial,
     unloadGlobelMaterial,
-    // loadPost
-    loadPostProcess,
-    unloadPostProcess,
+    
     animateTarget,
   }
 }

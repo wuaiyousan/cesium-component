@@ -5,7 +5,7 @@
  * @LastEditTime: 2025-07-31 19:55:28
  * @Description: UseLayer
  */
-import Cesium from "@/utils/cesium";
+import Cesium from "@/utils/exportCesium";
 export default function UseLayer() {
   // 加载或卸载数据
   // 加载WmsLayer矢量线划数据

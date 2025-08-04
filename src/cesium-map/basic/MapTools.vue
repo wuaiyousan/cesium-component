@@ -38,20 +38,18 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref, onUnmounted } from "vue"
-import Cesium from "@/utils/cesium.js";
+import { onMounted, reactive, ref, onUnmounted } from "vue";
 import eventMapBus from "@/utils/eventMapBus.js";
-import UseDataSource from "@/uses/UseDataSource.js"
-import UseDraw from "@/uses/UseDraw.js"
-import { viewConf } from "@/config/scene.config.js"
+import UseDataSource from "@/uses/UseDataSource.js";
+import UseDraw from "@/uses/UseDraw.js";
+import UseTools from "@/uses/UseTools.js";
 
-const { location } = viewConf
-const { doEventSubscribe } = eventMapBus()
-const { loadDataSourceByParams } = UseDataSource()
-const { startDrawing } = UseDraw()
+const { doEventSubscribe } = eventMapBus();
+const { loadDataSourceByParams } = UseDataSource();
+const { startDrawing } = UseDraw();
+const { mapZoomIn, mapZoomOut, mapReset } = UseTools();
 
 import DrawTool from "@/utils/drawGraphic";
-
 
 const drawTool = new DrawTool(window.earthObj);
 
@@ -59,19 +57,18 @@ onUnmounted(() => {
   drawTool.clearAll();
 });
 
-
 //#region ------------------------- 弹窗
 const formLabelAlign = reactive({
   label: "",
   color: "#ff201c",
-  size: ""
-})
+  size: "",
+});
 
-const dialogVisible = ref(false)
+const dialogVisible = ref(false);
 
 function submit() {
-  ElMessage.info(`size: ${formLabelAlign.size}`)
-  dialogVisible.value = false
+  ElMessage.info(`size: ${formLabelAlign.size}`);
+  dialogVisible.value = false;
 }
 
 //#endregion --------------------- 弹窗
@@ -80,78 +77,39 @@ function submit() {
 doEventSubscribe("map-draw-point", ({ isSet = false, callback = () => {} }) => {
   // 设置入参属性
   if (isSet) {
-    dialogVisible.value = true
-    startDrawing({ mode: "point", ops: formLabelAlign, callback })
+    dialogVisible.value = true;
+    startDrawing({ mode: "point", ops: formLabelAlign, callback });
   } else {
-    startDrawing({ mode: "point", callback })
+    startDrawing({ mode: "point", callback });
   }
-})
+});
 
 doEventSubscribe("map-draw-rectangle", ({ callback = () => {} }) => {
-  startDrawing({ mode: "rectangle" })
-})
+  startDrawing({ mode: "rectangle" });
+});
 
 doEventSubscribe("map-draw-polygon", ({ callback = () => {} }) => {
-  startDrawing({ mode: "polygon" })
-})
+  startDrawing({ mode: "polygon" });
+});
 
 doEventSubscribe("map-add-dataSoure", ({ callback = () => {} }) => {
-  loadDataSourceByParams({ name: "basicDraw" })
-})
+  loadDataSourceByParams({ name: "basicDraw" });
+});
 
 //#endregion --------------------- 全局方法
-function mapZoomIn() {
-  const camera = window.earthObj.camera
-  const currentHeight = camera.positionCartographic.height
-  const targetHeight = currentHeight * 0.7
-  camera.flyTo({
-    destination: Cesium.Cartesian3.fromRadians(
-      camera.positionCartographic.longitude,
-      camera.positionCartographic.latitude,
-      targetHeight
-    ),
-    duration: 0.5
-  })
-}
-
-function mapZoomOut() {
-  const camera = window.earthObj.camera
-  const currentHeight = camera.positionCartographic.height
-  const targetHeight = currentHeight * 1.3
-  camera.flyTo({
-    destination: Cesium.Cartesian3.fromRadians(
-      camera.positionCartographic.longitude,
-      camera.positionCartographic.latitude,
-      targetHeight
-    ),
-    duration: 0.5
-  })
-}
-
-// 复位
-function mapReset() {
-  let toR = Cesium.Math.toRadians
-  let theViewer = window.earthObj
-  if (theViewer && theViewer.camera) {
-    theViewer.camera.flyTo({
-      destination: Cesium.Cartesian3.fromDegrees(location.lon, location.lat, location.height),
-      duration: 0.8
-    })
-  }
-}
 
 onMounted(() => {
   // console.log("window.earthObj._viewer", window.earthObj)
-})
+});
 </script>
 
 <style lang="scss" scoped>
 .map-tooltip {
   position: absolute;
   right: 25px;
-  bottom: 20px;
+  bottom: 30px;
   width: 36px;
-  background-color: #fff;
+  // background-color: #fff;
   display: flex;
   flex-direction: column;
   gap: 6px;

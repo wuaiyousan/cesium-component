@@ -1,7 +1,7 @@
 /*
  * @Description: test
  */
-import Cesium from "@/utils/cesium";
+import Cesium from "@/utils/exportCesium";
 
 export default class DashedArrowMaterialProperty {
   constructor(options) {

@@ -6,7 +6,7 @@
  * @FilePath: \map\utils\UseEntity.js
  * @Description:  方法集合
  */
-import Cesium from "@/utils/cesium";
+import Cesium from "@/utils/exportCesium";
 import { station } from "../config/icon.config"
 import FormatUtil from "./FormatUtil"
 

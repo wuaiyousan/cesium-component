@@ -1,4 +1,4 @@
-import Cesium from "@/utils/cesium";
+import Cesium from "@/utils/exportCesium";
 
 export default class DrawTool {
   /**

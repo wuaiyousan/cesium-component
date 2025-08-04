@@ -13,7 +13,7 @@
 
 <script setup>
 import { onBeforeUnmount, onMounted, ref, nextTick, provide } from "vue";
-import Cesium from "@/utils/cesium";
+import Cesium from "@/utils/exportCesium";
 import UseScene from "../uses/UseScene.js";
 
 const { basicSetting, initOthers, initEvents, flyToByParams } = UseScene();

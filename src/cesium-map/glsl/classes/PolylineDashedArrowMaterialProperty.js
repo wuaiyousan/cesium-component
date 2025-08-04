@@ -5,7 +5,7 @@
  * @param {Number} [options.dashLength=0.05] 虚线段的长度（单位：比例值）
  * @param {Number} [options.gapLength=0.03] 间隔的长度（单位：比例值）
  */
-import Cesium from "@/utils/cesium";
+import Cesium from "@/utils/exportCesium";
 
 export default class PolylineDashedArrowMaterialProperty {
   constructor(options) {

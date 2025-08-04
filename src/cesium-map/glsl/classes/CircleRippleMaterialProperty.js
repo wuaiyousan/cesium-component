@@ -5,7 +5,7 @@
  * @LastEditTime: 2025-08-01 15:41:01
  * @Description: 波纹圆
  */
-import Cesium from "@/utils/cesium";
+import Cesium from "@/utils/exportCesium";
 class CircleRippleMaterialProperty {
   constructor(options) {
     this._definitionChanged = new Cesium.Event()
