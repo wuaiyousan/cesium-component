@@ -2,12 +2,12 @@
  * @Author: xionghaiying
  * @Date: 2025-06-20 15:31:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-04 14:40:54
+ * @LastEditTime: 2025-08-04 17:54:11
  * @Description:  绘制
  */
-import Cesium from "@/utils/cesium";
+import Cesium from "@/utils/exportCesium";
 const { Cartesian2 } = Cesium;
-import PolylineDashedArrowMaterialProperty from "../glsl/classes/PolylineDashedArrowMaterialProperty.js";
+import DashedArrowMaterialProperty from "../glsl/classes/DashedArrowMaterialProperty.js";
 import UseDataSource from "./UseDataSource.js";
 import FormatUtil from "@/utils/FormatUtil.js";
 
@@ -232,11 +232,14 @@ export default function UseDraw() {
             positions: activePoints,
             clampToGround: true, //贴地
             width: 5, // 这个宽度会被材质自动继承
-            material: new PolylineDashedArrowMaterialProperty({
+            material: new DashedArrowMaterialProperty({
               color: Cesium.Color.BLUE,
               dashLength: 0.05,
               gapLength: 0.03
             })
+            // material: new Cesium.PolylineDashMaterialProperty({
+            //   color: Cesium.Color.YELLOW,
+            // }),
           },
         });
       } else {
