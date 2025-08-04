@@ -1,13 +1,9 @@
 /*
- * @Description: 虚线+箭头材质属性（自动继承线段宽度）
- * @param {Object} options 配置项
- * @param {Cesium.Color} options.color 线段颜色
- * @param {Number} [options.dashLength=0.05] 虚线段的长度（单位：比例值）
- * @param {Number} [options.gapLength=0.03] 间隔的长度（单位：比例值）
+ * @Description: test
  */
 import Cesium from "@/utils/cesium";
 
-export default class PolylineDashedArrowMaterialProperty {
+export default class DashedArrowMaterialProperty {
   constructor(options) {
     options = Cesium.defaultValue(options, Cesium.defaultValue.EMPTY_OBJECT);
 
@@ -65,7 +61,7 @@ export default class PolylineDashedArrowMaterialProperty {
   equals(other) {
     return (
       this === other ||
-      (other instanceof PolylineDashedArrowMaterialProperty &&
+      (other instanceof DashedArrowMaterialProperty &&
         Cesium.Property.equals(this._color, other._color) &&
         Cesium.Property.equals(this._dashLength, other._dashLength) &&
         Cesium.Property.equals(this._gapLength, other._gapLength))
@@ -74,18 +70,16 @@ export default class PolylineDashedArrowMaterialProperty {
 }
 
 // 定义属性描述符
-Object.defineProperties(PolylineDashedArrowMaterialProperty.prototype, {
+Object.defineProperties(DashedArrowMaterialProperty.prototype, {
   color: Cesium.createPropertyDescriptor("color"),
   dashLength: Cesium.createPropertyDescriptor("dashLength"),
   gapLength: Cesium.createPropertyDescriptor("gapLength"),
 });
 
 // 注册材质类型
-Cesium.Material.PolylineDashedArrowMaterialProperty =
-  "PolylineDashedArrowMaterialProperty";
-Cesium.Material.PolylineDashedArrowMaterialType =
-  "PolylineDashedArrowMaterialType";
-Cesium.Material.PolylineDashedArrowMaterialSource = `
+Cesium.Material.DashedArrowMaterialProperty = "DashedArrowMaterialProperty";
+Cesium.Material.DashedArrowMaterialType = "DashedArrowMaterialType";
+Cesium.Material.DashedArrowMaterialSource = `
 uniform vec4 color;
 uniform float dashLength;  // 虚线段的长度
 uniform float gapLength;   // 间隔的长度
@@ -164,16 +158,16 @@ czm_material czm_getMaterial(czm_materialInput materialInput)
 
 // 注册材质
 Cesium.Material._materialCache.addMaterial(
-  Cesium.Material.PolylineDashedArrowMaterialType,
+  Cesium.Material.DashedArrowMaterialType,
   {
     fabric: {
-      type: Cesium.Material.PolylineDashedArrowMaterialType,
+      type: Cesium.Material.DashedArrowMaterialType,
       uniforms: {
         color: new Cesium.Color(1.0, 0.0, 0.0, 1.0),
         dashLength: 0.05,
         gapLength: 0.03,
       },
-      source: Cesium.Material.PolylineDashedArrowMaterialSource,
+      source: Cesium.Material.DashedArrowMaterialSource,
     },
     translucent: function (material) {
       return true;

@@ -2,14 +2,12 @@
  * @Author: xionghaiying
  * @Date: 2025-06-20 15:31:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-01 18:01:56
+ * @LastEditTime: 2025-08-04 14:40:54
  * @Description:  绘制
  */
 import Cesium from "@/utils/cesium";
 const { Cartesian2 } = Cesium;
 import PolylineDashedArrowMaterialProperty from "../glsl/classes/PolylineDashedArrowMaterialProperty.js";
-import DashedArrowMaterialProperty from "../glsl/classes/GradientDashedArrowMaterialProperty.js";
-// import "../glsl/classes/CircleRippleMaterialProperty.js";
 import UseDataSource from "./UseDataSource.js";
 import FormatUtil from "@/utils/FormatUtil.js";
 
@@ -232,21 +230,13 @@ export default function UseDraw() {
         certainEntity = dataSources.entities.add({
           polyline: {
             positions: activePoints,
-            width: 5,
             clampToGround: true, //贴地
-            material: new DashedArrowMaterialProperty({
-              color: Cesium.Color.RED,
-              width: 3,
-              arrowSize: 0.01,
-              dashLength: 0.1,
-              gapLength: 0.05,
-              arrowBaseWidth: 20.0 // 箭头底部宽度（相对于线宽的倍数）
+            width: 5, // 这个宽度会被材质自动继承
+            material: new PolylineDashedArrowMaterialProperty({
+              color: Cesium.Color.BLUE,
+              dashLength: 0.05,
+              gapLength: 0.03
             })
-            // material: new Cesium.PolylineDashedArrowMaterialProperty({
-            //   color: Cesium.Color.CYAN,
-            //   dashLength: 0.15,
-            //   arrowSize: 0.15
-            // }),
           },
         });
       } else {
