@@ -3,18 +3,13 @@
  * @Author: xionghaiying
  * @Date: 2025-07-29 14:59:29
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-05 10:14:49
+ * @LastEditTime: 2025-08-05 11:29:48
 -->
 
 <template>
   <div class="scene-view">
     <!-- 地图容器 -->
-    <SceneMap
-      :options="viewOptions"
-      class="scene-map"
-      ref="mapRef"
-      @scene-loaded="sceneLoaded"
-    >
+    <SceneMap :options="viewOptions" class="scene-map" ref="mapRef" @scene-loaded="sceneLoaded">
       <MapTools></MapTools>
       <slot name="mapSlot"></slot>
     </SceneMap>
@@ -33,7 +28,7 @@ import SceneMap from "@/basic/SceneMap.vue";
 import MapTools from "@/basic/MapTools.vue";
 
 // 事件
-import "@/basic/event.collection.js";
+// import "@/basic/event.collection.js";
 
 const { viewOptions } = viewConf;
 
@@ -55,9 +50,7 @@ const mapRef = ref(null);
 const initScene = () => {
   let toRef = mapRef.value;
   if (toRef) {
-    let defaultLayers = mapConfig
-      .getScenarioList()
-      .filter((item) => item.isDefault);
+    let defaultLayers = mapConfig.getScenarioList().filter((item) => item.isDefault);
     let basicLayers = defaultLayers.flatMap((item) => {
       return item.layerList.filter((it) => it.checked);
     });

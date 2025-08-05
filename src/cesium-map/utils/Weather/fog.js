@@ -1,20 +1,17 @@
 /*
- * @Descripttion: 雾粒子
- * @Author: 笙痞
+ * @Author: xionghaiying
  * @Date: 2023-01-04 18:11:32
- * @LastEditors: 笙痞77
- * @LastEditTime: 2023-05-19 09:56:16
+ * @LastEditors: xionghaiying
+ * @LastEditTime: 2025-08-05 11:35:03
+ * @Descripttion: 雾粒子
  */
-import * as Cesium from "cesium";
+import Cesium from "@/utils/exportCesium";
 class FogEffect {
   constructor(viewer, options) {
     if (!viewer) throw new Error("no viewer object!");
     options = options || {};
-    this.visibility = Cesium.defaultValue(options.visibility, 0.1); // 能见度
-    this.color = Cesium.defaultValue(
-      options.color,
-      new Cesium.Color(0.8, 0.8, 0.8, 0.5)
-    );
+    this.visibility = options.visibility ?? 0.1; // 能见度
+    this.color = Cesium.Color.fromCssColorString(options.color) ?? new Cesium.Color(0.8, 0.8, 0.8, 0.5);
     this.viewer = viewer;
     this.init();
   }

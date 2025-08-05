@@ -1,12 +1,11 @@
 /*
- * @Descripttion: 雪花粒子类
  * @Author: 笙痞
  * @Date: 2023-01-04 14:01:07
- * @LastEditors: 笙痞77
- * @LastEditTime: 2023-05-19 09:52:52
+ * @LastEditors: xionghaiying
+ * @LastEditTime: 2025-08-05 10:30:56
+ * @Descripttion: 雪花粒子类
  */
-
-import * as Cesium from "cesium";
+import Cesium from "@/utils/exportCesium";
 class SnowEffect {
   constructor(viewer, options) {
     if (!viewer) throw new Error("no viewer object!");

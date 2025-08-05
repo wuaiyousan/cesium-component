@@ -1,11 +1,11 @@
 /*
- * @Descripttion: 雨粒子效果
  * @Author: 笙痞
  * @Date: 2023-01-04 15:01:03
- * @LastEditors: 笙痞77
- * @LastEditTime: 2023-05-19 09:54:15
+ * @LastEditors: xionghaiying
+ * @LastEditTime: 2025-08-05 10:29:58
+ * @Descripttion: 雨粒子效果
  */
-import * as Cesium from "cesium";
+import Cesium from "@/utils/exportCesium";
 
 class RainEffect {
   constructor(viewer, options) {

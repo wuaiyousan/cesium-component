@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-08-04 16:34:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-05 09:33:09
+ * @LastEditTime: 2025-08-05 10:44:01
  * @Description: 
 -->
 <template>
@@ -42,7 +42,7 @@
       <div class="line">
         <el-button @click="onTest">雨</el-button>
         <el-button @click="onTest">雪</el-button>
-        <el-button @click="onTest">雾</el-button>
+        <el-button @click="onFog">雾</el-button>
       </div>
     </div>
   </div>
@@ -105,7 +105,9 @@ const onDrawClear = () =>{
 
 
 //#region ------ 效果 ------
-
+const onFog = () =>{
+  doEventSend("map-add-fog")
+}
 
 //#endregion ------ 效果 ------
 
