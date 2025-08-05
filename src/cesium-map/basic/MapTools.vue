@@ -40,22 +40,13 @@
 <script setup>
 import { onMounted, reactive, ref, onUnmounted } from "vue";
 import eventMapBus from "@/utils/eventMapBus.js";
-import UseDataSource from "@/uses/UseDataSource.js";
 import UseDraw from "@/uses/UseDraw.js";
 import UseTools from "@/uses/UseTools.js";
 
 const { doEventSubscribe } = eventMapBus();
-const { loadDataSourceByParams } = UseDataSource();
-const { startDrawing } = UseDraw();
+const { startDrawing,clearDraw } = UseDraw();
 const { mapZoomIn, mapZoomOut, mapReset } = UseTools();
 
-import DrawTool from "@/utils/drawGraphic";
-
-const drawTool = new DrawTool(window.earthObj);
-
-onUnmounted(() => {
-  drawTool.clearAll();
-});
 
 //#region ------------------------- 弹窗
 const formLabelAlign = reactive({
@@ -84,16 +75,20 @@ doEventSubscribe("map-draw-point", ({ isSet = false, callback = () => {} }) => {
   }
 });
 
-doEventSubscribe("map-draw-rectangle", ({ callback = () => {} }) => {
-  startDrawing({ mode: "rectangle" });
+doEventSubscribe("map-draw-polyline", ({ callback = () => {} }) => {
+  startDrawing({ mode: "polyline" });
 });
 
 doEventSubscribe("map-draw-polygon", ({ callback = () => {} }) => {
   startDrawing({ mode: "polygon" });
 });
 
-doEventSubscribe("map-add-dataSoure", ({ callback = () => {} }) => {
-  loadDataSourceByParams({ name: "basicDraw" });
+doEventSubscribe("map-draw-rectangle", ({ callback = () => {} }) => {
+  startDrawing({ mode: "rectangle" });
+});
+
+doEventSubscribe("map-draw-clear", () => {
+  clearDraw();
 });
 
 //#endregion --------------------- 全局方法

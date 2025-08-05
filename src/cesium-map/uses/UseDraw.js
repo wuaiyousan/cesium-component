@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-06-20 15:31:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-04 17:54:11
+ * @LastEditTime: 2025-08-05 09:21:19
  * @Description:  绘制
  */
 import Cesium from "@/utils/exportCesium";
@@ -304,6 +304,10 @@ export default function UseDraw() {
   function clearDraw() {
     if (dataSources) dataSources.entities.removeAll();
     if (handler && !handler.isDestroyed()) handler.destroy();
+    posistions = [];
+    floatingPoint = null;
+    activeShape = null;
+    activePoints = [];
   }
 
   function labelPostion(positions) {

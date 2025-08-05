@@ -3,7 +3,7 @@
  * @Author: xionghaiying
  * @Date: 2025-07-29 14:59:29
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-01 10:50:47
+ * @LastEditTime: 2025-08-05 10:14:49
 -->
 
 <template>
@@ -25,23 +25,22 @@
 <script setup>
 import { onMounted, onBeforeUnmount, ref } from "vue";
 
-import mapConfig from "./config/map.config.js";
-import { viewConf } from "./config/scene.config.js";
-import eventMapBus from "./utils/eventMapBus.js";
+import mapConfig from "@/config/map.config.js";
+import { viewConf } from "@/config/scene.config.js";
 
 // 组件
-import SceneMap from "./basic/SceneMap.vue";
-import MapTools from "./basic/MapTools.vue";
+import SceneMap from "@/basic/SceneMap.vue";
+import MapTools from "@/basic/MapTools.vue";
+
+// 事件
+import "@/basic/event.collection.js";
 
 const { viewOptions } = viewConf;
-const { doEventSubscribe, doEventSend } = eventMapBus();
 
 onMounted(() => {
   if (mapRef.value) {
     // 初始化场景
     initScene();
-    // 订阅与发送
-    doEventSubscribe("map-test", mapTest);
   }
 });
 
@@ -50,10 +49,6 @@ onBeforeUnmount(() => {
   if (toEarth) {
   }
 });
-
-const mapTest = (data) => {
-  console.log("xhy----mapTest", data);
-};
 
 const mapRef = ref(null);
 
