@@ -2,21 +2,36 @@
   <!-- 工具栏 -->
   <div class="map-tooltip">
     <!-- 放大缩小复位 -->
-    <el-button type="primary" @click="mapZoomIn()" class="map-tooltip-button">放大</el-button>
-    <el-button type="primary" @click="mapZoomOut()" style="margin-left: 0px">缩小</el-button>
-    <el-button type="primary" @click="mapReset()" style="margin-left: 0px">复位</el-button>
+    <el-button @click="mapZoomIn()" class="map-tooltip-button zoom-in"></el-button>
+    <el-button @click="mapZoomOut()" style="margin-left: 0px" class="map-tooltip-button zoom-out"></el-button>
+    <el-button @click="mapReset()" style="margin-left: 0px" class="map-tooltip-button reposition"></el-button>
 
     <!-- 基础绘制、清除 -->
-    <el-button type="primary" @click="startDrawing({ mode: 'point' })" style="margin-left: 0px">点</el-button>
-    <el-button type="primary" @click="startDrawing({ mode: 'polyline' })" style="margin-left: 0px">线</el-button>
-    <el-button type="primary" @click="startDrawing({ mode: 'rectangle' })" style="margin-left: 0px">矩形</el-button>
-    <el-button type="primary" @click="startDrawing({ mode: 'polygon' })" style="margin-left: 0px">面</el-button>
-    <el-button type="primary" @click="clearDraw()" style="margin-left: 0px">清除</el-button>
+    <el-dropdown placement="left" popper-class="custom-dropdown">
+      <el-button class="map-tooltip-button map-tools"> </el-button>
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item>
+            <el-button @click="startDrawing({ mode: 'point' })" class="plot-point"></el-button>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <el-button @click="startDrawing({ mode: 'polyline' })" class="plot-line"></el-button>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <el-button @click="startDrawing({ mode: 'polygon' })" class="plot-polygon"></el-button>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <el-button @click="startDrawing({ mode: 'rectangle' })" class="plot-rectangle"></el-button>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
+    <el-button @click="clearDraw()" style="margin-left: 0px" class="map-tooltip-button draw-clear"></el-button>
 
     <!-- 雨雪雾 -->
-    <el-button type="primary" @click="showRain()" style="margin-left: 0px">雨</el-button>
-    <el-button type="primary" @click="showSnow()" style="margin-left: 0px">雪</el-button>
-    <el-button type="primary" @click="showFog()" style="margin-left: 0px">雾</el-button>
+    <el-button @click="showRain()" style="margin-left: 0px" class="map-tooltip-button weather-rain"></el-button>
+    <el-button @click="showSnow()" style="margin-left: 0px" class="map-tooltip-button weather-snow"></el-button>
+    <el-button @click="showFog()" style="margin-left: 0px" class="map-tooltip-button weather-fog"></el-button>
 
     <el-dialog title="新增实体" width="20%" :close-on-click-modal="false" v-model="dialogVisible">
       <el-form label-width="auto" :model="formLabelAlign" style="max-width: 600px">
@@ -162,13 +177,83 @@ onUnmounted(() => {
   right: 25px;
   bottom: 30px;
   width: 36px;
-  // background-color: #fff;
   display: flex;
   flex-direction: column;
   gap: 6px;
   z-index: 60;
+  .map-tooltip-button {
+    height: 36px;
+    width: 36px;
+    border: 0px;
+  }
+  .zoom-in {
+    background: #f0f0f0 url("../assets/controls/zoom-in.svg") no-repeat center;
+    background-size: 60%;
+  }
+  .zoom-out {
+    background: #f0f0f0 url("../assets/controls/zoom-out.svg") no-repeat center;
+    background-size: 60%;
+  }
+  .reposition {
+    background: #f0f0f0 url("../assets/controls/reposition.svg") no-repeat center;
+    background-size: 60%;
+  }
+  .map-tools {
+    background: #f0f0f0 url("../assets/controls/map-tools.svg") no-repeat center;
+    background-size: 60%;
+  }
+  .draw-clear {
+    background: #f0f0f0 url("../assets/controls/draw-clear.svg") no-repeat center;
+    background-size: 60%;
+  }
+
+  .weather-rain {
+    background: #f0f0f0 url("../assets/controls/weather-rain.svg") no-repeat center;
+    background-size: 60%;
+  }
+  .weather-snow {
+    background: #f0f0f0 url("../assets/controls/weather-snow.svg") no-repeat center;
+    background-size: 60%;
+  }
+  .weather-fog {
+    background: #f0f0f0 url("../assets/controls/weather-fog.svg") no-repeat center;
+    background-size: 60%;
+  }
 }
-.map-tooltip-button {
+
+:deep(.el-dropdown-menu__item) {
+  padding: 0px;
+}
+
+:deep(.plot-point) {
+  background: url("../assets/controls/plot-point.svg") no-repeat center;
+  background-size: 60%;
+  width: 36px;
   height: 36px;
+  border: 0px;
+}
+
+:deep(.plot-line) {
+  background: url("../assets/controls/plot-line.svg") no-repeat center;
+  background-size: 60%;
+  width: 36px;
+  height: 36px;
+  border: 0px;
+}
+
+:deep(.plot-polygon) {
+  background: url("../assets/controls/plot-polygon.svg") no-repeat center;
+  background-size: 60%;
+  width: 36px;
+  height: 36px;
+  border: 0px;
+}
+
+:deep(.plot-rectangle) {
+  background: url("../assets/controls/plot-rectangle.svg") no-repeat center;
+  background-size: 60%;
+  width: 36px;
+  height: 36px;
+  border: 0px;
 }
 </style>
