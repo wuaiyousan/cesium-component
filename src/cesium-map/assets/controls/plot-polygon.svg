@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>定位添加黑备份 17</title>
+    <g id="总览" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="总览-水厂" transform="translate(-1372.000000, -692.000000)">
+            <g id="编组-24" transform="translate(1372.000000, 624.000000)">
+                <g id="编组" transform="translate(0.000000, 68.000000)">
+                    <rect id="矩形备份-13" fill="#D8D8D8" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                    <g id="多边形" transform="translate(1.000000, 1.000000)" fill="#566073" fill-rule="nonzero">
+                        <rect id="矩形" opacity="0" x="0" y="0" width="14" height="14"></rect>
+                        <path d="M10.311,12.236 L3.696,12.236 C3.507,12.236 3.339,12.117 3.283,11.935 L1.239,5.642 C1.183,5.46 1.246,5.264 1.4,5.152 L6.748,1.267 C6.902,1.155 7.112,1.155 7.259,1.267 L12.607,5.152 C12.761,5.264 12.824,5.46 12.768,5.642 L10.724,11.935 C10.668,12.117 10.5,12.236 10.311,12.236 Z M4.011,11.361 L9.989,11.361 L11.837,5.677 L7,2.163 L2.163,5.677 L4.011,11.361 Z" id="形状"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

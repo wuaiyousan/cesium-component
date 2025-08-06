@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>通用/图标/系统/定位</title>
+    <g id="总览" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="总览-水厂" transform="translate(-1411.000000, -962.000000)" fill="#566073">
+            <g id="编组" transform="translate(1356.000000, 754.779412)">
+                <g id="工具栏组" transform="translate(0.000000, -5.000000)">
+                    <g id="按钮/亮色/投影备份-2" transform="translate(43.000000, 200.220588)">
+                        <g id="编组-12" transform="translate(12.000000, 12.000000)">
+                            <path d="M13.3333333,7.5 C13.6094757,7.5 13.8333333,7.72385763 13.8333333,8 C13.8333333,8.25313051 13.6452307,8.46232731 13.4011804,8.49543559 L13.3333333,8.5 L2.66666667,8.5 C2.39052429,8.5 2.16666667,8.27614237 2.16666667,8 C2.16666667,7.74686949 2.35476925,7.53767269 2.59881963,7.50456441 L2.66666667,7.5 L13.3333333,7.5 Z" id="形状结合"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>定位添加黑备份 20</title>
+    <g id="总览" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="总览-水厂" transform="translate(-1372.000000, -758.000000)" fill="#566073">
+            <g id="编组-24" transform="translate(1372.000000, 624.000000)">
+                <g id="编组" transform="translate(0.000000, 134.000000)">
+                    <g id="定位添加黑备份-12" transform="translate(-1.943689, -1.941999)">
+                        <g id="编组" transform="translate(-0.000000, -0.000000)">
+                            <rect id="矩形" opacity="0" x="2" y="2" width="16" height="16"></rect>
+                            <g id="菱形框" transform="translate(9.941999, 9.941999) rotate(-45.000000) translate(-9.941999, -9.941999) translate(2.911944, 2.911944)" fill-rule="nonzero">
+                                <path d="M7.03004688,1.35807812 L12.7020313,7.03004688 L7.03004688,12.7020313 L1.35807812,7.03004688 L7.03004688,1.35807812 M7.03004688,0 L0,7.03004688 L7.03004688,14.0601094 L14.0601094,7.03004688 L7.03004688,0 L7.03004688,0 Z" id="形状"></path>
+                            </g>
+                            <circle id="椭圆形" stroke="#566073" cx="5.44368911" cy="5.44199868" r="1"></circle>
+                            <circle id="椭圆形备份-2" stroke="#566073" cx="14.4436891" cy="5.44199868" r="1"></circle>
+                            <circle id="椭圆形备份" stroke="#566073" cx="5.44368911" cy="14.4419987" r="1"></circle>
+                            <circle id="椭圆形备份-3" stroke="#566073" cx="14.4436891" cy="14.4419987" r="1"></circle>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
