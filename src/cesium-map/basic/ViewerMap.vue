@@ -3,7 +3,7 @@
  * @Author: xionghaiying
  * @Date: 2025-07-31 09:27:45
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-05 17:01:30
+ * @LastEditTime: 2025-08-06 16:17:11
 -->
 <template>
   <div class="scene-container" ref="earthContainerRef">
@@ -21,7 +21,7 @@ const { basicSetting, initOthers, initEvents, flyToByParams } = UseScene();
 const emit = defineEmits();
 const doInit = async ({ sceneList }) => {
   return Promise.resolve(initContainer({ sceneList })).then(() => {
-    emit("scene-loaded", { sceneList });
+    emit("viewer-loaded", { sceneList });
   });
 };
 

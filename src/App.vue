@@ -3,15 +3,15 @@
  * @Author: xionghaiying
  * @Date: 2025-07-29 14:06:08
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-04 16:35:51
+ * @LastEditTime: 2025-08-06 16:17:43
 -->
 <script setup>
-import CesiumViewer from "./cesium-map/CesiumViewer.vue";
+import CesiumMap from "./cesium-map/CesiumMap.vue";
 import CesiumTest from "./example/CesiumTest.vue";
 </script>
 
 <template>
-  <CesiumViewer />
+  <CesiumMap />
   <CesiumTest></CesiumTest>
 </template>
 

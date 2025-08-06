@@ -3,14 +3,14 @@
  * @Author: xionghaiying
  * @Date: 2025-07-29 14:59:13
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-31 15:44:20
+ * @LastEditTime: 2025-08-06 16:14:47
  */
-import CesiumViewer from './cesium-map/CesiumViewer.vue'
+import CesiumMap from './cesium-map/CesiumMap.vue'
 import eventMapBus from "./cesium-map/utils/eventMapBus";
 
 const plugin = {
   install(app) {
-    app.component('CesiumViewer', CesiumViewer)
+    app.component('CesiumMap', CesiumMap)
   }
 }
 

@@ -3,16 +3,16 @@
  * @Author: xionghaiying
  * @Date: 2025-07-29 14:59:29
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-06 10:59:18
+ * @LastEditTime: 2025-08-06 16:16:37
 -->
 
 <template>
-  <div class="scene-view">
+  <div class="viewer-view">
     <!-- 地图容器 -->
-    <SceneMap :options="viewOptions" class="scene-map" ref="mapRef" @scene-loaded="sceneLoaded">
+    <ViewerMap :options="viewOptions" class="viewer-map" ref="mapRef" @viewer-loaded="viewerLoaded">
       <MapTools></MapTools>
       <slot name="mapSlot"></slot>
-    </SceneMap>
+    </ViewerMap>
     <!---->
     <EventCollection/>
     <slot></slot>
@@ -26,7 +26,7 @@ import mapConfig from "./config/map.config.js";
 import { viewConf } from "./config/scene.config.js";
 
 // 组件
-import SceneMap from "./basic/SceneMap.vue";
+import ViewerMap from "./basic/ViewerMap.vue";
 import MapTools from "./basic/MapTools.vue";
 import EventCollection from "@/basic/EventCollection.vue";
 
@@ -61,7 +61,7 @@ const initScene = () => {
   }
 };
 
-const sceneLoaded = () => {
+const viewerLoaded = () => {
   const viewer = window.earthObj;
   viewer.scene.sun.show = true; //太阳
   viewer.scene.moon.show = false; //月亮
@@ -91,11 +91,11 @@ const sceneLoaded = () => {
 </script>
 
 <style scoped>
-.scene-view {
+.viewer-view {
   width: 100%;
   height: 100%;
 }
-.scene-map {
+.viewer-map {
   top: 0;
   left: 0;
   height: 100%;
