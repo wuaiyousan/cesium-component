@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-08-04 16:34:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-05 10:44:01
+ * @LastEditTime: 2025-08-06 11:49:47
  * @Description: 
 -->
 <template>
@@ -40,8 +40,8 @@
     <div class="panel-block">
       <div class="title">weather</div>
       <div class="line">
-        <el-button @click="onTest">雨</el-button>
-        <el-button @click="onTest">雪</el-button>
+        <el-button @click="onRain">雨</el-button>
+        <el-button @click="onSnow">雪</el-button>
         <el-button @click="onFog">雾</el-button>
       </div>
     </div>
@@ -105,6 +105,14 @@ const onDrawClear = () =>{
 
 
 //#region ------ 效果 ------
+const onRain = () =>{
+  doEventSend("map-add-rain")
+}
+
+const onSnow = () =>{
+  doEventSend("map-add-snow")
+}
+
 const onFog = () =>{
   doEventSend("map-add-fog")
 }

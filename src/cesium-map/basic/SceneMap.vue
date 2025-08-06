@@ -3,7 +3,7 @@
  * @Author: xionghaiying
  * @Date: 2025-07-31 09:27:45
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-01 13:59:14
+ * @LastEditTime: 2025-08-05 17:01:30
 -->
 <template>
   <div class="scene-container" ref="earthContainerRef">
@@ -13,7 +13,7 @@
 
 <script setup>
 import { onBeforeUnmount, onMounted, ref, nextTick, provide } from "vue";
-import Cesium from "@/utils/exportCesium";
+import Cesium from "../utils/exportCesium.js";
 import UseScene from "../uses/UseScene.js";
 
 const { basicSetting, initOthers, initEvents, flyToByParams } = UseScene();

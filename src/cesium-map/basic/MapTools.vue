@@ -14,7 +14,9 @@
     <el-button type="primary" @click="clearDraw()" style="margin-left: 0px">清除</el-button>
 
     <!-- 雨雪雾 -->
-    <el-button type="primary" @click="showFog()" style="margin-left: 0px">雨</el-button>
+    <el-button type="primary" @click="showRain()" style="margin-left: 0px">雨</el-button>
+    <el-button type="primary" @click="showSnow()" style="margin-left: 0px">雪</el-button>
+    <el-button type="primary" @click="showFog()" style="margin-left: 0px">雾</el-button>
 
     <el-dialog title="新增实体" width="20%" :close-on-click-modal="false" v-model="dialogVisible">
       <el-form label-width="auto" :model="formLabelAlign" style="max-width: 600px">
@@ -43,6 +45,8 @@ import { onMounted, reactive, ref, onUnmounted } from "vue";
 import eventMapBus from "@/utils/eventMapBus.js";
 import UseDraw from "@/uses/UseDraw.js";
 import UseTools from "@/uses/UseTools.js";
+import RainEffect from "@/utils/Weather/rain.js";
+import SnowEffect from "@/utils/Weather/snow.js";
 import FogEffect from "@/utils/Weather/fog.js";
 
 const { doEventSubscribe } = eventMapBus();
@@ -65,15 +69,43 @@ function submit() {
 
 //#endregion --------------------- 弹窗
 
-let instance = null;
-const showFog = () => {
-  instance = new FogEffect(window.earthObj,{
-    visibility: 0.2,
-    color: "rgba(204, 204, 204, 0.3)",
+//#region ------------------------- 雨雪雾
+let rainInstance = null;
+const showRain = () => {
+  rainInstance ??= new RainEffect(window.earthObj, {
+    tiltAngle: -0.2,
+    rainSize: 1.0,
+    rainSpeed: 120.0,
   });
-  // instance.show(true);
+
+  rainInstance?.show(true);
+  snowInstance?.show(false);
+  fogInstance?.show(false);
 };
 
+let snowInstance = null;
+const showSnow = () => {
+  snowInstance ??= new SnowEffect(window.earthObj, {
+    snowSize: 0.02, // 雪花大小
+    snowSpeed: 60.0, // 雪速
+  });
+
+  snowInstance?.show(true);
+  rainInstance?.show(false);
+  fogInstance?.show(false);
+};
+
+let fogInstance = null;
+const showFog = () => {
+  fogInstance ??= new FogEffect(window.earthObj, {
+    visibility: 0.2, // 能见度
+    color: "rgba(204, 204, 204, 0.3)", //雾气颜色
+  });
+  fogInstance?.show(true);
+  snowInstance?.show(false);
+  rainInstance?.show(false);
+};
+//#endregion --------------------- 雨雪雾
 
 //#region ------------------------- 全局方法
 doEventSubscribe("map-draw-point", ({ isSet = false, callback = () => {} }) => {
@@ -102,6 +134,14 @@ doEventSubscribe("map-draw-clear", () => {
   clearDraw();
 });
 
+doEventSubscribe("map-add-rain", () => {
+  showRain();
+});
+
+doEventSubscribe("map-add-snow", () => {
+  showSnow();
+});
+
 doEventSubscribe("map-add-fog", () => {
   showFog();
 });
@@ -110,7 +150,6 @@ doEventSubscribe("map-add-fog", () => {
 
 onMounted(() => {
   // console.log("window.earthObj._viewer", window.earthObj);
-
 });
 onUnmounted(() => {
   // instance.destroy();

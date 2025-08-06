@@ -3,7 +3,7 @@
  * @Author: xionghaiying
  * @Date: 2025-07-29 14:57:04
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-30 16:46:04
+ * @LastEditTime: 2025-08-05 17:02:32
  */
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
@@ -51,6 +51,11 @@ export default defineConfig({
     emptyOutDir: true,
     commonjsOptions: {
       strictRequires: true, // 兼容commonjs
+    },
+  },
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src/cesium-map"),
     },
   },
   // 设置 Cesium 静态资源路径（开发和生产环境不同）

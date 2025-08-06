@@ -3,7 +3,7 @@
  * @Author: xionghaiying
  * @Date: 2025-07-29 14:59:29
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-05 11:29:48
+ * @LastEditTime: 2025-08-06 10:59:18
 -->
 
 <template>
@@ -13,6 +13,8 @@
       <MapTools></MapTools>
       <slot name="mapSlot"></slot>
     </SceneMap>
+    <!---->
+    <EventCollection/>
     <slot></slot>
   </div>
 </template>
@@ -20,15 +22,16 @@
 <script setup>
 import { onMounted, onBeforeUnmount, ref } from "vue";
 
-import mapConfig from "@/config/map.config.js";
-import { viewConf } from "@/config/scene.config.js";
+import mapConfig from "./config/map.config.js";
+import { viewConf } from "./config/scene.config.js";
 
 // 组件
-import SceneMap from "@/basic/SceneMap.vue";
-import MapTools from "@/basic/MapTools.vue";
+import SceneMap from "./basic/SceneMap.vue";
+import MapTools from "./basic/MapTools.vue";
+import EventCollection from "@/basic/EventCollection.vue";
 
 // 事件
-// import "@/basic/event.collection.js";
+
 
 const { viewOptions } = viewConf;
 
