@@ -2,12 +2,13 @@
  * @Author: xionghaiying
  * @Date: 2025-06-20 15:31:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-05 09:21:19
+ * @LastEditTime: 2025-08-19 13:49:28
  * @Description:  绘制
  */
 import Cesium from "@/utils/exportCesium";
 const { Cartesian2 } = Cesium;
-import DashedArrowMaterialProperty from "../glsl/classes/DashedArrowMaterialProperty.js";
+// import DashedArrowMaterialProperty from "../glsl/classes/DashedArrowMaterialProperty.js";
+import DashedArrowMaterialProperty from "../glsl/classes/xhytest.js";
 import UseDataSource from "./UseDataSource.js";
 import FormatUtil from "@/utils/FormatUtil.js";
 
@@ -235,7 +236,8 @@ export default function UseDraw() {
             material: new DashedArrowMaterialProperty({
               color: Cesium.Color.BLUE,
               dashLength: 0.05,
-              gapLength: 0.03
+              gapLength: 0.03,
+              centerLinePosition: 1.0,
             })
             // material: new Cesium.PolylineDashMaterialProperty({
             //   color: Cesium.Color.YELLOW,
