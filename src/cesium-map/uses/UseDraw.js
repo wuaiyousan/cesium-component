@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-06-20 15:31:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-19 13:49:28
+ * @LastEditTime: 2025-08-22 10:40:10
  * @Description:  绘制
  */
 import Cesium from "@/utils/exportCesium";
@@ -237,7 +237,7 @@ export default function UseDraw() {
               color: Cesium.Color.BLUE,
               dashLength: 0.05,
               gapLength: 0.03,
-              centerLinePosition: 1.0,
+              centerLinePosition: 0.5,
             })
             // material: new Cesium.PolylineDashMaterialProperty({
             //   color: Cesium.Color.YELLOW,

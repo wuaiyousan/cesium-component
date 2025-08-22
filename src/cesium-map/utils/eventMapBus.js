@@ -2,11 +2,10 @@
  * @Author: xionghaiying
  * @Date: 2025-07-31 09:17:49
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-07-31 15:30:02
+ * @LastEditTime: 2025-08-22 09:23:57
  * @Description:
  */
 import mitt from "mitt";
-import { onUnmounted } from "vue";
 // 创建 mitt 实例
 const emitter = mitt();
 export default function eventMapBus() {
@@ -17,11 +16,11 @@ export default function eventMapBus() {
     } else {
       console.error("[doEventSubscribe]:global target emitter is empty!");
     }
-    onUnmounted(() => {
-      if (emitter) {
-        emitter.off(eventName, eventHandler);
-      }
-    });
+    // onUnmounted(() => {
+    //   if (emitter) {
+    //     emitter.off(eventName, eventHandler);
+    //   }
+    // });
   }
 
   function doEventSend(eventName, eventInfo) {
@@ -32,9 +31,18 @@ export default function eventMapBus() {
     }
   }
 
+  function doEventOff (eventName, eventHandler) {
+    if (emitter) {
+      emitter.off(eventName, eventHandler);
+    }else {
+      console.error("[doEventSubscribe]:global target emitter is empty!");
+    }
+  }
+
   return {
     // 全局总线消息处理
     doEventSubscribe,
     doEventSend,
+    doEventOff
   };
 }

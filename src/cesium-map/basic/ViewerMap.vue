@@ -3,7 +3,7 @@
  * @Author: xionghaiying
  * @Date: 2025-07-31 09:27:45
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-06 16:17:11
+ * @LastEditTime: 2025-08-22 09:55:09
 -->
 <template>
   <div class="scene-container" ref="earthContainerRef">
@@ -12,11 +12,13 @@
 </template>
 
 <script setup>
-import { onBeforeUnmount, onMounted, ref, nextTick, provide } from "vue";
+import { onBeforeUnmount, onMounted, ref, nextTick } from "vue";
 import Cesium from "../utils/exportCesium.js";
 import UseScene from "../uses/UseScene.js";
+import eventMapBus from "../utils/eventMapBus.js";
 
 const { basicSetting, initOthers, initEvents, flyToByParams } = UseScene();
+const { doEventSubscribe, doEventSend, doEventOff } = eventMapBus();
 
 const emit = defineEmits();
 const doInit = async ({ sceneList }) => {
@@ -93,9 +95,10 @@ const initContainer = ({ sceneList }) => {
     flyToByParams(viewer, 1.2);
   });
 
-  provide("$earthObj", viewer);
   // 保存实例到全局
   window.earthObj = viewer;
+  
+  doEventSend("map-inited", { a: 1 });
 
   return true;
 };

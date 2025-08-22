@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-08-04 16:34:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-06 11:49:47
+ * @LastEditTime: 2025-08-22 10:14:38
  * @Description: 
 -->
 <template>
@@ -13,8 +13,7 @@
         <span class="line-label">ModuleID：</span>
         <el-select class="line-input" v-model="toModule" placeholder="请选择" clearable>
           <el-option-group v-for="group in modulesList" :key="group.label" :label="group.label">
-            <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
+            <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value"> </el-option>
           </el-option-group>
         </el-select>
       </div>
@@ -43,6 +42,12 @@
         <el-button @click="onRain">雨</el-button>
         <el-button @click="onSnow">雪</el-button>
         <el-button @click="onFog">雾</el-button>
+      </div>
+    </div>
+    <div class="panel-block">
+      <div class="title">entity</div>
+      <div class="line">
+        <el-button @click="addEntityPolyline">添加polyline</el-button>
       </div>
     </div>
   </div>
@@ -98,27 +103,49 @@ const onDraw = (type) => {
   }
 };
 
-const onDrawClear = () =>{
+const onDrawClear = () => {
   doEventSend("map-draw-clear");
-}
+};
 //#endregion ------ 绘制 ------
 
-
 //#region ------ 效果 ------
-const onRain = () =>{
-  doEventSend("map-add-rain")
-}
+const onRain = () => {
+  doEventSend("map-add-rain");
+};
 
-const onSnow = () =>{
-  doEventSend("map-add-snow")
-}
+const onSnow = () => {
+  doEventSend("map-add-snow");
+};
 
-const onFog = () =>{
-  doEventSend("map-add-fog")
-}
+const onFog = () => {
+  doEventSend("map-add-fog");
+};
 
 //#endregion ------ 效果 ------
 
+//#region ------ entity ------
+const addEntityPolyline = () => {
+  let data = [
+    {
+      longitude: 112.97,
+      latitude: 28.24,
+      altitude: 0,
+    },
+    {
+      longitude: 112.95,
+      latitude: 28.2,
+      altitude: 0,
+    },
+    {
+      longitude: 112.93,
+      latitude: 28.2,
+      altitude: 0,
+    },
+  ];
+  doEventSend("entity-polyline-add", {data});
+};
+
+//#endregion ------ entity ------
 </script>
 
 <style lang="scss" scoped>

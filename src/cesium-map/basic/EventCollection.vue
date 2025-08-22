@@ -1,52 +1,58 @@
 <template></template>
 
 <script setup>
+import { onMounted, onUnmounted } from "vue";
 import eventMapBus from "@/utils/eventMapBus.js";
 import UseDataSource from "@/uses/UseDataSource.js";
+import UseEntity from "../uses/UseEntity.js";
+import Cesium from "../utils/exportCesium.js";
 
-const { loadDataSourceByParams } = UseDataSource;
-const { doEventSubscribe, doEventSend } = eventMapBus();
-
-doEventSubscribe("map-add-dataSoure", ({ callback = () => {} }) => {
-  loadDataSourceByParams({ name: "basicDraw" });
-});
+const { doEventSubscribe, doEventSend, doEventOff } = eventMapBus();
+const { loadDataSourceByParams } = UseDataSource();
+const { creatPolyline } = UseEntity();
 
 // 测试
 const mapTest = (data) => {
   console.log("xhy----mapTest", data);
 };
-// 订阅与发送
-doEventSubscribe("map-test", mapTest);
 
-//#region ------weather------
-// let rainInstance = null;
-// doEventSubscribe("map-add-rain", () => {
-//   rainInstance = new RainEffect(window.earthObj, {
-//     tiltAngle: -0.2, //倾斜角度
-//     rainSize: 1.0, // 雨大小
-//     rainSpeed: 120.0, // 雨速
-//   });
-//   snowInstance.show(false);
-//   fogInstance.show(false);
-// });
+const creatPolylineFun = ({ data }) => {
+  let positions = [];
+  data.forEach((item) => {
+    let { longitude, latitude, altitude } = item;
+    let xhy = Cesium.Cartesian3.fromDegrees(longitude, latitude, altitude);
+    positions.push(xhy);
+  });
+  creatPolyline({ id: "001", positions });
+};
 
-// doEventSubscribe("map-add-snow", () => {
-//   const instance = new FogEffect(viewer, {
-//     visibility: 0.2,
-//     color: new Color(0.8, 0.8, 0.8, 0.3),
-//   });
-//   instance.show(true);
-// });
+const mapInited = () => {
+  // 订阅与发送
+  doEventSubscribe("map-test", mapTest);
 
-// doEventSubscribe("map-add-fog", () => {
-//   const instance = new FogEffect(viewer, {
-//     visibility: 0.2,
-//     color: new Color(0.8, 0.8, 0.8, 0.3),
-//   });
-//   instance.show(true);
-// });
+  //#region ------DataSource------
+  doEventSubscribe("map-add-dataSoure", loadDataSourceByParams);
 
-//#endregion ------weather------
+  //#endregion ------DataSource------
+
+  //#region ------entity------
+  doEventSubscribe("entity-polyline-add", creatPolylineFun);
+
+  //#endregion ------entity------
+
+  //#region ------weather------
+
+  //#endregion ------weather------
+};
+
+//
+doEventSubscribe("map-inited", mapInited);
+
+onUnmounted(() => {
+  doEventOff("map-test", mapTest);
+
+  doEventOff("map-add-dataSoure", loadDataSourceByParams);
+});
 </script>
 
 <style lang="scss" scoped></style>
