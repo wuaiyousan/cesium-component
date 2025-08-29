@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2024-06-26 15:31:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-01 11:42:25
+ * @LastEditTime: 2025-08-29 15:50:46
  * @FilePath: \visualization\src\views\map\uses\UseDataSource.js
  * @Description: DataSource 方法集合
  */
@@ -77,27 +77,8 @@ export default function UseDataSource() {
     // DataSoure
   }
 
-  // 通过参数获取相应类型测站
-  function findEntityByParam({ key, keyVal = "id", sourceKey }) {
-    let ToViewer = (window.earthObj) || null
-    if (!ToViewer) {
-      return false
-    }
-    let theDs = findDataSourceByParam(sourceKey)
-    if (theDs) {
-      let theEntity = null
-      if (keyVal === "id") {
-        theEntity = theDs.entities.getById(key)
-      } else {
-        theEntity = theDs.entities.values.find((entity) => entity.properties.getValue()[keyVal] === key)
-      }
-      return theEntity
-    }
-    return false
-  }
-
   return {
-    findEntityByParam,
+    findDataSourceByParam,
     loadDataSourceByParams,
     unloadDataSourceLayer,
     hideOrShowDataSourceLayer,

@@ -1,0 +1,180 @@
+[
+    {
+        "ID": 32000066,
+        "ForceID": 32000066,
+        "SensorArr": [
+            {
+                "AssembleID": 2500000260,
+                "AssembleName": "地面雷达站",
+                "ComponentID": 1200000088,
+                "WorkID": 2441000062,
+                "WorkState": 1,
+                "SimState": 1,
+                "Waveband": 14,
+                "Roll": 0,
+                "Course": 0,
+                "SweepAngle": 120,
+                "RangeToAir": 200,
+                "RangeToSurface": 26.7,
+                "RangeToSubsurface": 0,
+                "RangeToGround": 15,
+                "PolygonType": 1,
+                "centerPosition": {
+                    "latitude": 25.0768947588367,
+                    "longitude": 121.425714091193,
+                    "altitude": 0
+                },
+                "DefaultRadius": 200,
+                "bearingOne": 264.03,
+                "bearingTwo": 384.03
+            }
+        ]
+    },
+    {
+        "ID": 32000067,
+        "ForceID": 32000067,
+        "SensorArr": [
+            {
+                "AssembleID": 2500000261,
+                "AssembleName": "地面雷达站",
+                "ComponentID": 1200000088,
+                "WorkID": 2441000062,
+                "WorkState": 1,
+                "SimState": 1,
+                "Waveband": 14,
+                "Roll": 0,
+                "Course": 0,
+                "SweepAngle": 120,
+                "RangeToAir": 200,
+                "RangeToSurface": 26.7,
+                "RangeToSubsurface": 0,
+                "RangeToGround": 15,
+                "PolygonType": 1,
+                "centerPosition": {
+                    "latitude": 25.0894597159426,
+                    "longitude": 121.543128709334,
+                    "altitude": 0
+                },
+                "DefaultRadius": 200,
+                "bearingOne": 251.57,
+                "bearingTwo": 371.57
+            }
+        ]
+    },
+    {
+        "ID": 32000052,
+        "ForceID": 32000052,
+        "SensorArr": [
+            {
+                "AssembleID": 2500000133,
+                "AssembleName": "BZK－007无人侦察机合成孔径雷达（SAR/GMTI）侦察系统",
+                "ComponentID": 1200000060,
+                "WorkID": 2441000064,
+                "WorkState": 0,
+                "SimState": 0,
+                "Waveband": 7,
+                "Roll": 0,
+                "Course": 0,
+                "SweepAngle": 90,
+                "RangeToAir": 0,
+                "RangeToSurface": 20,
+                "RangeToSubsurface": 0,
+                "RangeToGround": 10,
+                "PolygonType": 1,
+                "centerPosition": {
+                    "latitude": 25.2070030955135,
+                    "longitude": 121.374542472299,
+                    "altitude": 6500
+                },
+                "DefaultRadius": 0,
+                "bearingOne": 293.85,
+                "bearingTwo": 383.85
+            },
+            {
+                "AssembleID": 2500000134,
+                "AssembleName": "BZK－007无人侦察机光电侦察设备",
+                "ComponentID": 1205000028,
+                "WorkID": 2440000193,
+                "WorkState": 0,
+                "SimState": 0,
+                "Waveband": 24,
+                "Roll": 0,
+                "Course": 0,
+                "SweepAngle": 60,
+                "RangeToAir": 0,
+                "RangeToSurface": 55,
+                "RangeToSubsurface": 0,
+                "RangeToGround": 15,
+                "PolygonType": 1,
+                "centerPosition": {
+                    "latitude": 25.2070030955135,
+                    "longitude": 121.374542472299,
+                    "altitude": 6500
+                },
+                "DefaultRadius": 0,
+                "bearingOne": 308.85,
+                "bearingTwo": 368.85
+            }
+        ]
+    },
+    {
+        "ID": 32000058,
+        "ForceID": 32000058,
+        "SensorArr": [
+            {
+                "AssembleID": 2500000112,
+                "AssembleName": "HR-76C5型对海搜索雷达",
+                "ComponentID": 1200000048,
+                "WorkID": 2441000019,
+                "WorkState": 0,
+                "SimState": 0,
+                "Waveband": 9,
+                "Roll": 0,
+                "Course": 0,
+                "SweepAngle": 300,
+                "RangeToAir": 0,
+                "RangeToSurface": 37,
+                "RangeToSubsurface": 0,
+                "RangeToGround": 0,
+                "PolygonType": 1,
+                "centerPosition": {
+                    "latitude": 25.1380897441875,
+                    "longitude": 121.234748098626,
+                    "altitude": 0
+                },
+                "DefaultRadius": 0,
+                "bearingOne": -77.92,
+                "bearingTwo": 222.07999999999998
+            }
+        ]
+    },
+    {
+        "ID": 32000059,
+        "ForceID": 32000059,
+        "SensorArr": [
+            {
+                "AssembleID": 2500000262,
+                "AssembleName": "车载相控阵雷达",
+                "ComponentID": 1200000090,
+                "WorkID": 2441000065,
+                "WorkState": 0,
+                "SimState": 0,
+                "Waveband": 15,
+                "Roll": 0,
+                "Course": 0,
+                "SweepAngle": 360,
+                "RangeToAir": 200,
+                "RangeToSurface": 0,
+                "RangeToSubsurface": 0,
+                "RangeToGround": 0,
+                "PolygonType": 2,
+                "centerPosition": {
+                    "latitude": 25.2629643909895,
+                    "longitude": 121.513390284569,
+                    "altitude": 0
+                },
+                "DefaultRadius": 200
+            }
+        ]
+    }
+]

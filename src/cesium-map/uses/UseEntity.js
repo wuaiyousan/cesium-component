@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2024-06-26 15:31:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-22 10:58:34
+ * @LastEditTime: 2025-08-29 16:10:41
  * @FilePath: \map\utils\UseEntity.js
  * @Description:  方法集合
  */
@@ -10,9 +10,13 @@ import Cesium from "@/utils/exportCesium";
 import { station } from "../config/icon.config";
 import FormatUtil from "../utils/FormatUtil.js";
 import DashedArrowMaterialProperty from "../glsl/classes/xhytest.js";
+import UseEntityEvent from "./UseEntityEvent.js";
+import UseDataSource from "./UseDataSource.js";
 
 export default function UseEntity() {
   const { getColorRamp } = FormatUtil();
+  const { addListenerToProperties } = UseEntityEvent();
+  const { findDataSourceByParam } = UseDataSource();
   // 本地图标映射
   const storeMap = {
     imgMap: station,
@@ -75,7 +79,7 @@ export default function UseEntity() {
         dashLength: 0.05,
         gapLength: 0.03,
         centerLinePosition: 0.6,
-      })
+      }),
     };
     const polylineOps = { ...baseOptions, ...options };
     const polylineEntity = new Cesium.Entity({
@@ -85,6 +89,11 @@ export default function UseEntity() {
         ...polylineOps,
       },
     });
+    polylineEntity.properties = {
+      type: 3,
+      state: 'xhy'
+    };
+    addListenerToProperties({ entity: polylineEntity });
     viewer.entities.add(polylineEntity);
   }
   // --------------------------------------- Polyline属性 end --------------------------------------- //
@@ -111,8 +120,36 @@ export default function UseEntity() {
   function deleteEntity({ viewer, entity }) {}
   // --------------------------------------- 删除entity end --------------------------------------- //
 
+  // 效果entity对象的自定义属性
+  function updateEntityProperties({ id, sourceName, changeObj }) {
+    // let theEntity = findEntityByParam({ key: id, sourceKey: sourceName });
+    let theEntity = window.earthObj.entities.getById(id)
+    // theEntity.properties = changeObj
+    theEntity.properties.type = 2
+  }
+
+  // 通过参数获取相应类型测站
+  function findEntityByParam({ key, keyVal = "id", sourceKey }) {
+    let ToViewer = window.earthObj || null;
+    if (!ToViewer) {
+      return false;
+    }
+    let theDs = findDataSourceByParam(sourceKey);
+    if (theDs) {
+      let theEntity = null;
+      if (keyVal === "id") {
+        theEntity = theDs.entities.getById(key);
+      } else {
+        theEntity = theDs.entities.values.find((entity) => entity.properties.getValue()[keyVal] === key);
+      }
+      return theEntity;
+    }
+    return false;
+  }
+
   return {
     creatPoint,
     creatPolyline,
+    updateEntityProperties,
   };
 }

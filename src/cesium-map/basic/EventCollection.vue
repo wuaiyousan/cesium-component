@@ -1,3 +1,10 @@
+<!--
+ * @Author: xionghaiying
+ * @Date: 2025-08-06 10:57:23
+ * @LastEditors: xionghaiying
+ * @LastEditTime: 2025-08-29 16:03:28
+ * @Description: 
+-->
 <template></template>
 
 <script setup>
@@ -9,7 +16,7 @@ import Cesium from "../utils/exportCesium.js";
 
 const { doEventSubscribe, doEventSend, doEventOff } = eventMapBus();
 const { loadDataSourceByParams } = UseDataSource();
-const { creatPolyline } = UseEntity();
+const { creatPolyline, updateEntityProperties } = UseEntity();
 
 // 测试
 const mapTest = (data) => {
@@ -23,7 +30,7 @@ const creatPolylineFun = ({ data }) => {
     let xhy = Cesium.Cartesian3.fromDegrees(longitude, latitude, altitude);
     positions.push(xhy);
   });
-  creatPolyline({ id: "001", positions });
+  creatPolyline({ id: "xhy001", positions });
 };
 
 const mapInited = () => {
@@ -37,6 +44,8 @@ const mapInited = () => {
 
   //#region ------entity------
   doEventSubscribe("entity-polyline-add", creatPolylineFun);
+
+  doEventSubscribe("entity-properties-update",updateEntityProperties)
 
   //#endregion ------entity------
 
