@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-08-04 16:34:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-29 15:58:24
+ * @LastEditTime: 2025-09-01 17:47:18
  * @Description: 
 -->
 <template>
@@ -50,6 +50,7 @@
       <div class="line">
         <el-button @click="addEntityPolyline">添加polyline</el-button>
         <el-button @click="updateEntityProperties">修改properties属性</el-button>
+        <el-button @click="addEntityPolygon">添加polygon</el-button>
       </div>
     </div>
     <div class="panel-block">
@@ -264,7 +265,16 @@ const updateEntityProperties = () => {
   let data = {
     type: 2,
   };
-  doEventSend("entity-properties-update", { id : 'xhy001', sourceName: "basicDraw", changeObj:data  });
+  doEventSend("entity-properties-update", { id: "xhy001", sourceName: "basicDraw", changeObj: data });
+};
+
+const addEntityPolygon = () => {
+  let center = [112.96, 28.24];
+  let radius = [50, 5];
+  let bearing1 = 25;
+  let bearing2 = 45;
+
+  doEventSend("entity-polygon-add", { center, radius, bearing1, bearing2 });
 };
 
 //#endregion ------ entity ------

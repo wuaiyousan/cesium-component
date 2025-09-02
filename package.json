@@ -22,6 +22,7 @@
     "build-lib": "vite build --config vite.config.build.js"
   },
   "dependencies": {
+    "@turf/turf": "^7.2.0",
     "cesium": "^1.120.0",
     "element-plus": "^2.10.4",
     "mitt": "^3.0.1",

@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2024-06-26 15:31:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-29 16:10:41
+ * @LastEditTime: 2025-09-01 17:58:24
  * @FilePath: \map\utils\UseEntity.js
  * @Description:  方法集合
  */
@@ -51,7 +51,7 @@ export default function UseEntity() {
   // --------------------------------------- Wall属性 end --------------------------------------- //
 
   // --------------------------------------- Point属性 start ------------------------------------- //
-  function creatPoint({ viewer, id, position, options }) {
+  function createPoint({ viewer, id, position, options }) {
     const basePoint = {
       color: Cesium.Color.RED,
       pixelSize: 10,
@@ -67,7 +67,7 @@ export default function UseEntity() {
   // --------------------------------------- Point属性 end --------------------------------------- //
 
   // --------------------------------------- Polyline属性 start ------------------------------------- //
-  function creatPolyline({ id, positions, options = {} }) {
+  function createPolyline({ id, positions, options = {} }) {
     let viewer = window.earthObj;
     if (!viewer) return;
     const baseOptions = {
@@ -99,20 +99,21 @@ export default function UseEntity() {
   // --------------------------------------- Polyline属性 end --------------------------------------- //
 
   // --------------------------------------- Polygon属性 start --------------------------------------- //
-  function createPolygon(entity) {
-    let theEntity = entity;
-    let polygon = {
-      // 需要重新赋值一次？？？？？
-      hierarchy: entity.polygon.hierarchy,
-      extrudedHeight: 2000,
-      perPositionHeight: true,
-      material: new Cesium.ImageMaterialProperty({
-        image: imageImg,
-      }),
-      outline: true,
-      outlineColor: Cesium.Color.BLACK,
-    };
-    theEntity.polygon = polygon;
+  function createPolygon({ id, positions, options = {}}) {
+    let viewer = window.earthObj;
+    if (!viewer) return;
+
+    const polygonEntity = new Cesium.Entity({
+      id,
+      polygon : {
+        hierarchy: Cesium.Cartesian3.fromDegreesArray(positions),
+        perPositionHeight: true,
+        material: Cesium.Color.BLUE.withAlpha(0.2),
+        outline: true,
+        outlineColor: Cesium.Color.BLACK,
+      }
+    })
+    viewer.entities.add(polygonEntity);
   }
   // --------------------------------------- Polygon属性 end --------------------------------------- //
 
@@ -148,8 +149,9 @@ export default function UseEntity() {
   }
 
   return {
-    creatPoint,
-    creatPolyline,
+    createPoint,
+    createPolyline,
+    createPolygon,
     updateEntityProperties,
   };
 }
