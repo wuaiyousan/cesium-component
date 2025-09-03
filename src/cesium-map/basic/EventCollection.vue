@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-08-06 10:57:23
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-09-02 09:09:22
+ * @LastEditTime: 2025-09-03 11:44:43
  * @Description: 
 -->
 <template></template>
@@ -15,11 +15,14 @@ import Cesium from "../utils/exportCesium.js";
 import eventMapBus from "@/utils/eventMapBus.js";
 import UseDataSource from "@/uses/UseDataSource.js";
 import UseEntity from "../uses/UseEntity.js";
+import UsePrimitiveCollection from "../uses/usePrimitiveCollection.js";
+
 import TurfUtil from "../utils/TurfUtil.js";
 
 const { doEventSubscribe, doEventSend, doEventOff } = eventMapBus();
 const { loadDataSourceByParams } = UseDataSource();
 const { createPolyline, createPolygon, updateEntityProperties } = UseEntity();
+const { loadPrimitiveCollection } = UsePrimitiveCollection()
 const { getCircleByTurf, getSectorByTurf, getDifferenceByTurf } = TurfUtil();
 
 // 测试
@@ -38,12 +41,15 @@ const creatPolylineFun = ({ data }) => {
 };
 
 const createPolygonFun = ({ center, radius, bearing1, bearing2 }) => {
+  // ??? 当bearingOne为负数时，计算2个扇面的差集，不能正确的计算结果。暂未找到原因
   let bigSector = getSectorByTurf({ center, radius: radius[0], bearingOne: bearing1, bearingTwo: bearing2 });
   let smallCircle = getCircleByTurf({ center, radius: radius[1] });
 
-  let difference = getDifferenceByTurf({ polygons: [bigSector, smallCircle] });
+  let smallSector = getSectorByTurf({ center, radius: radius[1],bearingOne: bearing1, bearingTwo: bearing2 });
 
-  console.log("2222", bigSector, smallSector, difference);
+  let difference = getDifferenceByTurf({ polygons: [bigSector, smallSector] });
+
+  console.log("2222", bigSector, smallCircle, difference);
   // createPolygon({ id: "xhy002", positions: bigSector.geometry.coordinates[0].flat() });
   // createPolygon({ id: "xhy003", positions: smallCircle.geometry.coordinates[0].flat() });
 
@@ -68,6 +74,11 @@ const mapInited = () => {
 
   //#endregion ------entity------
 
+  //#region ------primitiveCollection------
+  doEventSubscribe("map-add-primitiveCollection", loadPrimitiveCollection)
+
+  //#endregion ------primitiveCollection------
+
   //#region ------weather------
 
   //#endregion ------weather------
@@ -80,6 +91,12 @@ onUnmounted(() => {
   doEventOff("map-test", mapTest);
 
   doEventOff("map-add-dataSoure", loadDataSourceByParams);
+
+  doEventOff("entity-polyline-add", creatPolylineFun);
+  doEventOff("entity-polygon-add", createPolygonFun);
+  doEventOff("entity-properties-update", updateEntityProperties);
+
+  doEventOff("map-add-primitiveCollection", loadPrimitiveCollection)
 });
 </script>
 

@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2024-06-21 15:03:31
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-01 14:53:28
+ * @LastEditTime: 2025-09-03 10:52:30
  * @Description: 地图配置
  */
 
@@ -214,16 +214,6 @@ let mapConf = {
         checkAll: false,
         checkList: [],
       },
-      // 河流湖泊
-      {
-        groupName: "河流湖泊",
-        groupType: "water-system",
-        groupList: [],
-        isIndeterminate: false,
-        checkAll: false,
-        checkList: [],
-      },
-
       // 供水管网
       {
         groupName: "供水管网",

@@ -9,7 +9,7 @@
 export default function FormatUtil() {
   // 获取点位对应的高程
   function heightByLonlat({ carto, lon, lat, dz = 5 }) {
-    let toScene = window.earthObj && window.earthObj._scene
+    let toScene = window.earthObj && window.earthObj.scene
     if (toScene) {
       return toScene.globe.getHeight(carto || new Cesium.Cartographic.fromDegrees(lon, lat)) + dz
     }
@@ -65,7 +65,7 @@ export default function FormatUtil() {
   // 屏幕坐标转经纬度
   function pixel2Lonlat(pos) {
     let toEarth = window.earthObj
-    let scene = toEarth._scene
+    let scene = toEarth.scene
     let cartographic = scene.globe.ellipsoid.cartesianToCartographic(scene.pickPosition(pos))
     let toD = Cesium.Math.toDegrees
     return {
@@ -77,7 +77,7 @@ export default function FormatUtil() {
   // 经纬度转屏幕坐标
   function lonlat2Pixel(log, lat) {
     let toEarth = window.earthObj
-    let scene = toEarth._scene
+    let scene = toEarth.scene
     let cartesian3 = Cesium.cartesian3.fromDegrees(log, lat)
     let cartesian2 = Cesium.SceneTransforms.wgs84ToWindowCoordinates(scene, cartesian3)
     return cartesian2
