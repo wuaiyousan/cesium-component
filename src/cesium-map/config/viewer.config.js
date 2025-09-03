@@ -2,8 +2,8 @@
  * @Author: xionghaiying
  * @Date: 2022-06-10 20:37:08
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-01 13:42:22
- * @Description: scene.config
+ * @LastEditTime: 2025-09-03 16:16:14
+ * @Description: viewer.config
  */
 import * as Cesium from "cesium";
 // 场景视图配置
@@ -70,8 +70,6 @@ export let viewConf = {
 
 // 天地图服务key
 export const getTDTKey = function () {
-  // '6451442b8eba4fe29af1b47a6d82750b'
-  // return 'ee95636dcb9175098ea54d3316a220e1'
   return "e24c815473fe46d8c8a8cbaf8fdf9b42";
 };
 

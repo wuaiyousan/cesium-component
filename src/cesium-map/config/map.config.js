@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2024-06-21 15:03:31
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-09-03 10:52:30
+ * @LastEditTime: 2025-09-03 16:36:26
  * @Description: 地图配置
  */
 
@@ -12,6 +12,21 @@ let mapConf = {
   superMapUrl: "http://222.219.141.174:8090",
   // geoserver地址
   geoserverUrl: "http://39.91.167.36:8090/geoserver",
+  // 初始化基础dataSource
+  getBasicLayer: function () {
+    return [
+      // 基础绘制图层
+      {
+        id: "basic_drawing",
+        dataType: "customDS",
+        type: "get",
+        title: "基础绘制",
+        userName: "xhy",
+        index: 100,
+        isShow: true,
+      },
+    ];
+  },
   // 底图方案 todo:暂时没有用，以后用于做切换底图方案
   getScenarioList: function () {
     return [
@@ -142,8 +157,8 @@ let mapConf = {
           },
           // geoserver 要素服务
           {
-            id: "featuresmap_County",
-            dataType: "featuresmap",
+            id: "customDS_County",
+            dataType: "customDS",
             type: "get",
             title: "东阿县",
             url: `${mapConf.geoserverUrl}/DongAn/ows`,
@@ -180,16 +195,13 @@ let mapConf = {
             zIndex: 7,
             visible: true,
             extData: {
-              rectangles: [
-                116.04431727200006, 36.126622534000035, 116.54407316300004,
-                36.52445016200006,
-              ],
+              rectangles: [116.04431727200006, 36.126622534000035, 116.54407316300004, 36.52445016200006],
             },
           },
           // geoserver 要素服务
           {
-            id: "featuresmap_Town",
-            dataType: "featuresmap",
+            id: "customDS_Town",
+            dataType: "customDS",
             type: "get",
             title: "镇级",
             url: `${mapConf.geoserverUrl}/DongAn/ows`,

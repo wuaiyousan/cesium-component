@@ -13,7 +13,7 @@ import rivers from '../assets/json/rivers.json'
 
 import UseGlobeMaterial from '../glsl/UseGlobeMaterial.js'
 import UsePostStage from '../glsl/UsePostStage.js'
-import { viewConf } from '../config/scene.config.js'
+import { viewConf } from '../config/viewer.config.js'
 
 export default function UseEffects() {
   // 记录加载的基础场景内容项

@@ -3,7 +3,7 @@
  * @Author: xionghaiying
  * @Date: 2025-07-31 09:27:45
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-22 09:55:09
+ * @LastEditTime: 2025-09-03 15:51:45
 -->
 <template>
   <div class="scene-container" ref="earthContainerRef">
@@ -14,10 +14,12 @@
 <script setup>
 import { onBeforeUnmount, onMounted, ref, nextTick } from "vue";
 import Cesium from "../utils/exportCesium.js";
+import UseViewer from "../uses/UseViewer.js";
 import UseScene from "../uses/UseScene.js";
 import eventMapBus from "../utils/eventMapBus.js";
 
-const { basicSetting, initOthers, initEvents, flyToByParams } = UseScene();
+const { initLayers } = UseViewer();
+const { basicSetting, initScenario, initEvents, flyToByParams } = UseScene();
 const { doEventSubscribe, doEventSend, doEventOff } = eventMapBus();
 
 const emit = defineEmits();
@@ -74,16 +76,17 @@ const { options, defaultOptions } = defineProps({
 const earthContainerRef = ref(null);
 const initContainer = ({ sceneList }) => {
   // 创建地球
-  let viewer = new Cesium.Viewer(
-    earthContainerRef.value,
-    Object.assign({}, defaultOptions, options)
-  );
-
+  let viewer = new Cesium.Viewer(earthContainerRef.value, Object.assign({}, defaultOptions, options));
+  // 保存实例到全局
+  window.earthObj = viewer;
   // 基础场景设置
   basicSetting(viewer);
 
   // 图层初始化
-  initOthers(viewer, sceneList);
+  initScenario(viewer, sceneList);
+
+  // 初始化
+  initLayers();
 
   // 初始化事件
   // todo: 加载时先不注册鼠标事件。根据情况按需处理
@@ -95,9 +98,6 @@ const initContainer = ({ sceneList }) => {
     flyToByParams(viewer, 1.2);
   });
 
-  // 保存实例到全局
-  window.earthObj = viewer;
-  
   doEventSend("map-inited", { a: 1 });
 
   return true;

@@ -7,7 +7,7 @@
  */
 import Cesium from "@/utils/exportCesium";
 import eventMapBus from "@/utils/eventMapBus.js";
-import { viewConf } from "../config/scene.config.js";
+import { viewConf } from "../config/viewer.config.js";
 import UseLayer from "./UseLayer.js";
 
 const { doEventSubscribe, doEventSend } = eventMapBus();
@@ -244,7 +244,7 @@ export default function UseScene() {
   }
   const { loadWmsLayer, loadTerrainProvider, loadWmtsLayer } = UseLayer();
   // 初始化一些需要特别处理的场景类型数据
-  function initOthers(toEarth, otherScenes, toKey = "code") {
+  function initScenario(toEarth, otherScenes, toKey = "code") {
     let toViewer = toEarth;
     let aliveCodes = ["600", "500", "300", "200"];
     if (toViewer) {
@@ -340,7 +340,7 @@ export default function UseScene() {
   return {
     flyToByParams,
     basicSetting,
-    initOthers,
+    initScenario,
     initEvents,
     findItemListByIds,
     heightByLocation,

@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2024-06-26 15:31:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-29 15:50:46
+ * @LastEditTime: 2025-09-03 16:34:19
  * @FilePath: \visualization\src\views\map\uses\UseDataSource.js
  * @Description: DataSource 方法集合
  */
@@ -10,17 +10,17 @@ import Cesium from "@/utils/exportCesium";
 
 export default function UseDataSource() {
   // 创建
-  function loadDataSourceByParams({ type = "custom",name = "basicDraw", dataList = null }) {
+  function loadDataSourceByParams({ type = "customDS",name = "xhytest", dataList = null }) {
     let theDS = findDataSourceByName(name)
     if (!theDS) {
       let viewer = window.earthObj
       switch (type) {
-        case "custom":
+        case "customDS":
           const customDataSoure = new Cesium.CustomDataSource(name)
           viewer.dataSources.add(customDataSoure)
           return customDataSoure
           break
-        case "geoJson":
+        case "geojsonDS":
           if(!dataList){
             const geoJsonDataSource = new Cesium.GeoJsonDataSource({ name,dataList })
             viewer.dataSources.add(geoJsonDataSource)

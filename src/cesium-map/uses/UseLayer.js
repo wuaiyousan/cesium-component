@@ -102,7 +102,7 @@ export default function UseLayer() {
         requestWaterMask: layerNode.requestWaterMask || false,
       })
     } else {
-      console.log('Scene@initOthers,不支持的类型！')
+      console.log('Scene@initScenario,不支持的类型！')
     }
   }
 

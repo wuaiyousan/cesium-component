@@ -23,7 +23,7 @@
 import { onMounted, onBeforeUnmount, ref } from "vue";
 
 import mapConfig from "./config/map.config.js";
-import { viewConf } from "./config/scene.config.js";
+import { viewConf } from "./config/viewer.config.js";
 
 // 组件
 import ViewerMap from "./basic/ViewerMap.vue";

@@ -7,7 +7,7 @@
  * @Description:  方法集合
  */
 import Cesium from "@/utils/exportCesium";
-import { station } from "../config/icon.config";
+import { station } from "../config/default.config";
 import FormatUtil from "../utils/FormatUtil.js";
 import DashedArrowMaterialProperty from "../glsl/classes/xhytest.js";
 import UseEntityEvent from "./UseEntityEvent.js";

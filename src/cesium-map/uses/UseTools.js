@@ -6,7 +6,7 @@
  * @Description: 地图基本操作
  */
 import Cesium from "@/utils/exportCesium";
-import { viewConf } from "@/config/scene.config.js";
+import { viewConf } from "@/config/viewer.config.js";
 
 const { location } = viewConf;
 
