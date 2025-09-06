@@ -15,4 +15,4 @@ const plugin = {
 }
 
 export default plugin
-export const { doEventSubscribe, doEventSend } = eventMapBus();
+export const { doEventOn, doEventSend } = eventMapBus();

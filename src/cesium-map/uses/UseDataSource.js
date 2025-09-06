@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2024-06-26 15:31:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-09-03 16:34:19
+ * @LastEditTime: 2025-09-06 14:10:04
  * @FilePath: \visualization\src\views\map\uses\UseDataSource.js
  * @Description: DataSource 方法集合
  */
@@ -79,6 +79,7 @@ export default function UseDataSource() {
 
   return {
     findDataSourceByParam,
+    findDataSourceByName,
     loadDataSourceByParams,
     unloadDataSourceLayer,
     hideOrShowDataSourceLayer,

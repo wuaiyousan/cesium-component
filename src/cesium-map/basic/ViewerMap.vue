@@ -20,7 +20,7 @@ import eventMapBus from "../utils/eventMapBus.js";
 
 const { initLayers } = UseViewer();
 const { basicSetting, initScenario, initEvents, flyToByParams } = UseScene();
-const { doEventSubscribe, doEventSend, doEventOff } = eventMapBus();
+const { doEventOn, doEventSend, doEventOff } = eventMapBus();
 
 const emit = defineEmits();
 const doInit = async ({ sceneList }) => {

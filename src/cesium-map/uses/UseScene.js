@@ -10,7 +10,7 @@ import eventMapBus from "@/utils/eventMapBus.js";
 import { viewConf } from "../config/viewer.config.js";
 import UseLayer from "./UseLayer.js";
 
-const { doEventSubscribe, doEventSend } = eventMapBus();
+const { doEventOn, doEventSend } = eventMapBus();
 
 export default function UseScene() {
   // navigationHelpButton

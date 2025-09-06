@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-08-04 16:34:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-09-04 09:57:10
+ * @LastEditTime: 2025-09-06 14:32:31
  * @Description: 
 -->
 <template>
@@ -75,7 +75,7 @@ import eventMapBus from "@/utils/eventMapBus.js";
 
 import xhytest from "./assets/json/xhy001.json";
 
-const { doEventSubscribe, doEventSend } = eventMapBus();
+const { doEventOn, doEventSend } = eventMapBus();
 
 const toModule = ref();
 
@@ -144,7 +144,7 @@ const onFog = () => {
 
 //#region ------ entity ------
 const addEntityPolyline = () => {
-  let data = [
+  let points = [
     {
       longitude: 112.97,
       latitude: 28.24,
@@ -161,6 +161,10 @@ const addEntityPolyline = () => {
       altitude: 0,
     },
   ];
+  let data = {
+    id: "xhy001",
+    points
+  }
   doEventSend("entity-polyline-add", { data });
 };
 
@@ -168,7 +172,7 @@ const updateEntityProperties = () => {
   let data = {
     type: 2,
   };
-  doEventSend("entity-properties-update", { id: "xhy001", sourceName: "basicDraw", changeObj: data });
+  doEventSend("entity-properties-update", { id: "xhy001", sourceName: "basic_drawing", changeObj: data });
 };
 
 const addEntityPolygon = () => {

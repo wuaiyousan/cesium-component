@@ -10,11 +10,11 @@ import mitt from "mitt";
 const emitter = mitt();
 export default function eventMapBus() {
   // 全局总线消息上 - 订阅与发送
-  function doEventSubscribe(eventName, eventHandler) {
+  function doEventOn(eventName, eventHandler) {
     if (emitter) {
       emitter.on(eventName, eventHandler);
     } else {
-      console.error("[doEventSubscribe]:global target emitter is empty!");
+      console.error("[doEventOn]:global target emitter is empty!");
     }
     // onUnmounted(() => {
     //   if (emitter) {
@@ -35,13 +35,13 @@ export default function eventMapBus() {
     if (emitter) {
       emitter.off(eventName, eventHandler);
     }else {
-      console.error("[doEventSubscribe]:global target emitter is empty!");
+      console.error("[doEventOn]:global target emitter is empty!");
     }
   }
 
   return {
     // 全局总线消息处理
-    doEventSubscribe,
+    doEventOn,
     doEventSend,
     doEventOff
   };

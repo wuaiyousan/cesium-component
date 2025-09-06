@@ -64,7 +64,7 @@ import RainEffect from "@/utils/Weather/rain.js";
 import SnowEffect from "@/utils/Weather/snow.js";
 import FogEffect from "@/utils/Weather/fog.js";
 
-const { doEventSubscribe } = eventMapBus();
+const { doEventOn } = eventMapBus();
 const { startDrawing, clearDraw } = UseDraw();
 const { mapZoomIn, mapZoomOut, mapReset } = UseTools();
 
@@ -123,7 +123,7 @@ const showFog = () => {
 //#endregion --------------------- 雨雪雾
 
 //#region ------------------------- 全局方法
-doEventSubscribe("map-draw-point", ({ isSet = false, callback = () => {} }) => {
+doEventOn("map-draw-point", ({ isSet = false, callback = () => {} }) => {
   // 设置入参属性
   if (isSet) {
     dialogVisible.value = true;
@@ -133,31 +133,31 @@ doEventSubscribe("map-draw-point", ({ isSet = false, callback = () => {} }) => {
   }
 });
 
-doEventSubscribe("map-draw-polyline", ({ callback = () => {} }) => {
+doEventOn("map-draw-polyline", ({ callback = () => {} }) => {
   startDrawing({ mode: "polyline" });
 });
 
-doEventSubscribe("map-draw-polygon", ({ callback = () => {} }) => {
+doEventOn("map-draw-polygon", ({ callback = () => {} }) => {
   startDrawing({ mode: "polygon" });
 });
 
-doEventSubscribe("map-draw-rectangle", ({ callback = () => {} }) => {
+doEventOn("map-draw-rectangle", ({ callback = () => {} }) => {
   startDrawing({ mode: "rectangle" });
 });
 
-doEventSubscribe("map-draw-clear", () => {
+doEventOn("map-draw-clear", () => {
   clearDraw();
 });
 
-doEventSubscribe("map-add-rain", () => {
+doEventOn("map-add-rain", () => {
   showRain();
 });
 
-doEventSubscribe("map-add-snow", () => {
+doEventOn("map-add-snow", () => {
   showSnow();
 });
 
-doEventSubscribe("map-add-fog", () => {
+doEventOn("map-add-fog", () => {
   showFog();
 });
 

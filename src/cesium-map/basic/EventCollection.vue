@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-08-06 10:57:23
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-09-04 11:43:09
+ * @LastEditTime: 2025-09-06 14:33:03
  * @Description: 
 -->
 <template></template>
@@ -19,13 +19,13 @@ import UsePrimitiveCollection from "../uses/usePrimitiveCollection.js";
 
 import TurfUtil from "../utils/TurfUtil.js";
 
-const { doEventSubscribe, doEventSend, doEventOff } = eventMapBus();
+const { doEventOn, doEventSend, doEventOff } = eventMapBus();
 const { loadDataSourceByParams } = UseDataSource();
 const { createPolyline, createPolygon, updateEntityProperties } = UseEntity();
-const { loadPrimitiveCollection } = UsePrimitiveCollection()
+const { loadPrimitiveCollection } = UsePrimitiveCollection();
 const { getCircleByTurf, getSectorByTurf, getDifferenceByTurf } = TurfUtil();
 
-import xhytest from "../assets/json/xhytest.json"
+import xhytest from "../assets/json/xhytest.json";
 
 // 测试
 const mapTest = (data) => {
@@ -33,13 +33,27 @@ const mapTest = (data) => {
 };
 
 const creatPolylineFun = ({ data }) => {
+  let {id, points} = data
   let positions = [];
-  data.forEach((item) => {
+
+  points.forEach((item) => {
     let { longitude, latitude, altitude } = item;
     let xhy = Cesium.Cartesian3.fromDegrees(longitude, latitude, altitude);
     positions.push(xhy);
   });
-  createPolyline({ id: "xhy001", positions });
+  let testData = [
+    {
+      id,
+      positions,
+      options: {
+        width: 6,
+        lineType: 3,
+        lineColor: "#25aff3",
+      },
+    },
+  ];
+
+  createPolyline({ layerName: "basic_drawing", dataList: testData });
 };
 
 const createPolygonFun = ({ center, radius, bearing1, bearing2 }) => {
@@ -48,7 +62,7 @@ const createPolygonFun = ({ center, radius, bearing1, bearing2 }) => {
   let bigSector = getSectorByTurf({ center, radius: radius[0], bearingOne: bearing1, bearingTwo: bearing2 });
   let smallCircle = getCircleByTurf({ center, radius: radius[1] });
 
-  let smallSector = getSectorByTurf({ center, radius: radius[1],bearingOne: bearing1, bearingTwo: bearing2 });
+  let smallSector = getSectorByTurf({ center, radius: radius[1], bearingOne: bearing1, bearingTwo: bearing2 });
 
   let difference = getDifferenceByTurf({ polygons: [bigCirlce, smallSector] });
 
@@ -61,24 +75,24 @@ const createPolygonFun = ({ center, radius, bearing1, bearing2 }) => {
 
 const mapInited = () => {
   // 订阅与发送
-  doEventSubscribe("map-test", mapTest);
+  doEventOn("map-test", mapTest);
 
   //#region ------DataSource------
-  doEventSubscribe("map-add-dataSoure", loadDataSourceByParams);
+  doEventOn("map-add-dataSoure", loadDataSourceByParams);
 
   //#endregion ------DataSource------
 
   //#region ------entity------
-  doEventSubscribe("entity-polyline-add", creatPolylineFun);
+  doEventOn("entity-polyline-add", creatPolylineFun);
 
-  doEventSubscribe("entity-polygon-add", createPolygonFun);
+  doEventOn("entity-polygon-add", createPolygonFun);
 
-  doEventSubscribe("entity-properties-update", updateEntityProperties);
+  doEventOn("entity-properties-update", updateEntityProperties);
 
   //#endregion ------entity------
 
   //#region ------primitiveCollection------
-  doEventSubscribe("map-add-primitiveCollection", loadPrimitiveCollection)
+  doEventOn("map-add-primitiveCollection", loadPrimitiveCollection);
 
   //#endregion ------primitiveCollection------
 
@@ -88,7 +102,7 @@ const mapInited = () => {
 };
 
 //
-doEventSubscribe("map-inited", mapInited);
+doEventOn("map-inited", mapInited);
 
 onUnmounted(() => {
   doEventOff("map-test", mapTest);
@@ -99,7 +113,7 @@ onUnmounted(() => {
   doEventOff("entity-polygon-add", createPolygonFun);
   doEventOff("entity-properties-update", updateEntityProperties);
 
-  doEventOff("map-add-primitiveCollection", loadPrimitiveCollection)
+  doEventOff("map-add-primitiveCollection", loadPrimitiveCollection);
 });
 </script>
 
