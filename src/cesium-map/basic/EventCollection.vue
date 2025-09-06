@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-08-06 10:57:23
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-09-06 14:33:03
+ * @LastEditTime: 2025-09-06 16:53:52
  * @Description: 
 -->
 <template></template>
@@ -16,6 +16,8 @@ import eventMapBus from "@/utils/eventMapBus.js";
 import UseDataSource from "@/uses/UseDataSource.js";
 import UseEntity from "../uses/UseEntity.js";
 import UsePrimitiveCollection from "../uses/usePrimitiveCollection.js";
+import UseXhy from "../uses/UseXhy.js";
+import UseXhyPrimitive from "../uses/UseXhyPrimitive.js";
 
 import TurfUtil from "../utils/TurfUtil.js";
 
@@ -23,6 +25,8 @@ const { doEventOn, doEventSend, doEventOff } = eventMapBus();
 const { loadDataSourceByParams } = UseDataSource();
 const { createPolyline, createPolygon, updateEntityProperties } = UseEntity();
 const { loadPrimitiveCollection } = UsePrimitiveCollection();
+const { xhyTestFun } = UseXhy();
+const { testPrimitive } = UseXhyPrimitive();
 const { getCircleByTurf, getSectorByTurf, getDifferenceByTurf } = TurfUtil();
 
 import xhytest from "../assets/json/xhytest.json";
@@ -30,10 +34,11 @@ import xhytest from "../assets/json/xhytest.json";
 // 测试
 const mapTest = (data) => {
   console.log("xhy----mapTest", data);
+  xhyTestFun();
 };
 
 const creatPolylineFun = ({ data }) => {
-  let {id, points} = data
+  let { id, points } = data;
   let positions = [];
 
   points.forEach((item) => {

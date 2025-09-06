@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2024-06-26 15:31:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-09-06 14:34:17
+ * @LastEditTime: 2025-09-06 14:56:50
  * @FilePath: \map\utils\UseEntity.js
  * @Description:  方法集合
  */
@@ -297,7 +297,13 @@ export default function UseEntity() {
   // 效果entity对象的自定义属性
   function updateEntityProperties({ id, sourceName, changeObj }) {
     let theEntity = findEntityByParam({ key: id, sourceKey: sourceName });
-    if (theEntity) theEntity.properties = changeObj;
+    if (theEntity) {
+      // 此方法为替换整个properties，不能触发绑定的监听事件
+      // theEntity.properties = changeObj;
+      for(const [key, value] of Object.entries(changeObj)){
+        theEntity.properties[key] = value
+      }
+    }
   }
 
   /**
