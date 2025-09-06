@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Turf.js同心圆差集计算 - 正确解决方案</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        padding: 20px;
+        background-color: #f8f9fa;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      #map {
+        height: 500px;
+        margin-top: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      }
+      .card {
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+      .card-header {
+        background-color: #0d6efd;
+        color: white;
+        border-radius: 10px 10px 0 0 !important;
+      }
+      .btn-primary {
+        background-color: #0d6efd;
+        border: none;
+      }
+      .btn-primary:hover {
+        background-color: #0b5ed7;
+      }
+      .result-container {
+        display: none;
+        margin-top: 20px;
+      }
+      .coordinates {
+        font-family: monospace;
+        background-color: #f1f3f5;
+        padding: 10px;
+        border-radius: 5px;
+        max-height: 150px;
+        overflow-y: auto;
+      }
+      .alert {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center mb-4">Turf.js同心圆差集计算 - 正确解决方案</h1>
+
+      <div class="alert alert-info">
+        <strong>说明：</strong> 由于Turf.js的turf.difference在处理完全包含的多边形时存在问题，这里使用正确的方法创建环形区域。
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">参数设置</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="centerLng" class="form-label">中心点经度</label>
+                <input type="number" class="form-control" id="centerLng" value="112.95" step="0.1" />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="centerLat" class="form-label">中心点纬度</label>
+                <input type="number" class="form-control" id="centerLat" value="28.23" step="0.1" />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="pointCount" class="form-label">圆上点数</label>
+                <input type="number" class="form-control" id="pointCount" value="100" min="10" max="200" />
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="outerRadius" class="form-label">外圆半径 (公里)</label>
+                <input type="number" class="form-control" id="outerRadius" value="50" min="1" max="1000" step="1" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="innerRadius" class="form-label">内圆半径 (公里)</label>
+                <input type="number" class="form-control" id="innerRadius" value="30" min="1" max="1000" step="1" />
+              </div>
+            </div>
+          </div>
+
+          <button id="calculateBtn" class="btn btn-primary">计算环形区域</button>
+        </div>
+      </div>
+
+      <div id="map"></div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 初始化地图
+        const map = L.map("map").setView([112.95,28.23], 8);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(map);
+
+        // 图层组
+        const layers = L.layerGroup().addTo(map);
+
+        // 计算按钮点击事件
+        document.getElementById("calculateBtn").addEventListener("click", function () {
+          // 获取参数
+          const centerLng = parseFloat(document.getElementById("centerLng").value);
+          const centerLat = parseFloat(document.getElementById("centerLat").value);
+          const outerRadius = parseFloat(document.getElementById("outerRadius").value);
+          const innerRadius = parseFloat(document.getElementById("innerRadius").value);
+          const pointCount = parseInt(document.getElementById("pointCount").value);
+
+          if (innerRadius >= outerRadius) {
+            alert("内圆半径必须小于外圆半径！");
+            return;
+          }
+
+          // 清除之前的图层
+          layers.clearLayers();
+
+          // 创建中心点标记
+          const centerPoint = L.circleMarker([centerLat, centerLng], {
+            color: "red",
+            fillColor: "#f03",
+            fillOpacity: 0.7,
+            radius: 8,
+          }).addTo(layers);
+
+          centerPoint.bindPopup("中心点").openPopup();
+
+          // 创建外圆和内圆
+          const outerCircle = createCircle(centerLng, centerLat, outerRadius, pointCount);
+          const innerCircle = createCircle(centerLng, centerLat, innerRadius, pointCount);
+
+          // 显示外圆和内圆
+          const outerPolygon = L.polygon(
+            outerCircle.geometry.coordinates[0].map((coord) => [coord[1], coord[0]]),
+            {
+              color: "blue",
+              fillColor: "blue",
+              fillOpacity: 0.1,
+              weight: 2,
+              dashArray: "5,5",
+            }
+          ).addTo(layers);
+
+          const innerPolygon = L.polygon(
+            innerCircle.geometry.coordinates[0].map((coord) => [coord[1], coord[0]]),
+            {
+              color: "green",
+              fillColor: "green",
+              fillOpacity: 0.1,
+              weight: 2,
+              dashArray: "5,5",
+            }
+          ).addTo(layers);
+
+          // 创建正确的环形区域
+          const ring = createCorrectRing(outerCircle, innerCircle);
+
+          if (ring) {
+            let xhy = ring.geometry.coordinates.map((polygon) => polygon.map((coord) => [coord[1], coord[0]]))
+
+            let xhy3 = outerCircle.geometry.coordinates[0].flat()
+            let xhy4 = innerCircle.geometry.coordinates[0].reverse().flat()
+            let xhy5 = [...xhy4,...xhy3]
+            console.log("2222", xhy5);
+            // 显示环形区域
+            const ringPolygon = L.polygon(
+              xhy,
+              {
+                color: "purple",
+                fillColor: "purple",
+                fillOpacity: 0.6,
+                weight: 3,
+              }
+            ).addTo(layers);
+            console.log("2222111122", ringPolygon);
+            // 调整地图视图
+            map.fitBounds(ringPolygon.getBounds());
+          } else {
+            alert("无法计算环形区域");
+          }
+        });
+
+        // 创建圆形多边形
+        function createCircle(lng, lat, radiusKm, pointCount) {
+          const center = turf.point([lng, lat]);
+          const radius = radiusKm;
+          const options = { steps: pointCount, units: "kilometers" };
+          return turf.circle(center, radius, options);
+        }
+
+        // 正确创建环形区域
+        function createCorrectRing(outerCircle, innerCircle) {
+          try {
+            // 获取外圆坐标（逆时针）
+            const outerCoords = outerCircle.geometry.coordinates[0];
+
+            // 获取内圆坐标并反转（使其顺时针）
+            const innerCoords = [...innerCircle.geometry.coordinates[0]].reverse();
+
+            // 创建带孔的多边形：外环逆时针，内环顺时针
+            return turf.polygon([outerCoords, innerCoords]);
+          } catch (e) {
+            console.error("创建环形区域时出错:", e);
+            return null;
+          }
+        }
+
+        // 计算环形面积
+        function calculateRingArea(outerRadius, innerRadius) {
+          return Math.PI * (Math.pow(outerRadius, 2) - Math.pow(innerRadius, 2));
+        }
+      });
+    </script>
+
+    <!-- 引入Leaflet CSS和JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  </body>
+</html>

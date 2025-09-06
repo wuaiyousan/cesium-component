@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2024-06-26 15:31:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-09-01 17:58:24
+ * @LastEditTime: 2025-09-04 11:44:22
  * @FilePath: \map\utils\UseEntity.js
  * @Description:  方法集合
  */
@@ -91,7 +91,7 @@ export default function UseEntity() {
     });
     polylineEntity.properties = {
       type: 3,
-      state: 'xhy'
+      state: "xhy",
     };
     addListenerToProperties({ entity: polylineEntity });
     viewer.entities.add(polylineEntity);
@@ -99,7 +99,7 @@ export default function UseEntity() {
   // --------------------------------------- Polyline属性 end --------------------------------------- //
 
   // --------------------------------------- Polygon属性 start --------------------------------------- //
-  function createPolygon({ id, positions, options = {}}) {
+  function createPolygon({ id, positions, options = {} }) {
     let viewer = window.earthObj;
     if (!viewer) return;
 
@@ -109,11 +109,29 @@ export default function UseEntity() {
         hierarchy: Cesium.Cartesian3.fromDegreesArray(positions),
         perPositionHeight: true,
         material: Cesium.Color.BLUE.withAlpha(0.2),
-        outline: true,
-        outlineColor: Cesium.Color.BLACK,
+        // outline: true,
+        // outlineColor: Cesium.Color.BLACK,
       }
     })
     viewer.entities.add(polygonEntity);
+
+    // const bluePolygon = viewer.entities.add({
+    //   name: "Blue polygon with holes",
+    //   polygon: {
+    //     hierarchy: {
+    //       positions: Cesium.Cartesian3.fromDegreesArray([0,0,4,4,0,4]),
+    //       holes: [
+    //         {
+    //           positions: Cesium.Cartesian3.fromDegreesArray([0,0, 1,0,1,1,0,1]),
+    //         },
+    //       ],
+    //     },
+    //     material: Cesium.Color.BLUE.withAlpha(0.5),
+    //     height: 0,
+    //     // outline: true, // height is required for outline to display
+    //   },
+    // });
+    viewer.zoomTo(viewer.entities); 
   }
   // --------------------------------------- Polygon属性 end --------------------------------------- //
 
@@ -124,9 +142,9 @@ export default function UseEntity() {
   // 效果entity对象的自定义属性
   function updateEntityProperties({ id, sourceName, changeObj }) {
     // let theEntity = findEntityByParam({ key: id, sourceKey: sourceName });
-    let theEntity = window.earthObj.entities.getById(id)
+    let theEntity = window.earthObj.entities.getById(id);
     // theEntity.properties = changeObj
-    theEntity.properties.type = 2
+    theEntity.properties.type = 2;
   }
 
   // 通过参数获取相应类型测站

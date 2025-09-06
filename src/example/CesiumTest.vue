@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-08-04 16:34:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-09-03 11:50:49
+ * @LastEditTime: 2025-09-04 09:57:10
  * @Description: 
 -->
 <template>
@@ -172,8 +172,8 @@ const updateEntityProperties = () => {
 };
 
 const addEntityPolygon = () => {
-  let center = [121.234748098626, 25.1380897441875];
-  let radius = [50, 5];
+  let center = [112.95,28.23];
+  let radius = [10, 5];
   let bearing1 = -10;
   let bearing2 = 100;
 

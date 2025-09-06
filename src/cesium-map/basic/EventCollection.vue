@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-08-06 10:57:23
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-09-03 11:44:43
+ * @LastEditTime: 2025-09-04 11:43:09
  * @Description: 
 -->
 <template></template>
@@ -25,6 +25,8 @@ const { createPolyline, createPolygon, updateEntityProperties } = UseEntity();
 const { loadPrimitiveCollection } = UsePrimitiveCollection()
 const { getCircleByTurf, getSectorByTurf, getDifferenceByTurf } = TurfUtil();
 
+import xhytest from "../assets/json/xhytest.json"
+
 // 测试
 const mapTest = (data) => {
   console.log("xhy----mapTest", data);
@@ -42,18 +44,19 @@ const creatPolylineFun = ({ data }) => {
 
 const createPolygonFun = ({ center, radius, bearing1, bearing2 }) => {
   // ??? 当bearingOne为负数时，计算2个扇面的差集，不能正确的计算结果。暂未找到原因
+  let bigCirlce = getCircleByTurf({ center, radius: radius[0] });
   let bigSector = getSectorByTurf({ center, radius: radius[0], bearingOne: bearing1, bearingTwo: bearing2 });
   let smallCircle = getCircleByTurf({ center, radius: radius[1] });
 
   let smallSector = getSectorByTurf({ center, radius: radius[1],bearingOne: bearing1, bearingTwo: bearing2 });
 
-  let difference = getDifferenceByTurf({ polygons: [bigSector, smallSector] });
+  let difference = getDifferenceByTurf({ polygons: [bigCirlce, smallSector] });
 
   console.log("2222", bigSector, smallCircle, difference);
   // createPolygon({ id: "xhy002", positions: bigSector.geometry.coordinates[0].flat() });
   // createPolygon({ id: "xhy003", positions: smallCircle.geometry.coordinates[0].flat() });
 
-  createPolygon({ id: "xhy004", positions: difference.geometry.coordinates[0].flat() });
+  createPolygon({ id: "xhy004", positions: xhytest });
 };
 
 const mapInited = () => {
