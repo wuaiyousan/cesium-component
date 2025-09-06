@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-08-19 10:34:04
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-19 13:59:04
+ * @LastEditTime: 2025-09-06 14:38:21
  * @Description: 虚线箭头
  */
 
@@ -13,7 +13,7 @@ import Cesium from "@/utils/exportCesium";
  */
 export default class DashedArrowMaterialProperty {
   constructor(options) {
-    options = Cesium.defaultValue(options, Cesium.defaultValue.EMPTY_OBJECT);
+    options = options ?? Cesium.Frozen.EMPTY_OBJECT;
 
     this._definitionChanged = new Cesium.Event();
     this._color = undefined; // 线段颜色
@@ -22,9 +22,9 @@ export default class DashedArrowMaterialProperty {
     this._centerLinePosition = undefined; // 控制实虚线的比例
 
     this.color = options.color;
-    this.dashLength = Cesium.defaultValue(options.dashLength, 0.05);
-    this.gapLength = Cesium.defaultValue(options.gapLength, 0.03);
-    this.centerLinePosition = Cesium.defaultValue(options.centerLinePosition, 0.5); // 默认 0.5
+    this.dashLength = options.dashLength ?? 0.05;
+    this.gapLength = options.gapLength ?? 0.03;
+    this.centerLinePosition = options.centerLinePosition ?? 0.5; // 默认 0.5
   }
 
   get isConstant() {
@@ -72,7 +72,7 @@ Object.defineProperties(DashedArrowMaterialProperty.prototype, {
   color: Cesium.createPropertyDescriptor("color"),
   dashLength: Cesium.createPropertyDescriptor("dashLength"),
   gapLength: Cesium.createPropertyDescriptor("gapLength"),
-  centerLinePosition: Cesium.createPropertyDescriptor("centerLinePosition"), 
+  centerLinePosition: Cesium.createPropertyDescriptor("centerLinePosition"),
 });
 
 // 注册材质类型
