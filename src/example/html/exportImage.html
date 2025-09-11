@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cesium 视角图像下载</title>
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.95/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.95/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Microsoft YaHei", Arial, sans-serif;
+      }
+      body {
+        overflow: hidden;
+        background: #0a1721;
+        color: #edffff;
+      }
+      #cesiumContainer {
+        width: 100%;
+        height: 100vh;
+        position: relative;
+      }
+      .control-panel {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: rgba(28, 46, 58, 0.95);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        width: 350px;
+        backdrop-filter: blur(5px);
+        border: 1px solid #3c5f7c;
+      }
+      h1 {
+        font-size: 22px;
+        margin-bottom: 15px;
+        color: #48b;
+        text-align: center;
+        border-bottom: 1px solid #3c5f7c;
+        padding-bottom: 10px;
+      }
+      .button-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 15px 0;
+      }
+      button {
+        padding: 10px 15px;
+        background: #2c4762;
+        color: #edffff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        flex: 1;
+        min-width: 120px;
+        transition: all 0.3s;
+        font-weight: bold;
+      }
+      button:hover {
+        background: #48b;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+      button:active {
+        transform: translateY(0);
+      }
+      button:disabled {
+        background: #2c3e50;
+        color: #7f8c8d;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+      .info-panel {
+        background: rgba(28, 40, 50, 0.8);
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 15px;
+        border-left: 4px solid #48b;
+      }
+      .info-item {
+        margin: 8px 0;
+        display: flex;
+        justify-content: space-between;
+      }
+      .info-value {
+        color: #5eceff;
+        font-weight: bold;
+      }
+      .status {
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 15px;
+        text-align: center;
+        font-weight: bold;
+        background: rgba(72, 187, 255, 0.2);
+        border: 1px solid #3c5f7c;
+      }
+      .instructions {
+        margin-top: 15px;
+        padding: 10px;
+        background: rgba(28, 40, 50, 0.6);
+        border-radius: 5px;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      select,
+      input {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0 15px;
+        border-radius: 5px;
+        border: 1px solid #3c5f7c;
+        background: rgba(40, 50, 60, 0.8);
+        color: #edffff;
+      }
+      label {
+        display: block;
+        margin: 10px 0 5px;
+        color: #5eceff;
+      }
+      .section {
+        margin: 15px 0;
+        padding: 10px;
+        background: rgba(40, 50, 60, 0.4);
+        border-radius: 5px;
+      }
+      #download-link {
+        display: none;
+      }
+      .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s ease-in-out infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .preview-container {
+        margin-top: 15px;
+        text-align: center;
+      }
+      #imagePreview {
+        max-width: 100%;
+        max-height: 150px;
+        border: 2px solid #3c5f7c;
+        border-radius: 5px;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="cesiumContainer"></div>
+
+    <div class="control-panel">
+      <h1>Cesium 视角图像下载（已修复）</h1>
+
+      <div class="section">
+        <label for="fileName">文件名:</label>
+        <input type="text" id="fileName" value="cesium-snapshot" />
+
+        <label for="imageQuality">图像质量 (0.1-1.0):</label>
+        <input type="number" id="imageQuality" min="0.1" max="1.0" step="0.1" value="0.95" />
+
+        <label for="imageType">图像格式:</label>
+        <select id="imageType">
+          <option value="image/png">PNG</option>
+          <option value="image/jpeg">JPEG</option>
+        </select>
+
+        <label for="resolutionScale">分辨率缩放:</label>
+        <input type="number" id="resolutionScale" min="0.5" max="3.0" step="0.5" value="1.0" />
+
+        <div class="button-group">
+          <button id="captureView">捕获当前视角</button>
+          <button id="downloadImage" disabled>下载图像</button>
+        </div>
+      </div>
+
+      <div class="preview-container">
+        <img id="imagePreview" alt="图像预览" />
+      </div>
+
+      <div class="info-panel">
+        <div class="info-item">
+          <span>图像状态:</span>
+          <span class="info-value" id="imageStatus">未捕获</span>
+        </div>
+        <div class="info-item">
+          <span>图像尺寸:</span>
+          <span class="info-value" id="imageSize">-</span>
+        </div>
+        <div class="info-item">
+          <span>文件格式:</span>
+          <span class="info-value" id="imageFormat">-</span>
+        </div>
+      </div>
+
+      <div class="status" id="status">就绪：调整视角后点击"捕获当前视角"</div>
+
+      <!-- 隐藏的下载链接 -->
+      <a id="download-link" download></a>
+    </div>
+
+    <script>
+      // 初始化Cesium Viewer
+      Cesium.Ion.defaultAccessToken =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiOWQxNmQ2ZC1lNzhjLTRlNDQtYmYyZC1kYzk1ZTZiMWQ4NDgiLCJpZCI6Mzc3MjcsImlhdCI6MTYwNTUwNjM5OH0.HCimd3DQp5RxCZ3EqJmlA8WV3rJwtjpBLl0d2wAXfhc";
+
+      const viewer = new Cesium.Viewer("cesiumContainer", {
+        terrainProvider: Cesium.createWorldTerrain(),
+        animation: false,
+        timeline: false,
+        baseLayerPicker: true,
+        geocoder: false,
+        homeButton: true,
+        sceneModePicker: true,
+        navigationHelpButton: false,
+        fullscreenButton: true,
+        infoBox: false,
+        selectionIndicator: true,
+      });
+
+      // 设置初始视角
+      viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(116.4, 39.9, 10000000),
+        orientation: {
+          heading: 0,
+          pitch: -1.5,
+          roll: 0,
+        },
+      });
+
+      // 存储当前捕获的图像数据
+      let currentImageData = null;
+
+      // 捕获当前视角
+      document.getElementById("captureView").addEventListener("click", function () {
+        const button = this;
+        const originalText = button.textContent;
+
+        // 显示加载状态
+        button.innerHTML = '<span class="loading"></span> 捕获中...';
+        button.disabled = true;
+
+        document.getElementById("status").textContent = "正在捕获当前视角...";
+        document.getElementById("imageStatus").textContent = "捕获中";
+
+        // 获取分辨率缩放
+        const resolutionScale = parseFloat(document.getElementById("resolutionScale").value);
+
+        // 使用requestAnimationFrame确保在正确时机捕获
+        requestAnimationFrame(function () {
+          try {
+            // 等待场景渲染完成
+            viewer.render();
+
+            // 获取canvas和上下文
+            const canvas = viewer.scene.canvas;
+            const width = canvas.width;
+            const height = canvas.height;
+
+            // 创建离屏canvas进行捕获
+            const captureCanvas = document.createElement("canvas");
+            captureCanvas.width = width * resolutionScale;
+            captureCanvas.height = height * resolutionScale;
+
+            const context = captureCanvas.getContext("2d");
+
+            // 设置缩放
+            context.scale(resolutionScale, resolutionScale);
+
+            // 绘制当前场景
+            context.drawImage(canvas, 0, 0);
+
+            // 获取图像数据
+            const imageType = document.getElementById("imageType").value;
+            const imageQuality = parseFloat(document.getElementById("imageQuality").value);
+            const imageData = captureCanvas.toDataURL(imageType, imageQuality);
+
+            // 存储图像数据
+            currentImageData = imageData;
+
+            // 显示预览
+            const preview = document.getElementById("imagePreview");
+            preview.src = imageData;
+            preview.style.display = "block";
+
+            // 更新UI
+            document.getElementById("imageStatus").textContent = "已捕获";
+            document.getElementById("imageSize").textContent = `${captureCanvas.width} × ${captureCanvas.height} 像素`;
+            document.getElementById("imageFormat").textContent = imageType;
+            document.getElementById("status").textContent = "捕获完成，可以下载图像";
+
+            // 启用下载按钮
+            document.getElementById("downloadImage").disabled = false;
+          } catch (error) {
+            console.error("捕获图像时出错:", error);
+            document.getElementById("status").textContent = "错误: " + error.message;
+            document.getElementById("imageStatus").textContent = "捕获失败";
+          } finally {
+            // 恢复按钮状态
+            button.textContent = originalText;
+            button.disabled = false;
+          }
+        });
+      });
+
+      // 下载图像
+      document.getElementById("downloadImage").addEventListener("click", function () {
+        if (!currentImageData) {
+          document.getElementById("status").textContent = "错误: 没有可下载的图像";
+          return;
+        }
+
+        try {
+          const fileName = document.getElementById("fileName").value || "cesium-snapshot";
+          const imageType = document.getElementById("imageType").value;
+
+          // 确定文件扩展名
+          let extension = ".png";
+          if (imageType === "image/jpeg") extension = ".jpg";
+
+          // 创建下载链接
+          const link = document.getElementById("download-link");
+          link.href = currentImageData;
+          link.download = fileName + extension;
+
+          // 触发下载
+          link.click();
+
+          document.getElementById("status").textContent = "下载已开始";
+        } catch (error) {
+          console.error("下载图像时出错:", error);
+          document.getElementById("status").textContent = "错误: " + error.message;
+        }
+      });
+
+      // 添加一些实体以增强视觉效果
+      function addDemoEntities() {
+        // 北京
+        viewer.entities.add({
+          position: Cesium.Cartesian3.fromDegrees(116.4, 39.9),
+          point: {
+            pixelSize: 15,
+            color: Cesium.Color.RED,
+            outlineColor: Cesium.Color.WHITE,
+            outlineWidth: 2,
+          },
+          label: {
+            text: "北京",
+            font: "16pt sans-serif",
+            pixelOffset: new Cesium.Cartesian2(0, -30),
+            fillColor: Cesium.Color.WHITE,
+            outlineColor: Cesium.Color.BLACK,
+            outlineWidth: 3,
+          },
+        });
+
+        // 上海
+        viewer.entities.add({
+          position: Cesium.Cartesian3.fromDegrees(121.47, 31.23),
+          point: {
+            pixelSize: 15,
+            color: Cesium.Color.BLUE,
+            outlineColor: Cesium.Color.WHITE,
+            outlineWidth: 2,
+          },
+          label: {
+            text: "上海",
+            font: "16pt sans-serif",
+            pixelOffset: new Cesium.Cartesian2(0, -30),
+            fillColor: Cesium.Color.WHITE,
+            outlineColor: Cesium.Color.BLACK,
+            outlineWidth: 3,
+          },
+        });
+
+        // 广州
+        viewer.entities.add({
+          position: Cesium.Cartesian3.fromDegrees(113.23, 23.16),
+          point: {
+            pixelSize: 15,
+            color: Cesium.Color.GREEN,
+            outlineColor: Cesium.Color.WHITE,
+            outlineWidth: 2,
+          },
+          label: {
+            text: "广州",
+            font: "16pt sans-serif",
+            pixelOffset: new Cesium.Cartesian2(0, -30),
+            fillColor: Cesium.Color.WHITE,
+            outlineColor: Cesium.Color.BLACK,
+            outlineWidth: 3,
+          },
+        });
+
+        // 添加一条线
+        viewer.entities.add({
+          polyline: {
+            positions: Cesium.Cartesian3.fromDegreesArray([
+              116.4,
+              39.9, // 北京
+              121.47,
+              31.23, // 上海
+            ]),
+            width: 5,
+            material: Cesium.Color.YELLOW,
+            clampToGround: true,
+          },
+        });
+      }
+
+      // 添加演示实体
+      addDemoEntities();
+
+      // 监听视角变化
+      viewer.camera.changed.addEventListener(function () {
+        if (currentImageData) {
+          document.getElementById("status").textContent = "视角已变化，需要重新捕获";
+          document.getElementById("imageStatus").textContent = "已过期";
+          document.getElementById("downloadImage").disabled = true;
+          document.getElementById("imagePreview").style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2024-06-21 15:03:31
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-09-06 16:03:13
+ * @LastEditTime: 2025-09-10 15:48:30
  * @Description: 地图配置
  */
 
@@ -12,6 +12,9 @@ let mapConf = {
   superMapUrl: "http://222.219.141.174:8090",
   // geoserver地址
   geoserverUrl: "http://39.91.167.36:8090/geoserver",
+  //
+  CesiumIondefaultAccessToken:
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiOWQxNmQ2ZC1lNzhjLTRlNDQtYmYyZC1kYzk1ZTZiMWQ4NDgiLCJpZCI6Mzc3MjcsImlhdCI6MTYwNTUwNjM5OH0.HCimd3DQp5RxCZ3EqJmlA8WV3rJwtjpBLl0d2wAXfhc",
   // 初始化基础dataSource
   getBasicLayer: function () {
     return [

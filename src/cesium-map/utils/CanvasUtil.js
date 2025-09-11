@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-08-12 19:46:11
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-20 14:42:03
+ * @LastEditTime: 2025-09-11 13:50:10
  * @Description: canvas处理
  */
 class CanvasUtil {

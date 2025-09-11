@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-08-06 10:57:23
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-09-06 16:53:52
+ * @LastEditTime: 2025-09-11 14:26:44
  * @Description: 
 -->
 <template></template>
@@ -16,6 +16,9 @@ import eventMapBus from "@/utils/eventMapBus.js";
 import UseDataSource from "@/uses/UseDataSource.js";
 import UseEntity from "../uses/UseEntity.js";
 import UsePrimitiveCollection from "../uses/usePrimitiveCollection.js";
+import ImageUtil from "../utils/imageUtil.js";
+
+// 临时测试
 import UseXhy from "../uses/UseXhy.js";
 import UseXhyPrimitive from "../uses/UseXhyPrimitive.js";
 
@@ -25,9 +28,13 @@ const { doEventOn, doEventSend, doEventOff } = eventMapBus();
 const { loadDataSourceByParams } = UseDataSource();
 const { createPolyline, createPolygon, updateEntityProperties } = UseEntity();
 const { loadPrimitiveCollection } = UsePrimitiveCollection();
+const { exportImage } = ImageUtil();
+
+const { getCircleByTurf, getSectorByTurf, getDifferenceByTurf } = TurfUtil();
+
+// 临时测试
 const { xhyTestFun } = UseXhy();
 const { testPrimitive } = UseXhyPrimitive();
-const { getCircleByTurf, getSectorByTurf, getDifferenceByTurf } = TurfUtil();
 
 import xhytest from "../assets/json/xhytest.json";
 
@@ -78,6 +85,15 @@ const createPolygonFun = ({ center, radius, bearing1, bearing2 }) => {
   createPolygon({ id: "xhy004", positions: xhytest });
 };
 
+const exportImageFun = async ({ imageType, callback = () => {} }) => {
+  let info = null;
+  info = await exportImage({ imageType });
+  let flag = typeof callback === "function";
+  if (flag) {
+    callback({ success: true, msg: "exportImageFun", data: info });
+  }
+};
+
 const mapInited = () => {
   // 订阅与发送
   doEventOn("map-test", mapTest);
@@ -104,6 +120,8 @@ const mapInited = () => {
   //#region ------weather------
 
   //#endregion ------weather------
+
+  doEventOn("scene-export-image", exportImageFun);
 };
 
 //
@@ -119,6 +137,8 @@ onUnmounted(() => {
   doEventOff("entity-properties-update", updateEntityProperties);
 
   doEventOff("map-add-primitiveCollection", loadPrimitiveCollection);
+
+  doEventOff("scene-export-image", exportImage);
 });
 </script>
 

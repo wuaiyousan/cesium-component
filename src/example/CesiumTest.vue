@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-08-04 16:34:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-09-06 14:32:31
+ * @LastEditTime: 2025-09-11 14:35:35
  * @Description: 
 -->
 <template>
@@ -23,6 +23,7 @@
       <div class="line">
         <el-button @click="onTest">测试</el-button>
         <el-button @click="xhyTest">数据结构测试</el-button>
+        <el-button @click="getSenceImage">保存视窗图片</el-button>
       </div>
     </div>
     <div class="panel-block">
@@ -65,6 +66,8 @@
         <el-button @click="addPrimitiveCollection">addPrimitiveCollection</el-button>
       </div>
     </div>
+    <!-- 隐藏的下载链接 -->
+    <a id="download-link" download></a>
   </div>
 </template>
 
@@ -83,6 +86,23 @@ const xhyTest = () => {};
 
 const onTest = () => {
   doEventSend("map-test", { a: 1, b: "2" });
+};
+
+const getSenceImage = () => {
+  doEventSend("scene-export-image", {
+    imageType: "png",
+    callback: (res) => {
+      if(res.success){
+      // 创建下载链接
+      const link = document.getElementById("download-link");
+      link.href = res.data;
+      link.download = "map.png";
+
+      // 触发下载
+      link.click();
+      }
+    },
+  });
 };
 
 //#region ------ 绘制 ------
@@ -163,8 +183,8 @@ const addEntityPolyline = () => {
   ];
   let data = {
     id: "xhy001",
-    points
-  }
+    points,
+  };
   doEventSend("entity-polyline-add", { data });
 };
 
@@ -176,7 +196,7 @@ const updateEntityProperties = () => {
 };
 
 const addEntityPolygon = () => {
-  let center = [112.95,28.23];
+  let center = [112.95, 28.23];
   let radius = [10, 5];
   let bearing1 = -10;
   let bearing2 = 100;
@@ -204,6 +224,7 @@ const addPrimitiveCollection = () => {
   };
   doEventSend("map-add-primitiveCollection", data);
 };
+//#endregion ------ primitiveCollection -------
 </script>
 
 <style lang="scss" scoped>
@@ -249,5 +270,8 @@ const addPrimitiveCollection = () => {
       margin-left: 12px;
     }
   }
+}
+#download-link {
+  display: none;
 }
 </style>
