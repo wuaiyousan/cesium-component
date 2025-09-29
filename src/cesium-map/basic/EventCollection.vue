@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-08-06 10:57:23
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-09-11 14:26:44
+ * @LastEditTime: 2025-09-25 16:38:21
  * @Description: 
 -->
 <template></template>
@@ -18,6 +18,8 @@ import UseEntity from "../uses/UseEntity.js";
 import UsePrimitiveCollection from "../uses/usePrimitiveCollection.js";
 import ImageUtil from "../utils/imageUtil.js";
 
+import UseMeasure from "../uses/UseMeasure.js";
+
 // 临时测试
 import UseXhy from "../uses/UseXhy.js";
 import UseXhyPrimitive from "../uses/UseXhyPrimitive.js";
@@ -27,6 +29,8 @@ import TurfUtil from "../utils/TurfUtil.js";
 const { doEventOn, doEventSend, doEventOff } = eventMapBus();
 const { loadDataSourceByParams } = UseDataSource();
 const { createPolyline, createPolygon, updateEntityProperties } = UseEntity();
+const { startDrawing } = UseMeasure();
+
 const { loadPrimitiveCollection } = UsePrimitiveCollection();
 const { exportImage } = ImageUtil();
 
@@ -121,6 +125,12 @@ const mapInited = () => {
 
   //#endregion ------weather------
 
+  //#region ------measure------
+
+  doEventOn("measure-circle",startDrawing)
+
+  //#endregion ------measure------
+
   doEventOn("scene-export-image", exportImageFun);
 };
 
@@ -138,7 +148,11 @@ onUnmounted(() => {
 
   doEventOff("map-add-primitiveCollection", loadPrimitiveCollection);
 
+  doEventOff("measure-circle",startDrawing)
+
   doEventOff("scene-export-image", exportImage);
+
+  // doEventOff("map-inited", mapInited);
 });
 </script>
 

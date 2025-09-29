@@ -20,5 +20,6 @@ declare module 'vue' {
     ElOption: typeof import('element-plus/es')['ElOption']
     ElOptionGroup: typeof import('element-plus/es')['ElOptionGroup']
     ElSelect: typeof import('element-plus/es')['ElSelect']
+    ElTreeSelect: typeof import('element-plus/es')['ElTreeSelect']
   }
 }

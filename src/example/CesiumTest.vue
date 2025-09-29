@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-08-04 16:34:56
  * @LastEditors: xionghaiying
- * @LastEditTime: 2025-09-11 14:35:35
+ * @LastEditTime: 2025-09-25 16:13:44
  * @Description: 
 -->
 <template>
@@ -36,6 +36,12 @@
       </div>
       <div class="line">
         <el-button @click="onDrawClear()">clearDraw</el-button>
+      </div>
+    </div>
+    <div class="panel-block">
+      <div class="title">Measure</div>
+      <div class="line">
+        <el-button @click="onMeasureCircle()">圆</el-button>
       </div>
     </div>
     <div class="panel-block">
@@ -84,22 +90,24 @@ const toModule = ref();
 
 const xhyTest = () => {};
 
-const onTest = () => {
-  doEventSend("map-test", { a: 1, b: "2" });
+
+const onTest = (datalist) => {
+  // doEventSend("map-test", { a: 1, b: "2" });
 };
 
 const getSenceImage = () => {
   doEventSend("scene-export-image", {
     imageType: "png",
     callback: (res) => {
-      if(res.success){
-      // 创建下载链接
-      const link = document.getElementById("download-link");
-      link.href = res.data;
-      link.download = "map.png";
+      if (res.success) {
+        console.log("22222", res.data);
+        // 创建下载链接
+        const link = document.getElementById("download-link");
+        link.href = res.data;
+        link.download = "map.png";
 
-      // 触发下载
-      link.click();
+        // 触发下载
+        link.click();
       }
     },
   });
@@ -225,6 +233,10 @@ const addPrimitiveCollection = () => {
   doEventSend("map-add-primitiveCollection", data);
 };
 //#endregion ------ primitiveCollection -------
+
+const onMeasureCircle = () =>{
+  doEventSend("measure-circle");
+}
 </script>
 
 <style lang="scss" scoped>

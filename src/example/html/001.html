@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cesium 圆形绘制工具 (v1.120) - 带半径线和角度显示</title>
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+    <style>
+      html,
+      body,
+      #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      #toolbar {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: rgba(30, 30, 30, 0.85);
+        padding: 15px;
+        border-radius: 12px;
+        z-index: 1000;
+        color: white;
+        max-width: 320px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      #status {
+        margin: 12px 0;
+        padding: 10px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.08);
+        font-size: 14px;
+        min-height: 20px;
+        display: flex;
+        align-items: center;
+      }
+
+      .button-group {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      button {
+        background: linear-gradient(to bottom, #4caf50, #45a049);
+        border: none;
+        color: white;
+        padding: 10px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 6px;
+        transition: all 0.3s;
+        flex: 1;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
+
+      button:disabled {
+        background: linear-gradient(to bottom, #777, #666);
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      #clearAll {
+        background: linear-gradient(to bottom, #f44336, #d32f2f);
+      }
+
+      #clearAll:hover {
+        background: linear-gradient(to bottom, #e53935, #c62828);
+      }
+
+      h3 {
+        margin-top: 0;
+        color: #4caf50;
+        text-align: center;
+        font-size: 18px;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .info {
+        font-size: 12px;
+        color: #aaa;
+        margin-top: 15px;
+        line-height: 1.5;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 10px;
+        border-radius: 6px;
+      }
+
+      .radius-info {
+        background: rgba(76, 175, 80, 0.2);
+        padding: 8px;
+        border-radius: 4px;
+        margin-top: 10px;
+        font-size: 13px;
+        text-align: center;
+        display: none;
+      }
+
+      .drawing-active {
+        animation: pulse 1.5s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          background-color: rgba(76, 175, 80, 0.2);
+        }
+        50% {
+          background-color: rgba(76, 175, 80, 0.5);
+        }
+        100% {
+          background-color: rgba(76, 175, 80, 0.2);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="cesiumContainer"></div>
+    <div id="toolbar">
+      <h3>🌍 Cesium 圆形绘制工具</h3>
+      <div class="button-group">
+        <button id="drawCircle">开始绘制圆形</button>
+        <button id="clearAll">清除所有图形</button>
+      </div>
+      <div id="status">状态: 等待开始绘制</div>
+      <div id="radiusInfo" class="radius-info">半径: 0 公里 | 角度: 0°</div>
+      <div class="info">
+        <strong>使用说明:</strong><br />
+        1. 点击"开始绘制圆形"按钮<br />
+        2. 在地图上点击确定圆心位置<br />
+        3. 拖动鼠标调整圆的半径<br />
+        4. 半径线会实时显示圆心到鼠标位置的距离和角度<br />
+        5. 再次点击完成绘制（保留半径线和角度信息）
+      </div>
+    </div>
+
+    <script>
+      // 设置Cesium Ion访问令牌（需要替换为您自己的令牌）
+      // 注意：这是一个示例令牌，实际使用时需要替换
+      Cesium.Ion.defaultAccessToken =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiOWQxNmQ2ZC1lNzhjLTRlNDQtYmYyZC1kYzk1ZTZiMWQ4NDgiLCJpZCI6Mzc3MjcsImlhdCI6MTYwNTUwNjM5OH0.HCimd3DQp5RxCZ3EqJmlA8WV3rJwtjpBLl0d2wAXfhc";
+
+      // 初始化Cesium Viewer
+      const viewer = new Cesium.Viewer("cesiumContainer", {
+        // terrainProvider: Cesium.createWorldTerrain(),
+        animation: false,
+        timeline: false,
+        homeButton: false,
+        geocoder: false,
+        baseLayerPicker: false,
+        sceneModePicker: false,
+        navigationHelpButton: false,
+        fullscreenButton: false,
+      });
+
+      // 设置初始视图（中国区域）
+      viewer.camera.setView({
+        destination: Cesium.Cartesian3.fromDegrees(104.0, 36.0, 5000000),
+      });
+
+      // 绘制状态变量
+      let drawingMode = false;
+      let centerPoint = null;
+      let temporaryCircle = null;
+      let radiusLine = null;
+      let handler = null;
+      let currentRadius = 0;
+      let mousePosition = null;
+      let finalRadiusLine = null;
+      let radiusLabel = null;
+
+      // 获取UI元素
+      const drawCircleBtn = document.getElementById("drawCircle");
+      const clearAllBtn = document.getElementById("clearAll");
+      const statusDiv = document.getElementById("status");
+      const radiusInfoDiv = document.getElementById("radiusInfo");
+
+      // 开始绘制圆形
+      drawCircleBtn.addEventListener("click", function () {
+        if (drawingMode) {
+          cancelDrawing();
+        } else {
+          startDrawing();
+        }
+      });
+
+      // 清除所有图形
+      clearAllBtn.addEventListener("click", function () {
+        viewer.entities.removeAll();
+        statusDiv.textContent = "状态: 已清除所有图形";
+        radiusInfoDiv.style.display = "none";
+
+        // 重新添加示例圆形
+        addExampleCircle();
+      });
+
+      // 开始绘制模式
+      function startDrawing() {
+        drawingMode = true;
+        drawCircleBtn.textContent = "取消绘制";
+        drawCircleBtn.classList.add("drawing-active");
+        statusDiv.textContent = "状态: 请点击地图确定圆心位置";
+        radiusInfoDiv.style.display = "none";
+
+        // 设置事件处理器
+        handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+
+        // 第一次点击确定圆心
+        handler.setInputAction(function (event) {
+          const position = viewer.camera.pickEllipsoid(event.position, viewer.scene.globe.ellipsoid);
+          if (position) {
+            centerPoint = position;
+            statusDiv.textContent = "状态: 拖动鼠标确定圆的半径，点击完成绘制";
+            radiusInfoDiv.style.display = "block";
+
+            // 创建临时圆形
+            temporaryCircle = viewer.entities.add({
+              position: centerPoint,
+              ellipse: {
+                semiMinorAxis: new Cesium.CallbackProperty(updateRadius, false),
+                semiMajorAxis: new Cesium.CallbackProperty(updateRadius, false),
+                material: Cesium.Color.YELLOW.withAlpha(0.4),
+                outline: true,
+                outlineColor: Cesium.Color.YELLOW,
+                outlineWidth: 2,
+              },
+            });
+
+            // 创建临时半径线
+            radiusLine = viewer.entities.add({
+              polyline: {
+                positions: new Cesium.CallbackProperty(updateLinePositions, false),
+                width: 3,
+                material: new Cesium.PolylineDashMaterialProperty({
+                  color: Cesium.Color.CYAN,
+                  dashLength: 16.0,
+                }),
+              },
+            });
+
+            // 鼠标移动时更新半径和半径线
+            handler.setInputAction(function (moveEvent) {
+              mousePosition = viewer.camera.pickEllipsoid(moveEvent.endPosition, viewer.scene.globe.ellipsoid);
+              if (centerPoint && mousePosition) {
+                // 计算半径
+                currentRadius = Cesium.Cartesian3.distance(centerPoint, mousePosition);
+                // 计算与正北的角度
+                const angle = calculateNorthAngle(centerPoint, mousePosition);
+                // 更新半径信息显示
+                radiusInfoDiv.textContent = `半径: ${(currentRadius / 1000).toFixed(2)} 公里 | 角度: ${angle.toFixed(1)}°`;
+              }
+            }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+            // 第二次点击完成绘制
+            handler.setInputAction(function (secondClick) {
+              if (centerPoint && temporaryCircle) {
+                const finalMousePosition = viewer.camera.pickEllipsoid(secondClick.position, viewer.scene.globe.ellipsoid);
+                if (finalMousePosition) {
+                  mousePosition = finalMousePosition;
+                  currentRadius = Cesium.Cartesian3.distance(centerPoint, mousePosition);
+                  const finalAngle = calculateNorthAngle(centerPoint, mousePosition);
+
+                  // 移除临时圆形和半径线
+                  viewer.entities.remove(temporaryCircle);
+                  viewer.entities.remove(radiusLine);
+
+                  // 创建最终圆形
+                  viewer.entities.add({
+                    position: centerPoint,
+                    name: "绘制的圆形",
+                    ellipse: {
+                      semiMinorAxis: currentRadius,
+                      semiMajorAxis: currentRadius,
+                      material: Cesium.Color.GREEN.withAlpha(0.4),
+                      outline: true,
+                      outlineColor: Cesium.Color.GREEN,
+                      outlineWidth: 3,
+                    },
+                    description: `圆形半径: ${(currentRadius / 1000).toFixed(2)} 公里`,
+                  });
+
+                  // 创建最终的半径线（保留）
+                  finalRadiusLine = viewer.entities.add({
+                    polyline: {
+                      positions: [centerPoint, mousePosition],
+                      width: 3,
+                      material: Cesium.Color.CYAN,
+                    },
+                  });
+
+                  // 在半径线终点添加半径和角度标注
+                  radiusLabel = viewer.entities.add({
+                    position: mousePosition,
+                    label: {
+                      text: `半径: ${(currentRadius / 1000).toFixed(2)} km\n角度: ${finalAngle.toFixed(1)}°`,
+                      font: "14pt sans-serif",
+                      fillColor: Cesium.Color.WHITE,
+                      backgroundColor: Cesium.Color.BLACK.withAlpha(0.7),
+                      outlineColor: Cesium.Color.BLACK,
+                      outlineWidth: 2,
+                      style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                      pixelOffset: new Cesium.Cartesian2(15, 0),
+                      verticalOrigin: Cesium.VerticalOrigin.CENTER,
+                      horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+                      scale: 0.8,
+                    },
+                    billboard: {
+                      image:
+                        "data:image/svg+xml;base64," +
+                        btoa(`
+                                            <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="16" cy="16" r="8" fill="cyan" stroke="white" stroke-width="2"/>
+                                            </svg>
+                                        `),
+                      verticalOrigin: Cesium.VerticalOrigin.CENTER,
+                      scale: 0.8,
+                    },
+                  });
+
+                  // 在圆心添加标注
+                  viewer.entities.add({
+                    position: centerPoint,
+                    label: {
+                      text: "圆心",
+                      font: "12pt sans-serif",
+                      fillColor: Cesium.Color.WHITE,
+                      backgroundColor: Cesium.Color.BLACK.withAlpha(0.7),
+                      outlineColor: Cesium.Color.BLACK,
+                      outlineWidth: 1,
+                      style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                      pixelOffset: new Cesium.Cartesian2(0, 20),
+                      scale: 0.7,
+                    },
+                  });
+
+                  // 重置状态
+                  resetDrawingState();
+                  statusDiv.textContent = "状态: 圆形绘制完成";
+                  radiusInfoDiv.style.display = "none";
+                }
+              }
+            }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
+          }
+        }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
+      }
+
+      // 计算与正北的角度（0-360度）
+      function calculateNorthAngle(center, point) {
+        const centerCartographic = Cesium.Cartographic.fromCartesian(center);
+        const pointCartographic = Cesium.Cartographic.fromCartesian(point);
+
+        const centerLon = Cesium.Math.toDegrees(centerCartographic.longitude);
+        const centerLat = Cesium.Math.toDegrees(centerCartographic.latitude);
+        const pointLon = Cesium.Math.toDegrees(pointCartographic.longitude);
+        const pointLat = Cesium.Math.toDegrees(pointCartographic.latitude);
+
+        // 计算两点间的方位角（从正北顺时针）
+        const dLon = ((pointLon - centerLon) * Math.PI) / 180;
+        const y = Math.sin(dLon) * Math.cos((pointLat * Math.PI) / 180);
+        const x =
+          Math.cos((centerLat * Math.PI) / 180) * Math.sin((pointLat * Math.PI) / 180) -
+          Math.sin((centerLat * Math.PI) / 180) * Math.cos((pointLat * Math.PI) / 180) * Math.cos(dLon);
+
+        let angle = (Math.atan2(y, x) * 180) / Math.PI;
+        angle = (angle + 360) % 360; // 转换为0-360度
+
+        return angle;
+      }
+
+      // 取消绘制
+      function cancelDrawing() {
+        resetDrawingState();
+        statusDiv.textContent = "状态: 已取消绘制";
+        radiusInfoDiv.style.display = "none";
+      }
+
+      // 重置绘制状态
+      function resetDrawingState() {
+        drawingMode = false;
+        drawCircleBtn.textContent = "开始绘制圆形";
+        drawCircleBtn.classList.remove("drawing-active");
+        centerPoint = null;
+        currentRadius = 0;
+        mousePosition = null;
+
+        if (temporaryCircle) {
+          viewer.entities.remove(temporaryCircle);
+          temporaryCircle = null;
+        }
+
+        if (radiusLine) {
+          viewer.entities.remove(radiusLine);
+          radiusLine = null;
+        }
+
+        if (handler) {
+          handler.destroy();
+          handler = null;
+        }
+      }
+
+      // 更新半径的回调函数
+      function updateRadius() {
+        return currentRadius;
+      }
+
+      // 更新半径线的回调函数
+      function updateLinePositions() {
+        if (centerPoint && mousePosition) {
+          return [centerPoint, mousePosition];
+        }
+        return [centerPoint, centerPoint];
+      }
+
+      // 添加示例圆形
+      function addExampleCircle() {
+        const exampleCenter = Cesium.Cartesian3.fromDegrees(104.0, 36.0, 0);
+        const exampleRadius = 300000.0;
+        const exampleEndPoint = Cesium.Cartesian3.fromDegrees(107.0, 36.0, 0); // 正东方向
+
+        // 示例圆形
+        viewer.entities.add({
+          position: exampleCenter,
+          ellipse: {
+            semiMinorAxis: exampleRadius,
+            semiMajorAxis: exampleRadius,
+            material: Cesium.Color.RED.withAlpha(0.3),
+            outline: true,
+            outlineColor: Cesium.Color.RED,
+            outlineWidth: 2,
+          },
+          description: "示例圆形: 半径300公里",
+        });
+
+        // 示例半径线
+        viewer.entities.add({
+          polyline: {
+            positions: [exampleCenter, exampleEndPoint],
+            width: 2,
+            material: Cesium.Color.ORANGE,
+          },
+        });
+
+        // 示例标注
+        viewer.entities.add({
+          position: exampleEndPoint,
+          label: {
+            text: "半径: 300.00 km\n角度: 90.0°",
+            font: "12pt sans-serif",
+            fillColor: Cesium.Color.WHITE,
+            backgroundColor: Cesium.Color.BLACK.withAlpha(0.7),
+            outlineColor: Cesium.Color.BLACK,
+            outlineWidth: 1,
+            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+            pixelOffset: new Cesium.Cartesian2(15, 0),
+            verticalOrigin: Cesium.VerticalOrigin.CENTER,
+            horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+            scale: 0.7,
+          },
+        });
+
+        // 添加提示信息
+        viewer.entities.add({
+          position: Cesium.Cartesian3.fromDegrees(104.0, 41.0, 0),
+          label: {
+            text: "点击上方工具栏开始绘制圆形",
+            font: "14pt sans-serif",
+            pixelOffset: new Cesium.Cartesian2(0, 50),
+            fillColor: Cesium.Color.WHITE,
+            outlineColor: Cesium.Color.BLACK,
+            outlineWidth: 2,
+            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+          },
+        });
+      }
+
+      // 初始化示例
+      addExampleCircle();
+    </script>
+  </body>
+</html>
