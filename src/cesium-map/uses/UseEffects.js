@@ -5,7 +5,7 @@
  * @LastEditTime: 2025-08-04 15:43:38
  * @Description: 效果
  */
-import Cesium from "@/utils/exportCesium";
+import Cesium from "../utils/exportCesium.js";
 import roadsList from '../assets/json/roads.json'
 import movingWater from '../assets/images/moving-water.png'
 import earthspec from '../assets/images/earthspec1k.jpg'

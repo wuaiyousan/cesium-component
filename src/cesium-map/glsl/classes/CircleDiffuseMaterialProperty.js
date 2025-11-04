@@ -5,7 +5,7 @@
  * @LastEditTime: 2025-08-01 15:46:17
  * @Description: 扩散圆
  */
-import Cesium from "@/utils/exportCesium";
+import Cesium from "../../utils/exportCesium.js";
 class CircleDiffuseMaterialProperty {
   constructor(options) {
     this._definitionChanged = new Cesium.Event()

@@ -5,7 +5,7 @@
  * @LastEditTime: 2025-08-05 10:29:58
  * @Descripttion: 雨粒子效果
  */
-import Cesium from "@/utils/exportCesium";
+import Cesium from "../exportCesium.js";
 
 class RainEffect {
   constructor(viewer, options) {

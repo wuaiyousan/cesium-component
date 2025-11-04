@@ -5,7 +5,7 @@
  * @LastEditTime: 2025-08-05 11:35:03
  * @Descripttion: 雾粒子
  */
-import Cesium from "@/utils/exportCesium";
+import Cesium from "../exportCesium.js";
 class FogEffect {
   constructor(viewer, options) {
     if (!viewer) throw new Error("no viewer object!");

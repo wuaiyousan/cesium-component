@@ -1,8 +1,8 @@
 <!--
  * @Author: xionghaiying
  * @Date: 2025-08-06 10:57:23
- * @LastEditors: xionghaiying
- * @LastEditTime: 2025-09-25 16:38:21
+ * @LastEditors: xionghiaying 
+ * @LastEditTime: 2025-11-04 14:27:13
  * @Description: 
 -->
 <template></template>
@@ -12,8 +12,8 @@ import { onMounted, onUnmounted } from "vue";
 
 import Cesium from "../utils/exportCesium.js";
 
-import eventMapBus from "@/utils/eventMapBus.js";
-import UseDataSource from "@/uses/UseDataSource.js";
+import eventMapBus from "../utils/eventMapBus.js";
+import UseDataSource from "../uses/UseDataSource.js";
 import UseEntity from "../uses/UseEntity.js";
 import UsePrimitiveCollection from "../uses/usePrimitiveCollection.js";
 import ImageUtil from "../utils/imageUtil.js";

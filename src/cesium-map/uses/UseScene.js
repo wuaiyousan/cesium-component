@@ -5,8 +5,8 @@
  * @LastEditTime: 2025-08-01 10:10:35
  * @Description: UseScene
  */
-import Cesium from "@/utils/exportCesium";
-import eventMapBus from "@/utils/eventMapBus.js";
+import Cesium from "../utils/exportCesium.js";
+import eventMapBus from "../utils/eventMapBus.js";
 import { viewConf } from "../config/viewer.config.js";
 import UseLayer from "./UseLayer.js";
 

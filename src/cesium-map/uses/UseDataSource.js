@@ -6,7 +6,7 @@
  * @FilePath: \visualization\src\views\map\uses\UseDataSource.js
  * @Description: DataSource 方法集合
  */
-import Cesium from "@/utils/exportCesium";
+import Cesium from "../utils/exportCesium.js";
 
 export default function UseDataSource() {
   // 创建

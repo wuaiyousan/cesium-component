@@ -2,8 +2,8 @@
  * @Description:
  * @Author: xionghaiying
  * @Date: 2025-07-29 14:57:04
- * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-05 17:02:32
+ * @LastEditors: xionghiaying 
+ * @LastEditTime: 2025-11-04 15:56:12
  */
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
@@ -46,7 +46,8 @@ export default defineConfig({
         assetFileNames: "style.css", // 固定输出文件名
       },
     },
-
+    // 将资源内联阈值提高到 10KB，确保所有 SVG 都被内联
+    assetsInlineLimit: 10240,
     outDir: "dist",
     emptyOutDir: true,
     commonjsOptions: {

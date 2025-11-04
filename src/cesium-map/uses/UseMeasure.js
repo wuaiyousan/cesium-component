@@ -5,7 +5,7 @@
  * @LastEditTime: 2025-09-25 17:59:18
  * @Description: 量算
  */
-import Cesium from "@/utils/exportCesium";
+import Cesium from "../utils/exportCesium.js";
 export default function UseMeasure() {
   function circleMeasure() {}
 

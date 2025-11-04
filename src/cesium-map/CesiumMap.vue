@@ -2,8 +2,8 @@
  * @Description: 
  * @Author: xionghaiying
  * @Date: 2025-07-29 14:59:29
- * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-06 16:16:37
+ * @LastEditors: xionghiaying 
+ * @LastEditTime: 2025-11-04 14:24:22
 -->
 
 <template>
@@ -28,7 +28,7 @@ import { viewConf } from "./config/viewer.config.js";
 // 组件
 import ViewerMap from "./basic/ViewerMap.vue";
 import MapTools from "./basic/MapTools.vue";
-import EventCollection from "@/basic/EventCollection.vue";
+import EventCollection from "./basic/EventCollection.vue";
 
 // 事件
 

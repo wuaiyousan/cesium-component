@@ -5,8 +5,8 @@
  * @LastEditTime: 2025-08-04 16:14:05
  * @Description: 地图基本操作
  */
-import Cesium from "@/utils/exportCesium";
-import { viewConf } from "@/config/viewer.config.js";
+import Cesium from "../utils/exportCesium.js";
+import { viewConf } from "../config/viewer.config.js";
 
 const { location } = viewConf;
 

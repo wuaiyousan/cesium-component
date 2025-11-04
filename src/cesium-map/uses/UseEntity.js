@@ -6,7 +6,7 @@
  * @FilePath: \map\utils\UseEntity.js
  * @Description:  方法集合
  */
-import Cesium from "@/utils/exportCesium";
+import Cesium from "../utils/exportCesium.js";
 import { station } from "../config/default.config";
 import FormatUtil from "../utils/FormatUtil.js";
 import DashedArrowMaterialProperty from "../glsl/classes/DashedArrowMaterialProperty.js";

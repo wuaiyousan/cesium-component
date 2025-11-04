@@ -57,12 +57,12 @@
 
 <script setup>
 import { onMounted, reactive, ref, onUnmounted } from "vue";
-import eventMapBus from "@/utils/eventMapBus.js";
-import UseDraw from "@/uses/UseDraw.js";
-import UseTools from "@/uses/UseTools.js";
-import RainEffect from "@/utils/Weather/rain.js";
-import SnowEffect from "@/utils/Weather/snow.js";
-import FogEffect from "@/utils/Weather/fog.js";
+import eventMapBus from "../utils/eventMapBus.js";
+import UseDraw from "../uses/UseDraw.js";
+import UseTools from "../uses/UseTools.js";
+import RainEffect from "../utils/Weather/rain.js";
+import SnowEffect from "../utils/Weather/snow.js";
+import FogEffect from "../utils/Weather/fog.js";
 
 const { doEventOn } = eventMapBus();
 const { startDrawing, clearDraw } = UseDraw();
