@@ -12,9 +12,9 @@ class RainEffect {
     if (!viewer) throw new Error("no viewer object!");
     options = options || {};
     //倾斜角度，负数向右，正数向左
-    this.tiltAngle = Cesium.defaultValue(options.tiltAngle, -0.6);
-    this.rainSize = Cesium.defaultValue(options.rainSize, 0.3);
-    this.rainSpeed = Cesium.defaultValue(options.rainSpeed, 60.0);
+    this.tiltAngle = options.tiltAngle ?? -0.6;
+    this.rainSize = options.rainSize ?? 0.3;
+    this.rainSpeed = options.rainSpeed ?? 60.0;
     this.viewer = viewer;
     this.init();
   }

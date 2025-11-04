@@ -13,18 +13,18 @@ import Cesium from "../../utils/exportCesium.js";
  */
 export default class DashedArrowMaterialProperty {
   constructor(options) {
-    options = Cesium.defaultValue(options, Cesium.defaultValue.EMPTY_OBJECT);
+    options = options ?? {};
 
     this._definitionChanged = new Cesium.Event();
     this._color = undefined; // 线段颜色
-    this._dashLength = undefined; // 虚线段长度, Number（单位是基于 UV 坐标系的相对长度，一般不用关心具体单位）
+    this._dashLength = undefined; // 虚线段长度, Number（单位是基于 UV 坐标系的相对长度,一般不用关心具体单位）
     this._gapLength = undefined; // 间隔长度
     this._centerLinePosition = undefined; // 控制实虚线的比例
 
     this.color = options.color;
-    this.dashLength = Cesium.defaultValue(options.dashLength, 0.05);
-    this.gapLength = Cesium.defaultValue(options.gapLength, 0.03);
-    this.centerLinePosition = Cesium.defaultValue(options.centerLinePosition, 0.5); // 默认 0.5
+    this.dashLength = options.dashLength ?? 0.05;
+    this.gapLength = options.gapLength ?? 0.03;
+    this.centerLinePosition = options.centerLinePosition ?? 0.5; // 默认 0.5
   }
 
   get isConstant() {

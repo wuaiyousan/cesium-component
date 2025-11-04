@@ -10,8 +10,8 @@ class SnowEffect {
   constructor(viewer, options) {
     if (!viewer) throw new Error("no viewer object!");
     options = options || {};
-    this.snowSize = Cesium.defaultValue(options.snowSize, 0.02); // ❄️大小，最好小于0.02
-    this.snowSpeed = Cesium.defaultValue(options.snowSpeed, 60.0); // 速度
+    this.snowSize = options.snowSize ?? 0.02; // ❄️大小，最好小于0.02
+    this.snowSpeed = options.snowSpeed ?? 60.0; // 速度
     this.viewer = viewer;
     this.init();
   }

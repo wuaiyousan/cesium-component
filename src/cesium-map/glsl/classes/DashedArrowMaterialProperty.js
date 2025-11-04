@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-08-19 10:34:04
  * @LastEditors: xionghiaying 
- * @LastEditTime: 2025-11-04 17:20:21
+ * @LastEditTime: 2025-11-04 17:46:06
  * @Description: 虚线箭头
  */
 
@@ -13,7 +13,7 @@ import Cesium from "../../utils/exportCesium.js";
  */
 export default class DashedArrowMaterialProperty {
   constructor(options) {
-    options = options ?? Cesium.Frozen.EMPTY_OBJECT;
+    options = options ?? {};
 
     this._definitionChanged = new Cesium.Event();
     this._color = undefined; // 线段颜色
