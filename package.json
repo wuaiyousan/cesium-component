@@ -1,7 +1,7 @@
 {
   "name": "cesium-component",
   "private": false,
-  "version": "0.0.5",
+  "version": "0.0.6",
   "type": "module",
   "main": "./dist/cesium-component.umd.js",
   "module": "./dist/cesium-component.es.js",
