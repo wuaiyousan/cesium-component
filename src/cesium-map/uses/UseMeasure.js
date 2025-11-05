@@ -19,6 +19,7 @@ export default function UseMeasure() {
   let mousePosition = null;
   let finalRadiusLine = null;
   let radiusLabel = null;
+  let tempRadiusLabel = null; // 临时半径标签
 
   // 开始绘制模式
   function startDrawing() {
@@ -40,12 +41,24 @@ export default function UseMeasure() {
         centerPoint = position;
         console.log("圆心已确定，现在拖动鼠标调整半径");
 
-        // 创建临时圆形 - 使用固定值初始化和安全的回调
+        // 创建临时圆形 - 使用 CallbackProperty 动态更新半径
         temporaryCircle = viewer.entities.add({
           position: centerPoint,
           ellipse: {
-            semiMinorAxis: 0, // 初始小半径
-            semiMajorAxis: 0, // 初始小半径
+            semiMinorAxis: new Cesium.CallbackProperty(function() {
+              if (!centerPoint || !mousePosition) {
+                return 1.0; // 最小值
+              }
+              const distance = Cesium.Cartesian3.distance(centerPoint, mousePosition);
+              return distance > 0.1 ? distance : 1.0;
+            }, false),
+            semiMajorAxis: new Cesium.CallbackProperty(function() {
+              if (!centerPoint || !mousePosition) {
+                return 1.0; // 最小值
+              }
+              const distance = Cesium.Cartesian3.distance(centerPoint, mousePosition);
+              return distance > 0.1 ? distance : 1.0;
+            }, false),
             material: Cesium.Color.YELLOW.withAlpha(0.4),
             outline: true,
             outlineColor: Cesium.Color.YELLOW,
@@ -53,10 +66,24 @@ export default function UseMeasure() {
           },
         });
 
-        // 创建临时半径线
+        // 创建临时半径线 - 使用 CallbackProperty 动态计算位置
         radiusLine = viewer.entities.add({
           polyline: {
-            positions: [centerPoint, centerPoint], // 初始位置相同
+            positions: new Cesium.CallbackProperty(function() {
+              if (!centerPoint) {
+                return [];
+              }
+              if (!mousePosition || Cesium.Cartesian3.distance(centerPoint, mousePosition) < 0.1) {
+                // 返回一个很小的偏移避免相同点
+                const offset = Cesium.Cartesian3.add(
+                  centerPoint, 
+                  new Cesium.Cartesian3(0.1, 0, 0), 
+                  new Cesium.Cartesian3()
+                );
+                return [centerPoint, offset];
+              }
+              return [centerPoint, mousePosition];
+            }, false),
             width: 3,
             material: new Cesium.PolylineDashMaterialProperty({
               color: Cesium.Color.CYAN,
@@ -65,32 +92,53 @@ export default function UseMeasure() {
           },
         });
 
+        // 创建临时标签 - 显示实时半径
+        tempRadiusLabel = viewer.entities.add({
+          position: new Cesium.CallbackProperty(function() {
+            return mousePosition || centerPoint;
+          }, false),
+          label: {
+            text: new Cesium.CallbackProperty(function() {
+              if (!centerPoint || !mousePosition) {
+                return '点击确定半径';
+              }
+              const distance = Cesium.Cartesian3.distance(centerPoint, mousePosition);
+              if (distance < 0.1) {
+                return '移动鼠标调整半径';
+              }
+              const radiusKm = (distance / 1000).toFixed(2);
+              const angle = calculateNorthAngle(centerPoint, mousePosition);
+              return `半径: ${radiusKm} km\n角度: ${angle.toFixed(1)}°`;
+            }, false),
+            font: "14pt sans-serif",
+            fillColor: Cesium.Color.WHITE,
+            backgroundColor: Cesium.Color.BLACK.withAlpha(0.7),
+            outlineColor: Cesium.Color.BLACK,
+            outlineWidth: 2,
+            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+            pixelOffset: new Cesium.Cartesian2(15, 0),
+            verticalOrigin: Cesium.VerticalOrigin.CENTER,
+            horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+            scale: 0.8,
+            show: true,
+          },
+        });
+
         // 移除之前的鼠标移动事件（避免重复绑定）
         handler.removeInputAction(Cesium.ScreenSpaceEventType.MOUSE_MOVE);
         
-        // 鼠标移动时更新半径和半径线
+        // 鼠标移动时只需更新 mousePosition,CallbackProperty 会自动更新圆形和半径线
         handler.setInputAction(function (moveEvent) {
           const newMousePosition = viewer.camera.pickEllipsoid(moveEvent.endPosition, viewer.scene.globe.ellipsoid);
-          if (centerPoint && newMousePosition && Cesium.defined(newMousePosition)) {
+          if (newMousePosition && Cesium.defined(newMousePosition)) {
             mousePosition = newMousePosition;
             
-            // 计算半径（确保是有效数字）
-            const newRadius = Cesium.Cartesian3.distance(centerPoint, mousePosition);
-            if (!isNaN(newRadius) && isFinite(newRadius) && newRadius > 0) {
-              currentRadius = newRadius;
-              
-              // 直接更新实体的属性，而不是使用 CallbackProperty
-              if (temporaryCircle && temporaryCircle.ellipse) {
-                temporaryCircle.ellipse.semiMinorAxis = newRadius;
-                temporaryCircle.ellipse.semiMajorAxis = newRadius;
+            // 更新当前半径值（用于后续使用）
+            if (centerPoint) {
+              const distance = Cesium.Cartesian3.distance(centerPoint, mousePosition);
+              if (distance >= 0.1) {
+                currentRadius = distance;
               }
-              
-              if (radiusLine && radiusLine.polyline) {
-                radiusLine.polyline.positions = [centerPoint, mousePosition];
-              }
-              
-              // 计算与正北的角度
-              const angle = calculateNorthAngle(centerPoint, mousePosition);
             }
           }
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
@@ -125,7 +173,7 @@ export default function UseMeasure() {
     
     const finalAngle = calculateNorthAngle(centerPoint, mousePosition);
 
-    // 移除临时圆形和半径线
+    // 移除临时圆形、半径线和标签
     if (temporaryCircle) {
       viewer.entities.remove(temporaryCircle);
       temporaryCircle = null;
@@ -134,6 +182,11 @@ export default function UseMeasure() {
     if (radiusLine) {
       viewer.entities.remove(radiusLine);
       radiusLine = null;
+    }
+    
+    if (tempRadiusLabel) {
+      viewer.entities.remove(tempRadiusLabel);
+      tempRadiusLabel = null;
     }
 
     try {
@@ -216,8 +269,23 @@ export default function UseMeasure() {
   // 计算与正北的角度（0-360度）
   function calculateNorthAngle(center, point) {
     try {
+      // 检查点是否有效
+      if (!center || !point || !Cesium.defined(center) || !Cesium.defined(point)) {
+        return 0;
+      }
+      
+      // 检查两点是否过于接近
+      const distance = Cesium.Cartesian3.distance(center, point);
+      if (distance < 0.1) {
+        return 0; // 距离太小,角度无意义
+      }
+      
       const centerCartographic = Cesium.Cartographic.fromCartesian(center);
       const pointCartographic = Cesium.Cartographic.fromCartesian(point);
+      
+      if (!centerCartographic || !pointCartographic) {
+        return 0;
+      }
 
       const centerLon = Cesium.Math.toDegrees(centerCartographic.longitude);
       const centerLat = Cesium.Math.toDegrees(centerCartographic.latitude);
@@ -231,10 +299,15 @@ export default function UseMeasure() {
         Math.cos((centerLat * Math.PI) / 180) * Math.sin((pointLat * Math.PI) / 180) -
         Math.sin((centerLat * Math.PI) / 180) * Math.cos((pointLat * Math.PI) / 180) * Math.cos(dLon);
 
+      // 检查计算结果是否有效
+      if (isNaN(x) || isNaN(y) || !isFinite(x) || !isFinite(y)) {
+        return 0;
+      }
+
       let angle = (Math.atan2(y, x) * 180) / Math.PI;
       angle = (angle + 360) % 360; // 转换为0-360度
 
-      return isNaN(angle) ? 0 : angle;
+      return isNaN(angle) || !isFinite(angle) ? 0 : angle;
     } catch (error) {
       console.error("计算角度时出错:", error);
       return 0;
@@ -269,6 +342,11 @@ export default function UseMeasure() {
     if (radiusLine) {
       viewer.entities.remove(radiusLine);
       radiusLine = null;
+    }
+    
+    if (tempRadiusLabel) {
+      viewer.entities.remove(tempRadiusLabel);
+      tempRadiusLabel = null;
     }
 
     // 可选：移除最终实体
