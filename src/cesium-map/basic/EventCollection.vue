@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-08-06 10:57:23
  * @LastEditors: xionghiaying 
- * @LastEditTime: 2025-11-04 14:27:13
+ * @LastEditTime: 2025-11-06 16:05:21
  * @Description: 
 -->
 <template></template>
@@ -18,6 +18,7 @@ import UseEntity from "../uses/UseEntity.js";
 import UsePrimitiveCollection from "../uses/usePrimitiveCollection.js";
 import ImageUtil from "../utils/imageUtil.js";
 
+import PostStage from "../glsl/UsePostStage.js";
 import UseMeasure from "../uses/UseMeasure.js";
 
 // 临时测试
@@ -30,6 +31,7 @@ const { doEventOn, doEventSend, doEventOff } = eventMapBus();
 const { loadDataSourceByParams } = UseDataSource();
 const { createPolyline, createPolygon, updateEntityProperties } = UseEntity();
 const { startDrawing } = UseMeasure();
+const { addFlickerLine } = PostStage();
 
 const { loadPrimitiveCollection } = UsePrimitiveCollection();
 const { exportImage } = ImageUtil();
@@ -98,6 +100,13 @@ const exportImageFun = async ({ imageType, callback = () => {} }) => {
   }
 };
 
+const addFlickerLineFun = ({ dataList, color = "#5ee603ff" }) => {
+  dataList.forEach((item) => {
+    let { positions, id } = item;
+    addFlickerLine({ positions, id, color });
+  });
+};
+
 const mapInited = () => {
   // 订阅与发送
   doEventOn("map-test", mapTest);
@@ -127,11 +136,17 @@ const mapInited = () => {
 
   //#region ------measure------
 
-  doEventOn("measure-circle",startDrawing)
+  doEventOn("measure-circle", startDrawing);
 
   //#endregion ------measure------
 
+  //#region ------------------------- 场景截图
   doEventOn("scene-export-image", exportImageFun);
+  //#endregion --------------------- 场景截图
+
+  //#region ------------------------- 自定义着色器
+  doEventOn("map-add-flickerLine", addFlickerLineFun);
+  //#endregion --------------------- 自定义着色器
 };
 
 //
@@ -148,9 +163,11 @@ onUnmounted(() => {
 
   doEventOff("map-add-primitiveCollection", loadPrimitiveCollection);
 
-  doEventOff("measure-circle",startDrawing)
+  doEventOff("measure-circle", startDrawing);
 
   doEventOff("scene-export-image", exportImage);
+
+  doEventOff("map-add-flickerLine", addFlickerLineFun);
 
   // doEventOff("map-inited", mapInited);
 });

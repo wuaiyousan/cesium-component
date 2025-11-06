@@ -6,7 +6,8 @@
  * @Description: 波纹圆
  */
 import Cesium from "../../utils/exportCesium.js";
-class CircleRippleMaterialProperty {
+
+export default class CircleRippleMaterialProperty {
   constructor(options) {
     this._definitionChanged = new Cesium.Event()
     this._color = undefined
@@ -70,7 +71,7 @@ Object.defineProperties(CircleRippleMaterialProperty.prototype, {
   gradient: Cesium.createPropertyDescriptor('gradient'),
 })
 
-Cesium.CircleRippleMaterialProperty = CircleRippleMaterialProperty
+// 只在 Material 上定义材质类型相关属性
 Cesium.Material.CircleRippleMaterialProperty = 'CircleRippleMaterialProperty'
 Cesium.Material.CircleRippleMaterialType = 'CircleRippleMaterialType'
 Cesium.Material.CircleRippleMaterialSource = `

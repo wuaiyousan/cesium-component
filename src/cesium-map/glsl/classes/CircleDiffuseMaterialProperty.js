@@ -6,7 +6,8 @@
  * @Description: 扩散圆
  */
 import Cesium from "../../utils/exportCesium.js";
-class CircleDiffuseMaterialProperty {
+
+export default class CircleDiffuseMaterialProperty {
   constructor(options) {
     this._definitionChanged = new Cesium.Event()
     this._color = undefined
@@ -62,7 +63,7 @@ Object.defineProperties(CircleDiffuseMaterialProperty.prototype, {
   speed: Cesium.createPropertyDescriptor('speed'),
 })
 
-Cesium.CircleDiffuseMaterialProperty = CircleDiffuseMaterialProperty
+// 只在 Material 上定义材质类型相关属性
 Cesium.Material.CircleDiffuseMaterialProperty = 'CircleDiffuseMaterialProperty'
 Cesium.Material.CircleDiffuseMaterialType = 'CircleDiffuseMaterialType'
 Cesium.Material.CircleDiffuseMaterialSource = `

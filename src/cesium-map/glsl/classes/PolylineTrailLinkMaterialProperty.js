@@ -1,4 +1,13 @@
-class PolylineTrailLinkMaterialProperty {
+/*
+ * @Author: xionghiaying
+ * @Date: 2025-11-06 15:03:53
+ * @LastEditors: xionghiaying 
+ * @LastEditTime: 2025-11-06 15:09:01
+ * @Description: 穿梭线材质属性
+ */
+import * as Cesium from "cesium"
+
+export default class PolylineTrailLinkMaterialProperty {
   constructor(options) {
     this._definitionChanged = new Cesium.Event();
     this._color = undefined;
@@ -44,7 +53,7 @@ class PolylineTrailLinkMaterialProperty {
     color: Cesium.createPropertyDescriptor('color')
   });
   
-  Cesium.PolylineTrailLinkMaterialProperty = PolylineTrailLinkMaterialProperty;
+  // 只在 Material 上定义材质类型相关属性
   Cesium.Material.PolylineTrailLinkMaterialProperty = 'PolylineTrailLinkMaterialProperty'
   Cesium.Material.PolylineTrailLinkMaterialType = 'PolylineTrailLinkMaterialType'
   Cesium.Material.PolylineTrailLinkMaterialSource = `

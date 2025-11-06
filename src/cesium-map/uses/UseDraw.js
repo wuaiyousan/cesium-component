@@ -1,14 +1,13 @@
 /*
  * @Author: xionghaiying
  * @Date: 2025-06-20 15:31:56
- * @LastEditors: xionghaiying
- * @LastEditTime: 2025-08-22 10:40:10
+ * @LastEditors: xionghiaying 
+ * @LastEditTime: 2025-11-06 14:05:45
  * @Description:  绘制
  */
 import Cesium from "../utils/exportCesium.js";
 const { Cartesian2 } = Cesium;
-// import DashedArrowMaterialProperty from "../glsl/classes/DashedArrowMaterialProperty.js";
-import DashedArrowMaterialProperty from "../glsl/classes/xhytest.js";
+import DashedArrowMaterialProperty from "../glsl/classes/DashedArrowMaterialProperty.js";
 import UseDataSource from "./UseDataSource.js";
 import FormatUtil from "../utils/FormatUtil.js";
 
