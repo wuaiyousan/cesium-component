@@ -67,32 +67,32 @@ Object.defineProperties(CircleDiffuseMaterialProperty.prototype, {
 Cesium.Material.CircleDiffuseMaterialProperty = 'CircleDiffuseMaterialProperty'
 Cesium.Material.CircleDiffuseMaterialType = 'CircleDiffuseMaterialType'
 Cesium.Material.CircleDiffuseMaterialSource = `
-                                          uniform vec4 color;
-                                          uniform float speed;
+uniform vec4 color;
+uniform float speed;
 
-                                          vec3 circlePing(float r, float innerTail,  float frontierBorder, float timeResetSeconds,  float radarPingSpeed,  float fadeDistance){
-                                            float t = fract(czm_frameNumber * speed / 1000.0);
-                                            float time = mod(t, timeResetSeconds) * radarPingSpeed;
-                                            float circle;
-                                            circle += smoothstep(time - innerTail, time, r) * smoothstep(time + frontierBorder,time, r);
-                                            circle *= smoothstep(fadeDistance, 0.0, r);
-                                            return vec3(circle);
-                                          }
-
-                                          czm_material czm_getMaterial(czm_materialInput materialInput){
-                                            czm_material material = czm_getDefaultMaterial(materialInput);
-                                            vec2 st = materialInput.st * 2.0  - 1.0 ;
-                                            vec2 center = vec2(0.);
-                                            float time = fract(czm_frameNumber * speed / 1000.0);
-                                            vec3 flagColor;
-                                            float r = length(st - center) / 4.;
-                                            flagColor += circlePing(r, 0.25, 0.025, 4.0, 0.3, 1.0) * color.rgb;
-                                            material.alpha = length(flagColor);
-                                            material.diffuse = flagColor.rgb;
-                                            return material;
-                                          }
-
-                                          `
+czm_material czm_getMaterial(czm_materialInput materialInput){
+  czm_material material = czm_getDefaultMaterial(materialInput);
+  vec2 st = materialInput.st * 2.0 - 1.0;
+  float r = length(st);
+  
+  float t = fract(czm_frameNumber * speed / 1000.0);
+  float time = mod(t, 4.0) * 0.3;
+  
+  // 创建扩散波形
+  float wave = smoothstep(time - 0.25, time, r) * smoothstep(time + 0.025, time, r);
+  
+  // 边缘柔和淡出，避免硬边黑圈
+  float edgeFade = 1.0 - smoothstep(0.35, 0.5, r);
+  
+  // 组合波形和边缘淡出
+  float alpha = wave * edgeFade * color.a;
+  
+  material.diffuse = color.rgb;
+  material.alpha = alpha;
+  
+  return material;
+}
+`
 
 Cesium.Material._materialCache.addMaterial(
   Cesium.Material.CircleDiffuseMaterialType,

@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-08-06 10:57:23
  * @LastEditors: xionghiaying 
- * @LastEditTime: 2025-11-07 14:08:02
+ * @LastEditTime: 2025-11-07 14:42:51
  * @Description: 
 -->
 <template></template>
@@ -31,7 +31,7 @@ const { doEventOn, doEventSend, doEventOff } = eventMapBus();
 const { loadDataSourceByParams } = UseDataSource();
 const { createPolyline, createPolygon, updateEntityProperties } = UseEntity();
 const { startDrawing } = UseMeasure();
-const { addFlickerLine, addCircleScan } = PostStage();
+const { addFlickerLine, addCircleScan, addCircleRipple, addCircleDiffuse } = PostStage();
 
 const { loadPrimitiveCollection } = UsePrimitiveCollection();
 const { exportImage } = ImageUtil();
@@ -147,6 +147,8 @@ const mapInited = () => {
   //#region ------------------------- 自定义着色器
   doEventOn("map-add-flickerLine", addFlickerLineFun);
   doEventOn("map-add-circleScan", addCircleScan);
+  doEventOn("map-add-circleRipple", addCircleRipple);
+  doEventOn("map-add-circleDiffuse", addCircleDiffuse);
   //#endregion --------------------- 自定义着色器
 };
 
@@ -170,6 +172,8 @@ onUnmounted(() => {
 
   doEventOff("map-add-flickerLine", addFlickerLineFun);
   doEventOff("map-add-circleScan", addCircleScan);
+  doEventOff("map-add-circleRipple", addCircleRipple);
+  doEventOff("map-add-circleDiffuse", addCircleDiffuse);
 
   // doEventOff("map-inited", mapInited);
 });
