@@ -5,7 +5,7 @@
  * @LastEditTime: 2025-09-03 16:16:14
  * @Description: viewer.config
  */
-import * as Cesium from "cesium";
+import Cesium from "../utils/exportCesium.js";
 // 场景视图配置
 export let viewConf = {
   location: {

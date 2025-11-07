@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2025-08-06 10:57:23
  * @LastEditors: xionghiaying 
- * @LastEditTime: 2025-11-06 16:05:21
+ * @LastEditTime: 2025-11-07 14:08:02
  * @Description: 
 -->
 <template></template>
@@ -31,7 +31,7 @@ const { doEventOn, doEventSend, doEventOff } = eventMapBus();
 const { loadDataSourceByParams } = UseDataSource();
 const { createPolyline, createPolygon, updateEntityProperties } = UseEntity();
 const { startDrawing } = UseMeasure();
-const { addFlickerLine } = PostStage();
+const { addFlickerLine, addCircleScan } = PostStage();
 
 const { loadPrimitiveCollection } = UsePrimitiveCollection();
 const { exportImage } = ImageUtil();
@@ -146,6 +146,7 @@ const mapInited = () => {
 
   //#region ------------------------- 自定义着色器
   doEventOn("map-add-flickerLine", addFlickerLineFun);
+  doEventOn("map-add-circleScan", addCircleScan);
   //#endregion --------------------- 自定义着色器
 };
 
@@ -168,6 +169,7 @@ onUnmounted(() => {
   doEventOff("scene-export-image", exportImage);
 
   doEventOff("map-add-flickerLine", addFlickerLineFun);
+  doEventOff("map-add-circleScan", addCircleScan);
 
   // doEventOff("map-inited", mapInited);
 });

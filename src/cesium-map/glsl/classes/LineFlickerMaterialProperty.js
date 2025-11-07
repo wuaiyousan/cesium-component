@@ -5,7 +5,7 @@
  * @LastEditTime: 2025-11-06 15:04:49
  * @Description: line闪烁材质属性
  */
-import * as Cesium from "cesium"
+import Cesium from "../../utils/exportCesium.js";
 
 export default class LineFlickerMaterialProperty {
   constructor(options) {

@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2022-09-26 15:11:51
  * @LastEditors: xionghiaying 
- * @LastEditTime: 2025-11-06 16:07:07
+ * @LastEditTime: 2025-11-07 09:15:26
  * @Description: 后处理
  */
 import Cesium from "../utils/exportCesium.js";
@@ -204,6 +204,23 @@ export default function UsePostStage() {
     });
   }
 
+  function removeFlickerLine(ent){
+    if (ent && store.flickerLine) {
+      let entCol = store.flickerLine.entities;
+      if (entCol.contains(ent)) {
+        entCol.remove(ent);
+      }
+    }
+  }
+
+  function clearFlickerLine(){
+    let viewer = window.earthObj;
+    if (store.flickerLine) {
+      viewer.dataSources.remove(store.flickerLine);
+      store.flickerLine = null;
+    }
+  }
+
   return {
     //
     addTrailLink,
@@ -221,5 +238,7 @@ export default function UsePostStage() {
     clearCircleRipple,
     // 线段闪烁
     addFlickerLine,
+    removeFlickerLine,
+    clearFlickerLine
   };
 }

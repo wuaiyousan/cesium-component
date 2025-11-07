@@ -5,7 +5,7 @@
  * @LastEditTime: 2025-11-06 15:09:01
  * @Description: 穿梭线材质属性
  */
-import * as Cesium from "cesium"
+import Cesium from "../../utils/exportCesium.js";
 
 export default class PolylineTrailLinkMaterialProperty {
   constructor(options) {
