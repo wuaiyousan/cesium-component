@@ -1,8 +1,8 @@
 /*
  * @Author: xionghaiying
  * @Date: 2024-06-21 15:03:31
- * @LastEditors: xionghaiying
- * @LastEditTime: 2025-09-10 15:48:30
+ * @LastEditors: xionghaiying 1163702239@qq.com
+ * @LastEditTime: 2026-02-11 09:58:24
  * @Description: 地图配置
  */
 
@@ -82,7 +82,7 @@ let mapConf = {
             id: "mapservice_img_w",
             code: "600",
             title: "天地图-影像",
-            url: `https://t3.tianditu.gov.cn/img_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={TileMatrix}&TILEROW={TileRow}&TILECOL={TileCol}&tk=fd1a28bea0a80604b9b2744ccb6e208a`,
+            url: `https://t0.tianditu.gov.cn/img_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={TileMatrix}&TILEROW={TileRow}&TILECOL={TileCol}&tk=fd1a28bea0a80604b9b2744ccb6e208a`,
             params: {
               layer: "tdtBasicLayer",
               style: "default",
@@ -112,6 +112,37 @@ let mapConf = {
             checked: false,
             extData: {},
           },
+          // 测试tms
+          {
+            id: "mapservice_tms",
+            code: "700",
+            title: "TMS-影像",
+            url: `http://220.170.90.49:8004/googleData/tms`,
+            params: {
+              fileExtension: "jpg",
+              maximumLevel: 4,
+              Rectangle: [-180.0, -85.0, 180.0, 85.0],
+            },
+            opacity: 1,
+            zIndex: 0,
+            checked: false,
+            extData: {},
+          },
+          // 测试xyz
+          {
+            id: "mapservice_xyz",
+            code: "800",
+            title: "XYZ-注记",
+            url: `http://220.170.90.49:8004/tilesData/google/{z}/{x}/{y}.png`,
+            params: {
+              minimumLevel: 0,
+              maximumLevel: 18,
+            },
+            opacity: 1,
+            zIndex: 4,
+            checked: true,
+            extData: {},
+          },
         ],
         isDefault: true,
       },
@@ -128,6 +159,29 @@ let mapConf = {
             params: {},
             opacity: 1,
             zIndex: 2,
+            checked: true,
+            extData: {},
+          },
+        ],
+        isDefault: false,
+      },
+      // test
+      {
+        scenarioName: "影像",
+        scenarioType: "image",
+        layerList: [
+          {
+            id: "mapservice_tms",
+            code: "700",
+            title: "TMS-影像",
+            url: `http://220.170.90.49:8004/googleData/tms`,
+            params: {
+              fileExtension: "jpg",
+              maximumLevel: 4,
+              Rectangle: [-180.0, -85.0, 180.0, 85.0],
+            },
+            opacity: 1,
+            zIndex: 5,
             checked: true,
             extData: {},
           },
