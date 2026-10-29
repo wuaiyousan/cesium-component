@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2024-06-21 15:03:31
  * @LastEditors: xionghaiying 1163702239@qq.com
- * @LastEditTime: 2026-10-29 15:23:47
+ * @LastEditTime: 2026-10-29 15:31:15
  * @Description: 地图配置
  */
 
@@ -124,7 +124,12 @@ let mapConf = {
             code: "500",
             type: "CesiumTerrainProvider",
             title: "地形",
-            url: "/3dModel/terrians",
+            url: "http://localhost:8002/hunan/",
+            // 当前使用 layer.json 的完整 available 静态清单，关闭瓦片 metadata 解析。
+            // 若更换为支持动态可用性元数据的地形数据，将 url 改为新数据目录，并设为 true。
+            // 前提：layer.json 声明 metadataAvailability、extensions 包含 "metadata"，
+            // 且切片工具已生成匹配的瓦片 metadata；仅设为 true 不会将静态清单转换为动态模式。
+            requestMetadata: false,
             params: {},
             opacity: 1,
             zIndex: 2,
@@ -132,7 +137,7 @@ let mapConf = {
             extData: {},
           },
         ],
-        isDefault: false,
+        isDefault: true,
       },
     ];
   },

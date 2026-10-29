@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2022-06-21 17:49:25
  * @LastEditors: xionghaiying 1163702239@qq.com
- * @LastEditTime: 2026-02-11 17:27:30
+ * @LastEditTime: 2026-10-29 15:57:26
  * @Description: UseLayer
  */
 import Cesium from "../utils/exportCesium.js";
@@ -89,20 +89,28 @@ export default function UseLayer() {
   }
 
   // 加载地形
-  function loadTerrainProvider(layerNode, toEarth = window.earthObj) {
-    let theViewer = toEarth;
-    if (layerNode.type === "ArcGISTiledElevationTerrainProvider") {
-      theViewer.terrainProvider = new Cesium.ArcGISTiledElevationTerrainProvider({
-        url: layerNode.url,
-      });
-    } else if (layerNode.type === "CesiumTerrainProvider") {
-      theViewer.terrainProvider = new Cesium.CesiumTerrainProvider({
-        url: layerNode.url,
-        requestVertexNormals: layerNode.requestVertexNormals || false,
-        requestWaterMask: layerNode.requestWaterMask || false,
-      });
-    } else {
-      console.log("Scene@initScenario,不支持的类型！");
+  async function loadTerrainProvider(layerNode, toEarth = window.earthObj) {
+    try {
+      let provider;
+      if (layerNode.type === "ArcGISTiledElevationTerrainProvider") {
+        provider = await Cesium.ArcGISTiledElevationTerrainProvider.fromUrl(layerNode.url);
+      } else if (layerNode.type === "CesiumTerrainProvider") {
+        provider = await Cesium.CesiumTerrainProvider.fromUrl(layerNode.url, {
+          requestVertexNormals: layerNode.requestVertexNormals ?? false,
+          requestWaterMask: layerNode.requestWaterMask ?? false,
+          requestMetadata: layerNode.requestMetadata ?? true,
+        });
+      } else {
+        console.warn("不支持的地形类型：", layerNode.type);
+        return;
+      }
+      if (!toEarth || toEarth.isDestroyed()) {
+        return;
+      }
+      toEarth.terrainProvider = provider;
+      return provider;
+    } catch (error) {
+      console.error("地形初始化失败：", layerNode.url, error);
     }
   }
 
