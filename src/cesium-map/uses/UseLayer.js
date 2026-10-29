@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2022-06-21 17:49:25
  * @LastEditors: xionghaiying 1163702239@qq.com
- * @LastEditTime: 2026-02-11 11:13:59
+ * @LastEditTime: 2026-02-11 17:27:30
  * @Description: UseLayer
  */
 import Cesium from "../utils/exportCesium.js";
@@ -141,7 +141,7 @@ export default function UseLayer() {
       let theViewer = toEarth;
       let { url, params } = layerNode;
       const xyzProvider = new GCJ02UrlTemplateImageryProvider({
-        url:"http://220.170.90.49:8004/tilesData/google/{z}/{x}/{y}.png",
+        url,
         // 限制层级范围
         minimumLevel: params.minimumLevel || 0,
         maximumLevel: params.maximumLevel || 18, // 根据服务实际情况调整

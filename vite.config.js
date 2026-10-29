@@ -20,6 +20,13 @@ const cesiumBaseUrl = "cesiumStatic";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   return {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: "modern-compiler",
+        },
+      },
+    },
     define: {
       CESIUM_BASE_URL: JSON.stringify(`/${cesiumBaseUrl}`),
     },

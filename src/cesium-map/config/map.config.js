@@ -2,7 +2,7 @@
  * @Author: xionghaiying
  * @Date: 2024-06-21 15:03:31
  * @LastEditors: xionghaiying 1163702239@qq.com
- * @LastEditTime: 2026-02-11 09:58:24
+ * @LastEditTime: 2026-10-29 15:23:47
  * @Description: 地图配置
  */
 
@@ -112,37 +112,6 @@ let mapConf = {
             checked: false,
             extData: {},
           },
-          // 测试tms
-          {
-            id: "mapservice_tms",
-            code: "700",
-            title: "TMS-影像",
-            url: `http://220.170.90.49:8004/googleData/tms`,
-            params: {
-              fileExtension: "jpg",
-              maximumLevel: 4,
-              Rectangle: [-180.0, -85.0, 180.0, 85.0],
-            },
-            opacity: 1,
-            zIndex: 0,
-            checked: false,
-            extData: {},
-          },
-          // 测试xyz
-          {
-            id: "mapservice_xyz",
-            code: "800",
-            title: "XYZ-注记",
-            url: `http://220.170.90.49:8004/tilesData/google/{z}/{x}/{y}.png`,
-            params: {
-              minimumLevel: 0,
-              maximumLevel: 18,
-            },
-            opacity: 1,
-            zIndex: 4,
-            checked: true,
-            extData: {},
-          },
         ],
         isDefault: true,
       },
@@ -159,29 +128,6 @@ let mapConf = {
             params: {},
             opacity: 1,
             zIndex: 2,
-            checked: true,
-            extData: {},
-          },
-        ],
-        isDefault: false,
-      },
-      // test
-      {
-        scenarioName: "影像",
-        scenarioType: "image",
-        layerList: [
-          {
-            id: "mapservice_tms",
-            code: "700",
-            title: "TMS-影像",
-            url: `http://220.170.90.49:8004/googleData/tms`,
-            params: {
-              fileExtension: "jpg",
-              maximumLevel: 4,
-              Rectangle: [-180.0, -85.0, 180.0, 85.0],
-            },
-            opacity: 1,
-            zIndex: 5,
             checked: true,
             extData: {},
           },

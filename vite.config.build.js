@@ -17,6 +17,13 @@ const cesiumSource = "node_modules/cesium/Build/Cesium";
 const cesiumBaseUrl = "cesiumStatic";
 
 export default defineConfig({
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: "modern-compiler",
+      },
+    },
+  },
   plugins: [
     vue(),
     // 将cesium的静态文件拷贝到公共文件夹
